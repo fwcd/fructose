@@ -1,12 +1,14 @@
 package com.fredrikw.fructose.ml.function;
 
+import java.io.Serializable;
+
 /**
  * A differentiable float function.
  * 
  * @author Fredrik
  *
  */
-public interface DiffFunction {
+public interface DiffFunction extends Serializable {
 	/**
 	 * @return The result of the function at x
 	 */

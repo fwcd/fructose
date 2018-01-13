@@ -2,10 +2,10 @@ package com.fredrikw.fructose.test.unittest;
 
 import org.junit.Test;
 
+import com.fredrikw.fructose.ml.data.LabelledData;
 import com.fredrikw.fructose.ml.function.NNFunction;
 import com.fredrikw.fructose.ml.function.NNWeightInit;
 import com.fredrikw.fructose.ml.math.NNVector;
-import com.fredrikw.fructose.ml.neural.LabelledData;
 import com.fredrikw.fructose.ml.neural.Perceptron;
 
 public class PerceptronTest {
@@ -30,6 +30,10 @@ public class PerceptronTest {
 		for (int i=0; i<1000; i++) {
 			net.backprop(testData);
 			System.out.println("1, 0, 0 => " + net.cost(testData));
+			
+			if (Float.isNaN(net.cost(testData))) {
+				net.reInitWeights();
+			}
 		}
 		
 		System.out.println(net.compute(in));

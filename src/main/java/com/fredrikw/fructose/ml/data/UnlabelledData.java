@@ -1,11 +1,12 @@
-package com.fredrikw.fructose.ml.neural;
+package com.fredrikw.fructose.ml.data;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class UnlabelledData<I> implements TrainingData<I> {
+@SuppressWarnings("serial")
+public class UnlabelledData<I> implements DataSet<I> {
 	private final Set<I> inputs;
 	
 	@SafeVarargs

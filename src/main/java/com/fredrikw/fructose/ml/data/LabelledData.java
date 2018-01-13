@@ -1,10 +1,11 @@
-package com.fredrikw.fructose.ml.neural;
+package com.fredrikw.fructose.ml.data;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class LabelledData<I, O> implements TrainingData<I> {
+@SuppressWarnings("serial")
+public class LabelledData<I, O> implements DataSet<I> {
 	private final Map<I, O> data;
 	
 	public LabelledData() {

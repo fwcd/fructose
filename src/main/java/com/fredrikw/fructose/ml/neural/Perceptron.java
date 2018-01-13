@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import com.fredrikw.fructose.function.FloatSupplier;
+import com.fredrikw.fructose.ml.data.LabelledData;
 import com.fredrikw.fructose.ml.exception.SizeMismatchException;
 import com.fredrikw.fructose.ml.function.DiffFunction;
 import com.fredrikw.fructose.ml.function.NNFunction;
@@ -14,17 +15,19 @@ import com.fredrikw.fructose.ml.math.NNMatrix;
 import com.fredrikw.fructose.ml.math.NNVector;
 
 /**
- * A multi-layer, feed-forward perceptron. Can be constructed by instantiating
- * the nested builder.
+ * A flexible, multi-layer feed-forward perceptron.
+ * Can be constructed through the nested builder.
  * 
  * @author Fredrik
  *
  */
+@SuppressWarnings("serial")
 public class Perceptron implements NeuralNetwork<NNVector, NNVector> {
 	private final int[] layerSizes;
 	private final NNMatrix[] allWeights;
 	private final NNVector[] allBiases;
 	private final DiffFunction activationFunction;
+	private final WeightInit weightInit;
 	private final float learnFactor;
 	
 	protected Perceptron(
@@ -33,6 +36,7 @@ public class Perceptron implements NeuralNetwork<NNVector, NNVector> {
 			int[] layerSizes,
 			float learnFactor
 	) {
+		this.weightInit = weightInit;
 		this.activationFunction = activationFunction;
 		this.layerSizes = layerSizes;
 		this.learnFactor = learnFactor;
@@ -40,6 +44,10 @@ public class Perceptron implements NeuralNetwork<NNVector, NNVector> {
 		allWeights = new NNMatrix[layerSizes.length];
 		allBiases = new NNVector[layerSizes.length];
 		
+		reInitWeights();
+	}
+
+	public void reInitWeights() {
 		// First layer does not have any input neurons,
 		// so it doesn't have weights/biases either
 		

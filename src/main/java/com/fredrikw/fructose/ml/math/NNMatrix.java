@@ -1,5 +1,6 @@
 package com.fredrikw.fructose.ml.math;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.concurrent.ThreadLocalRandom;
@@ -17,7 +18,8 @@ import com.fredrikw.fructose.ml.exception.SizeMismatchException;
  * @author Fredrik
  *
  */
-public class NNMatrix implements Iterable<float[]> {
+@SuppressWarnings("serial")
+public class NNMatrix implements Iterable<float[]>, Serializable {
 	private final float[][] data;
 	
 	public NNMatrix(int width, int height) {

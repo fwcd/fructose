@@ -1,7 +1,9 @@
 package com.fredrikw.fructose.ml.function;
 
+import java.io.Serializable;
+
 @FunctionalInterface
-public interface WeightInit {
+public interface WeightInit extends Serializable {
 	float getWeight(int inputNeurons, int outputNeurons);
 	
 	default WeightInit scale(int factor) {
