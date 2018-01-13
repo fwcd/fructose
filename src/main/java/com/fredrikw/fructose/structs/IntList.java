@@ -44,6 +44,6 @@ public class IntList {
 	}
 	
 	public int[] toArray() {
-		return data;
+		return Arrays.copyOf(data, size);
 	}
 }

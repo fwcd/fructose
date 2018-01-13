@@ -31,6 +31,13 @@ public class FloatList {
 		size++;
 	}
 	
+	public void addAll(float... v) {
+		int offset = size;
+		size += v.length;
+		ensureCapacity();
+		System.arraycopy(v, 0, data, offset, v.length);
+	}
+	
 	public void removeLast() {
 		size--;
 	}
@@ -44,6 +51,6 @@ public class FloatList {
 	}
 	
 	public float[] toArray() {
-		return data;
+		return Arrays.copyOf(data, size);
 	}
 }
