@@ -18,5 +18,5 @@ public interface Decoder<T> extends Serializable {
 	 * @param genes - The genes/chromosome
 	 * @return The actual solution/state or "phenes"
 	 */
-	T decode(float[] genes);
+	T decode(int[] genes);
 }

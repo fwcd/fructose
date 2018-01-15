@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import com.fredrikw.fructose.genetic.core.PopulationBuilder;
+import com.fredrikw.fructose.genetic.core.Population;
 import com.fredrikw.fructose.genetic.core.PopulationManager;
 import com.fredrikw.fructose.genetic.operators.Decoder;
 import com.fredrikw.fructose.genetic.operators.Encoder;
@@ -47,14 +47,14 @@ public class GeneticAlgorithmDemo {
 	private static class KnapsackSolution {
 		private final List<Stone> stones;
 		
-		public KnapsackSolution(float[] encoded) {
+		public KnapsackSolution(int[] encoded) {
 			stones = new ArrayList<>();
 			
 			int i = 0;
 			while (i < encoded.length && encoded[i] != 0) {
-				float value = encoded[i++];
-				float weight = encoded[i++];
-				stones.add(new Stone((int) value, (int) weight));
+				int value = encoded[i++];
+				int weight = encoded[i++];
+				stones.add(new Stone(value, weight));
 			}
 		}
 		
@@ -74,8 +74,8 @@ public class GeneticAlgorithmDemo {
 					.sum();
 		}
 
-		public float[] encode() {
-			float[] result = new float[TOTAL_STONES.size() * 2];
+		public int[] encode() {
+			int[] result = new int[TOTAL_STONES.size() * 2];
 			
 			int i = 0;
 			for (Stone stone : stones) {
@@ -112,7 +112,7 @@ public class GeneticAlgorithmDemo {
 			return result;
 		};
 		
-		mgr.set(new PopulationBuilder()
+		mgr.set(new Population.Builder()
 				.fitnessFunc(decoder, KnapsackSolution::fitness)
 				.spawnIndividuals(encoder, supplier, 100)
 				.build()
@@ -126,8 +126,7 @@ public class GeneticAlgorithmDemo {
 		}
 		
 		// TODO: Still outputting obviously wrong solutions, because mutation
-		// and crossover can destroy the semantics of the encoded results. Maybe
-		// use ints/bits/booleans instead of floats to represents genes everywhere?
+		// and crossover can destroy the semantics of the encoded results.
 		
 		System.out.println(mgr.get().getFittestPhenes(decoder));
 	}

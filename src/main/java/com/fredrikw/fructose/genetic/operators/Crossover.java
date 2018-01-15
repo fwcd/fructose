@@ -21,5 +21,5 @@ public interface Crossover extends Serializable {
 	 * @param genesB - The second chromosome
 	 * @return The offspring's genes
 	 */
-	float[] crossover(float[] genesA, float[] genesB);
+	int[] crossover(int[] genesA, int[] genesB);
 }

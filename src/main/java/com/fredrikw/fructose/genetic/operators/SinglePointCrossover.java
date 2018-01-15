@@ -10,7 +10,7 @@ public class SinglePointCrossover implements Crossover {
 	private boolean randomlyChooseOffset = true; // Will ignore offsetPercent if true
 	
 	@Override
-	public float[] crossover(float[] genesA, float[] genesB) {
+	public int[] crossover(int[] genesA, int[] genesB) {
 		if (genesA.length != genesB.length) {
 			throw new IllegalArgumentException("Both gene sequences should be of the same length!");
 		}
@@ -22,7 +22,7 @@ public class SinglePointCrossover implements Crossover {
 		
 		int length = genesA.length;
 		int offset = (int) (length * offsetPercent);
-		float[] result = new float[length];
+		int[] result = new int[length];
 		
 		for (int i=0; i<length; i++) {
 			if ((i < offset) ^ swapParents) {

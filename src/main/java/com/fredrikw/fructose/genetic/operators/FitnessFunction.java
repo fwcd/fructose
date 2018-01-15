@@ -19,5 +19,5 @@ public interface FitnessFunction extends Serializable {
 	 * @param genes - The chromosome
 	 * @return The "fitness"
 	 */
-	float getFitness(float[] genes);
+	float getFitness(int[] genes);
 }

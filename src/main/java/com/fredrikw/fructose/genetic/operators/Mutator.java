@@ -17,5 +17,5 @@ public interface Mutator extends Serializable {
 	 * @param genes - The chromosome/genes
 	 * @return A mutated version of the chromosome
 	 */
-	float[] mutate(float[] genes);
+	int[] mutate(int[] genes);
 }

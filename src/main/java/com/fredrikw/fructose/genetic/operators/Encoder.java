@@ -18,5 +18,5 @@ public interface Encoder<T> extends Serializable {
 	 * @param phenes - The custom state/solution
 	 * @return The gene sequence/chromosome
 	 */
-	float[] encode(T phenes);
+	int[] encode(T phenes);
 }
