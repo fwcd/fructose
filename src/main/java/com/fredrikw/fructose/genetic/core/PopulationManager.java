@@ -7,10 +7,18 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.NoSuchElementException;
+import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
 import com.fredrikw.fructose.exception.SerializationException;
 
+/**
+ * An object that holds a Population and allows for easy
+ * serialization/deserialization.
+ * 
+ * @author Fredrik
+ *
+ */
 public class PopulationManager {
 	private Population population;
 	
@@ -18,16 +26,24 @@ public class PopulationManager {
 		set(mapper.apply(get()));
 	}
 	
+	public void usingPopulation(Consumer<Population> consumer) {
+		consumer.accept(get());
+	}
+	
 	public void set(Population population) {
 		this.population = population;
 	}
 	
 	public Population get() {
-		if (population != null) {
+		if (hasPopulation()) {
 			return population;
 		} else {
 			throw new NoSuchElementException();
 		}
+	}
+	
+	public boolean hasPopulation() {
+		return population != null;
 	}
 	
 	public void load(File file) {
