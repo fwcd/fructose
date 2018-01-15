@@ -14,5 +14,10 @@ package com.fredrikw.fructose.game;
  *
  */
 public interface GameRole {
+	/**
+	 * @return The opponent or null if there is none
+	 */
+	GameRole getOpponent();
 	
+	boolean hasOpponent();
 }

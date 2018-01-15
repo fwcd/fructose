@@ -6,8 +6,6 @@ import java.util.concurrent.RunnableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import com.fredrikw.fructose.exception.Rethrow;
-
 public abstract class TemplateGameAI implements GameAI {
 	private long softMaxTime = Long.MAX_VALUE;
 	private long hardMaxTime = Long.MAX_VALUE;
@@ -48,11 +46,12 @@ public abstract class TemplateGameAI implements GameAI {
 		
 		try {
 			result.run();
-			move = result.get(hardMaxTime - hardMaxBuffer, TimeUnit.MILLISECONDS); // FIXME: Debug
+			move = result.get(hardMaxTime - hardMaxBuffer, TimeUnit.MILLISECONDS);
 		} catch (TimeoutException e) {
 			move = timeoutMoveChooser.chooseMove(game);
 		} catch (InterruptedException | ExecutionException e) {
-			throw new Rethrow(e);
+			System.out.println("[Warning] " + e.getClass().getSimpleName() + ": " + e.getMessage());
+			move = timeoutMoveChooser.chooseMove(game);
 		}
 		
 		return move;

@@ -21,9 +21,9 @@ public class WinEvaluator implements MoveEvaluator {
 		Set<? extends GameRole> winners = gameAfterMove.getWinners();
 		
 		if (winners.contains(role)) {
-			return Double.MAX_VALUE - incrementalDepth;
+			return 1000000000000D / incrementalDepth;
 		} else if (!winners.isEmpty()) {
-			return -(Double.MAX_VALUE - incrementalDepth);
+			return -(1000000000000D / incrementalDepth);
 		} else {
 			return 0;
 		}

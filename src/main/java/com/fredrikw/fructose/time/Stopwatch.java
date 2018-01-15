@@ -1,8 +1,8 @@
 package com.fredrikw.fructose.time;
 
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
+import java.time.temporal.TemporalUnit;
 
 /**
  * An incrementing time measurement device.
@@ -20,7 +20,7 @@ public class Stopwatch {
 	 * might take about 10 ms to run.
 	 */
 	public void start() {
-		startTime = now();
+		startTime = System.currentTimeMillis();
 		resetted = false;
 	}
 	
@@ -31,13 +31,13 @@ public class Stopwatch {
 	 */
 	public long getMillis() {
 		if (resetted) {
-			return 0;
+			throw new IllegalStateException("Stopwatch not running");
 		} else {
-			return now() - startTime + delta;
+			return System.currentTimeMillis() - startTime + delta;
 		}
 	}
 	
-	public long get(ChronoUnit unit) {
+	public long get(TemporalUnit unit) {
 		Temporal startTemp = Instant.ofEpochMilli(startTime);
 		Temporal endTemp = Instant.ofEpochMilli(getMillis());
 		
@@ -69,10 +69,6 @@ public class Stopwatch {
 		long ms = getMillis();
 		reset();
 		return ms;
-	}
-
-	private long now() {
-		return System.currentTimeMillis();
 	}
 	
 	@Override

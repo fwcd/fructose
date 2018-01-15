@@ -18,8 +18,8 @@ import com.fredrikw.fructose.ml.exception.SizeMismatchException;
  * @author Fredrik
  *
  */
-@SuppressWarnings("serial")
 public class NNVector implements Iterable<Float>, Serializable {
+	private static final long serialVersionUID = 8045665146795616327L;
 	private final float[] data;
 	
 	/**

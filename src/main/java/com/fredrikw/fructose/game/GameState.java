@@ -2,6 +2,9 @@ package com.fredrikw.fructose.game;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import com.fredrikw.fructose.structs.TreeNode;
 
 /**
  * A mutable state in the game.
@@ -10,7 +13,7 @@ import java.util.Set;
  * 
  * @param T - This implementation type
  */
-public interface GameState {
+public interface GameState extends TreeNode {
 	/**
 	 * Fetches the legal moves. Caching these might
 	 * be a good idea.
@@ -63,5 +66,12 @@ public interface GameState {
 	
 	default boolean isLegal(GameMove move) {
 		return getLegalMoves().contains(move);
+	}
+
+	@Override
+	default List<? extends TreeNode> getChildren() {
+		return getLegalMoves().stream()
+				.map(this::spawnChild)
+				.collect(Collectors.toList());
 	}
 }

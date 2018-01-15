@@ -18,8 +18,8 @@ import com.fredrikw.fructose.ml.exception.SizeMismatchException;
  * @author Fredrik
  *
  */
-@SuppressWarnings("serial")
 public class NNMatrix implements Iterable<float[]>, Serializable {
+	private static final long serialVersionUID = -6602539081610190469L;
 	private final float[][] data;
 	
 	public NNMatrix(int width, int height) {

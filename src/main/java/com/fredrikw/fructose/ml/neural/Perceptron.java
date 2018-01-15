@@ -21,8 +21,8 @@ import com.fredrikw.fructose.ml.math.NNVector;
  * @author Fredrik
  *
  */
-@SuppressWarnings("serial")
 public class Perceptron implements NeuralNetwork<NNVector, NNVector> {
+	private static final long serialVersionUID = 8421330699640634886L;
 	private final int[] layerSizes;
 	private final NNMatrix[] allWeights;
 	private final NNVector[] allBiases;

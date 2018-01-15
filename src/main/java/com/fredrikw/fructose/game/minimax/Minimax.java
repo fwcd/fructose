@@ -11,11 +11,14 @@ import com.fredrikw.fructose.game.GameState;
 import com.fredrikw.fructose.game.MoveEvaluator;
 import com.fredrikw.fructose.game.TemplateGameAI;
 import com.fredrikw.fructose.game.WinEvaluator;
-import com.fredrikw.fructose.time.Stopwatch;
+import com.fredrikw.fructose.time.Timer;
 
 /**
  * The classic two-player, minimax algorithm
- * without alpha-beta.
+ * without alpha-beta. This implementation
+ * exists mostly just for educational purposes,
+ * for any production use I highly recommed
+ * {@link AlphaBeta} instead.
  * 
  * @author Fredrik
  *
@@ -41,13 +44,18 @@ public class Minimax extends TemplateGameAI {
 	
 	@Override
 	protected GameMove selectMove(GameState game, long softMaxTime) {
-		Stopwatch watch = new Stopwatch();
-		watch.start();
+		if (!game.getCurrentRole().hasOpponent()) {
+			throw new IllegalStateException("Minimax can only operate on two-player games!");
+		}
+		
+		Timer timer = new Timer();
+		timer.start(softMaxTime);
 		
 		Comparator<GameMove> comparator =
 				(a, b) -> Double.compare(
-						minimax(game.getCurrentRole(), game, a, depth, softMaxTime, watch),
-						minimax(game.getCurrentRole(), game, b, depth, softMaxTime, watch));
+						minimax(game.getCurrentRole(), game, a, depth, timer),
+						minimax(game.getCurrentRole(), game, b, depth, timer)
+				);
 		
 		return Collections.max(game.getLegalMoves(), comparator);
 	}
@@ -57,26 +65,21 @@ public class Minimax extends TemplateGameAI {
 			GameState gameBeforeMove,
 			GameMove move,
 			int decrementalDepth,
-			long softMaxTime,
-			Stopwatch watch
+			Timer timer
 	) {
 		GameState gameAfterMove = gameBeforeMove.spawnChild(move);
 		
-		if (watch.getMillis() > softMaxTime || decrementalDepth == 0 || gameAfterMove.isGameOver()) {
+		if (!timer.isRunning() || decrementalDepth == 0 || gameAfterMove.isGameOver()) {
 			return evaluator.rate(role, gameBeforeMove, gameAfterMove, move, depth - decrementalDepth);
 		} else {
-			DoubleStream childRatings = gameAfterMove.getLegalMoves().parallelStream()
-					.mapToDouble(childMove -> minimax(
-							role,
-							gameAfterMove,
-							childMove,
-							decrementalDepth - 1,
-							softMaxTime,
-							watch));
+			DoubleStream childRatings = gameAfterMove
+					.getLegalMoves()
+					.stream()
+					.mapToDouble(childMove -> minimax(role, gameAfterMove, childMove, decrementalDepth - 1, timer));
 			
 			OptionalDouble result;
 			
-			if (gameAfterMove.getCurrentRole() == role) {
+			if (gameAfterMove.getCurrentRole().equals(role)) {
 				result = childRatings.max();
 			} else {
 				result = childRatings.min();
