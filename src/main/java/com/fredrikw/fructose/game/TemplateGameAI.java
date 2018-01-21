@@ -40,9 +40,9 @@ public abstract class TemplateGameAI implements GameAI {
 	}
 	
 	@Override
-	public GameMove chooseMove(GameState game) {
-		RunnableFuture<GameMove> result = new FutureTask<>(() -> selectMove(game, softMaxTime));
-		GameMove move;
+	public <M extends GameMove, R extends GameRole> M chooseMove(GameState<M, R> game) {
+		RunnableFuture<M> result = new FutureTask<>(() -> selectMove(game, softMaxTime));
+		M move;
 		
 		try {
 			result.run();
@@ -57,5 +57,8 @@ public abstract class TemplateGameAI implements GameAI {
 		return move;
 	}
 	
-	protected abstract GameMove selectMove(GameState game, long softMaxTime);
+	protected abstract <M extends GameMove, R extends GameRole> M selectMove(
+			GameState<M, R> game,
+			long softMaxTime
+	);
 }

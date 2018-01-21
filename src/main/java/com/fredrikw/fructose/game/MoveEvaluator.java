@@ -19,11 +19,11 @@ public interface MoveEvaluator {
 	 * @param move - The move to be evaluated
 	 * @return A rating of the given move on the board
 	 */
-	double rate(
-			GameRole role,
-			GameState gameBeforeMove,
-			GameState gameAfterMove,
-			GameMove move,
+	<M extends GameMove, R extends GameRole> double rate(
+			R role,
+			GameState<M, R> gameBeforeMove,
+			GameState<M, R> gameAfterMove,
+			M move,
 			double incrementalDepth
 	);
 }

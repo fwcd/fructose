@@ -9,5 +9,5 @@ package com.fredrikw.fructose.game;
  */
 @FunctionalInterface
 public interface MoveChooser {
-	GameMove chooseMove(GameState game);
+	<M extends GameMove, R extends GameRole> M chooseMove(GameState<M, R> game);
 }

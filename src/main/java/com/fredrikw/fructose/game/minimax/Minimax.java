@@ -43,7 +43,7 @@ public class Minimax extends TemplateGameAI {
 	}
 	
 	@Override
-	protected GameMove selectMove(GameState game, long softMaxTime) {
+	protected <M extends GameMove, R extends GameRole> M selectMove(GameState<M, R> game, long softMaxTime) {
 		if (!game.getCurrentRole().hasOpponent()) {
 			throw new IllegalStateException("Minimax can only operate on two-player games!");
 		}
@@ -51,7 +51,7 @@ public class Minimax extends TemplateGameAI {
 		Timer timer = new Timer();
 		timer.start(softMaxTime);
 		
-		Comparator<GameMove> comparator =
+		Comparator<M> comparator =
 				(a, b) -> Double.compare(
 						minimax(game.getCurrentRole(), game, a, depth, timer),
 						minimax(game.getCurrentRole(), game, b, depth, timer)
@@ -60,14 +60,14 @@ public class Minimax extends TemplateGameAI {
 		return Collections.max(game.getLegalMoves(), comparator);
 	}
 	
-	private double minimax(
-			GameRole role,
-			GameState gameBeforeMove,
-			GameMove move,
+	private <M extends GameMove, R extends GameRole> double minimax(
+			R role,
+			GameState<M, R> gameBeforeMove,
+			M move,
 			int decrementalDepth,
 			Timer timer
 	) {
-		GameState gameAfterMove = gameBeforeMove.spawnChild(move);
+		GameState<M, R> gameAfterMove = gameBeforeMove.spawnChild(move);
 		
 		if (!timer.isRunning() || decrementalDepth == 0 || gameAfterMove.isGameOver()) {
 			return evaluator.rate(role, gameBeforeMove, gameAfterMove, move, depth - decrementalDepth);

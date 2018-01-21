@@ -3,8 +3,13 @@ package com.fredrikw.fructose.time;
 import java.time.Duration;
 import java.time.temporal.TemporalUnit;
 
-import com.fredrikw.fructose.exception.Rethrow;
-
+/**
+ * A decremental time-measurement device. Can also be
+ * used to schedule tasks.
+ * 
+ * @author Fredrik
+ *
+ */
 public class Timer {
 	private boolean resetted = true;
 	private long endTime = 0;
@@ -14,19 +19,13 @@ public class Timer {
 		resetted = false;
 	}
 	
-	public void schedule(Runnable task, long customDurationMs) {
-		new Thread(() -> {
-			try {
-				Thread.sleep(customDurationMs);
-				task.run();
-			} catch (InterruptedException e) {
-				throw new Rethrow(e);
-			}
-		}).start();
-	}
-	
-	public void schedule(Runnable onEnd) {
-		schedule(onEnd, getRemainingMillis());
+	/**
+	 * Waits for the timer to complete.
+	 * 
+	 * @throws InterruptedException - If this thread is interrupted
+	 */
+	public void waitFor() throws InterruptedException {
+		Thread.sleep(getRemainingMillis());
 	}
 	
 	public void reset() {

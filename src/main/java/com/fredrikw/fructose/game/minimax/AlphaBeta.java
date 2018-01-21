@@ -40,7 +40,7 @@ public class AlphaBeta extends TemplateGameAI {
 	}
 	
 	@Override
-	protected GameMove selectMove(GameState game, long softMaxTime) {
+	protected <M extends GameMove, R extends GameRole> M selectMove(GameState<M, R> game, long softMaxTime) {
 		if (!game.getCurrentRole().hasOpponent()) {
 			throw new IllegalStateException("Alpha beta can only operate on two-player games!");
 		}
@@ -49,9 +49,9 @@ public class AlphaBeta extends TemplateGameAI {
 		timer.start(softMaxTime);
 		
 		double bestRating = Double.NEGATIVE_INFINITY;
-		GameMove bestMove = null;
+		M bestMove = null;
 		
-		for (GameMove move : game.getLegalMoves()) {
+		for (M move : game.getLegalMoves()) {
 			double rating = alphaBeta(game.getCurrentRole(), game, move, depth, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, timer);
 
 			if (debugOutput) {
@@ -63,21 +63,20 @@ public class AlphaBeta extends TemplateGameAI {
 				bestMove = move;
 			}
 		}
-		System.out.println();
 		
 		return bestMove;
 	}
 	
-	private double alphaBeta(
-			GameRole role,
-			GameState gameBeforeMove,
-			GameMove move,
+	private <M extends GameMove, R extends GameRole> double alphaBeta(
+			R role,
+			GameState<M, R> gameBeforeMove,
+			M move,
 			int decrementalDepth,
 			double alpha,
 			double beta,
 			Timer timer
 	) {
-		GameState gameAfterMove = gameBeforeMove.spawnChild(move);
+		GameState<M, R> gameAfterMove = gameBeforeMove.spawnChild(move);
 		
 		if (!timer.isRunning() || decrementalDepth == 0 || gameAfterMove.isGameOver()) {
 			return evaluator.rate(role, gameBeforeMove, gameAfterMove, move, depth - decrementalDepth);
@@ -85,7 +84,7 @@ public class AlphaBeta extends TemplateGameAI {
 			boolean maximizing = gameAfterMove.getCurrentRole().equals(role);
 			double bestRating = maximizing ? alpha : beta;
 			
-			for (GameMove childMove : gameAfterMove.getLegalMoves()) {
+			for (M childMove : gameAfterMove.getLegalMoves()) {
 				if (!timer.isRunning()) {
 					break;
 				}

@@ -11,19 +11,19 @@ import java.util.Set;
  */
 public class WinEvaluator implements MoveEvaluator {
 	@Override
-	public double rate(
-			GameRole role,
-			GameState gameBeforeMove,
-			GameState gameAfterMove,
-			GameMove move,
+	public <M extends GameMove, R extends GameRole> double rate(
+			R role,
+			GameState<M, R> gameBeforeMove,
+			GameState<M, R> gameAfterMove,
+			M move,
 			double incrementalDepth
 	) {
 		Set<? extends GameRole> winners = gameAfterMove.getWinners();
 		
 		if (winners.contains(role)) {
-			return 1000000000000D / incrementalDepth;
+			return Double.MAX_VALUE / incrementalDepth;
 		} else if (!winners.isEmpty()) {
-			return -(1000000000000D / incrementalDepth);
+			return -(Double.MAX_VALUE / incrementalDepth);
 		} else {
 			return 0;
 		}

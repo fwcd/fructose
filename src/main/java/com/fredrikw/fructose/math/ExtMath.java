@@ -8,9 +8,8 @@ import java.util.List;
 import java.util.function.IntFunction;
 
 import com.fredrikw.fructose.ListUtils;
-import com.fredrikw.fructose.math.expressions.Constant;
-import com.fredrikw.fructose.math.expressions.Exponentiation;
-import com.fredrikw.fructose.math.expressions.ConstFraction;
+import com.fredrikw.fructose.math.graph.ConstScalar;
+import com.fredrikw.fructose.math.graph.ScalarExponentiation;
 
 /**
  * A set of utilities for performing custom, useful and common math operations.
@@ -92,7 +91,7 @@ public final class ExtMath {
 		return result;
 	}
 
-	public static List<Exponentiation> expPrimeFactors(int number) {
+	public static List<ScalarExponentiation> expPrimeFactors(int number) {
 		return summarizeFactors(primeFactors(number));
 	}
 
@@ -260,10 +259,10 @@ public final class ExtMath {
 		return Arrays.asList(ListUtils.box(getDigits(number)));
 	}
 
-	public static ConstFraction product(Iterable<ConstFraction> fractions) {
-		ConstFraction p = new ConstFraction(1, 1);
+	public static LongFraction product(Iterable<LongFraction> fractions) {
+		LongFraction p = new LongFraction(1, 1);
 
-		for (ConstFraction fraction : fractions) {
+		for (LongFraction fraction : fractions) {
 			p.multiply(fraction);
 		}
 
@@ -317,13 +316,13 @@ public final class ExtMath {
 		return number - 1;
 	}
 
-	private static Constant term(double n) {
-		return new Constant(n);
+	private static ConstScalar term(double n) {
+		return new ConstScalar(n);
 	}
 	
-	public static List<Exponentiation> summarizeFactors(List<Integer> factors) {
+	public static List<ScalarExponentiation> summarizeFactors(List<Integer> factors) {
 		Collections.sort(factors);
-		List<Exponentiation> exponentiations = new ArrayList<>();
+		List<ScalarExponentiation> exponentiations = new ArrayList<>();
 
 		int currentBase = 0;
 		int currentExponent = 0;
@@ -332,7 +331,7 @@ public final class ExtMath {
 		while (i < factors.size()) {
 			if (currentBase != factors.get(i)) {
 				if (i != 0) {
-					exponentiations.add(new Exponentiation(term(currentBase), term(currentExponent)));
+					exponentiations.add(new ScalarExponentiation(term(currentBase), term(currentExponent)));
 				}
 
 				currentBase = factors.get(i);
@@ -344,7 +343,7 @@ public final class ExtMath {
 			i++;
 		}
 
-		exponentiations.add(new Exponentiation(term(currentBase), term(currentExponent)));
+		exponentiations.add(new ScalarExponentiation(term(currentBase), term(currentExponent)));
 
 		return exponentiations;
 	}

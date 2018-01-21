@@ -7,5 +7,8 @@ package com.fredrikw.fructose.annotation;
  *
  */
 public @interface WIP {
-	
+	/**
+	 * Whether the annotated element is (already) suited for production usage
+	 */
+	boolean usable() default false;
 }

@@ -5,7 +5,7 @@ import java.time.temporal.Temporal;
 import java.time.temporal.TemporalUnit;
 
 /**
- * An incrementing time measurement device.
+ * An incremental time-measurement device.
  * 
  * @author Fredrik
  *

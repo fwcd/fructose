@@ -3,10 +3,11 @@ package com.fredrikw.fructose.game.mcts;
 import java.util.Optional;
 
 import com.fredrikw.fructose.game.GameMove;
+import com.fredrikw.fructose.game.GameRole;
 import com.fredrikw.fructose.game.GameState;
 import com.fredrikw.fructose.game.TemplateGameAI;
 import com.fredrikw.fructose.swing.TreePlotter;
-import com.fredrikw.fructose.time.Stopwatch;
+import com.fredrikw.fructose.time.Timer;
 
 /**
  * A monte-carlo-tree-search. It doesn't need
@@ -23,13 +24,16 @@ public class MCTS extends TemplateGameAI {
 	}
 	
 	@Override
-	protected GameMove selectMove(GameState game, long softMaxTime) {
-		Stopwatch watch = new Stopwatch();
-		watch.start();
+	protected <M extends GameMove, R extends GameRole> M selectMove(
+			GameState<M, R> game,
+			long softMaxTime
+	) {
+		Timer timer = new Timer();
+		timer.start(softMaxTime);
 		
-		MCTSNode node = new MCTSNode(game.getCurrentRole(), game);
+		MCTSNode<M> node = new MCTSNode<>(game.getCurrentRole(), game);
 		
-		while (watch.getMillis() < softMaxTime) {
+		while (timer.isRunning()) {
 			node.performIteration();
 		}
 		

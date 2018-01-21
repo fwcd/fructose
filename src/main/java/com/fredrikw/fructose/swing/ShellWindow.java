@@ -1,67 +1,62 @@
 package com.fredrikw.fructose.swing;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.io.PrintStream;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 
 import com.fredrikw.fructose.shell.Shell;
 
 public class ShellWindow {
-	private JTextArea outputArea;
-	private JScrollPane scrollPane;
+	private ConsolePane console;
 
+	public ShellWindow(Shell shell) {
+		this(shell, false);
+	}
+
+	public ShellWindow(Shell shell, boolean persistent) {
+		this(shell, persistent, null);
+	}
+	
 	public ShellWindow(Shell shell, boolean persistent, Runnable onClose) {
 		JFrame shellWindow = new JFrame("Shell Output (" + Integer.toHexString(hashCode()) + ")");
 		shellWindow.setMinimumSize(new Dimension(600, 250));
 		shellWindow.setLayout(new BorderLayout());
 		
-		outputArea = new JTextArea();
-		outputArea.setBackground(Color.BLACK);
-		outputArea.setForeground(Color.WHITE);
+		console = new ConsolePane();
+		shellWindow.add(console.getView(), BorderLayout.CENTER);
 		
-		scrollPane = new JScrollPane(outputArea);
-		shellWindow.add(scrollPane);
-		
-		Timer timer = new Timer();
-		timer.scheduleAtFixedRate(new TimerTask() {
-
-			@Override
-			public void run() {
-				if (shell.isRunning()) {
-					outputArea.setText("");
-					
-					for (String line : shell.getOutput()) {
-						outputArea.setText(outputArea.getText() + "\n" + line);
-					}
-					
-					JScrollBar vScrollBar = scrollPane.getVerticalScrollBar();
-					vScrollBar.setValue(vScrollBar.getMaximum());
-					
-					shellWindow.revalidate();
-					shellWindow.repaint();
-				} else {
-					timer.cancel();
-					
+		ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+		exec.scheduleAtFixedRate(() -> {
+			if (shell.isRunning()) {
+				console.clear();
+				console.printlns(shell.getOutput());
+			} else {
+				exec.shutdown();
+				
+				if (!persistent) {
 					if (onClose != null) {
 						onClose.run();
 					}
 					
-					if (!persistent) {
-						shellWindow.dispose();
-					}
+					shellWindow.dispose();
 				}
 			}
-			
-		}, 1000, 100);
+		}, 1000, 100, TimeUnit.MILLISECONDS);
 		
 		shellWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		shellWindow.setVisible(true);
+	}
+
+	public PrintStream getOutStream() {
+		return console.getOutStream();
+	}
+	
+	public PrintStream getErrStream() {
+		return console.getErrStream();
 	}
 }

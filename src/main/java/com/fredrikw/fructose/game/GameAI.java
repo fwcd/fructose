@@ -2,7 +2,7 @@ package com.fredrikw.fructose.game;
 
 /**
  * A move chooser that is intended to be used as
- * an AI. Thus is provides additional methods
+ * an AI. Thus it provides additional methods
  * like time limits.
  * 
  * @author Fredrik
@@ -11,7 +11,7 @@ package com.fredrikw.fructose.game;
 public interface GameAI extends MoveChooser {
 	/**
 	 * Sets the soft time limit. Usually it is up to the
-	 * algorithm to <i>try</i> and finish in this time period.
+	 * algorithm to <i>try</i> to finish in this time period.
 	 * 
 	 * @param ms - The soft time limit in milliseconds
 	 */

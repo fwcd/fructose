@@ -20,15 +20,15 @@ import com.fredrikw.fructose.structs.TreeNode;
  * @author Fredrik
  *
  */
-public class MCTSNode implements TreeNode, Comparable<MCTSNode> {
+public class MCTSNode<M extends GameMove> implements TreeNode, Comparable<MCTSNode<M>> {
 	private static final Random RANDOM = new Random();
 	private static final float EPSILON = 1e-8F; // Small value to prevent NaN's
 	
-	private final MCTSNode parent;
+	private final MCTSNode<M> parent;
 	private final GameRole ourPlayer;
-	private final GameMove move;
-	private final GameState stateAfterMove;
-	private List<MCTSNode> exploredChilds = null;
+	private final M move;
+	private final GameState<M, ?> stateAfterMove;
+	private List<MCTSNode<M>> exploredChilds = null;
 	
 	private MoveChooser moveChooser = new RandomMoveChooser();
 	
@@ -44,7 +44,7 @@ public class MCTSNode implements TreeNode, Comparable<MCTSNode> {
 	 * @param ourPlayer - The player this tree search is playing for
 	 * @param state - The game state
 	 */
-	public MCTSNode(GameRole ourPlayer, GameState state) {
+	public MCTSNode(GameRole ourPlayer, GameState<M, ?> state) {
 		parent = null;
 		move = null;
 		stateAfterMove = state;
@@ -57,7 +57,7 @@ public class MCTSNode implements TreeNode, Comparable<MCTSNode> {
 	 * @param parent - The parent node
 	 * @param state - The game state
 	 */
-	private MCTSNode(MCTSNode parent, GameMove move, GameState state) {
+	private MCTSNode(MCTSNode<M> parent, M move, GameState<M, ?> state) {
 		this.parent = parent;
 		this.move = move;
 		stateAfterMove = state;
@@ -111,7 +111,7 @@ public class MCTSNode implements TreeNode, Comparable<MCTSNode> {
 	public void performIteration() {
 		expand();
 		
-		MCTSNode leaf = select();
+		MCTSNode<M> leaf = select();
 		leaf.expand();
 		
 		int result = leaf.simulate();
@@ -123,8 +123,8 @@ public class MCTSNode implements TreeNode, Comparable<MCTSNode> {
 		}
 	}
 	
-	private MCTSNode select() {
-		MCTSNode child = Collections.max(exploredChilds);
+	private MCTSNode<M> select() {
+		MCTSNode<M> child = Collections.max(exploredChilds);
 		
 		if (child.isLeaf()) {
 			return child;
@@ -147,7 +147,7 @@ public class MCTSNode implements TreeNode, Comparable<MCTSNode> {
 	 * @return 1: Win for our player - 0: Not determined - -1: Win for opponent
 	 */
 	private int simulate() {
-		GameState simulation = stateAfterMove.copy();
+		GameState<M, ?> simulation = stateAfterMove.copy();
 		
 		int i = 0;
 		while (!simulation.isGameOver() && i < maxSimulationDepth) {
@@ -170,8 +170,8 @@ public class MCTSNode implements TreeNode, Comparable<MCTSNode> {
 		if (exploredChilds == null) {
 			exploredChilds = new ArrayList<>();
 			
-			for (GameMove move : stateAfterMove.getLegalMoves()) {
-				exploredChilds.add(new MCTSNode(this, move, stateAfterMove.spawnChild(move)));
+			for (M move : stateAfterMove.getLegalMoves()) {
+				exploredChilds.add(new MCTSNode<>(this, move, stateAfterMove.spawnChild(move)));
 			}
 		}
 	}
@@ -181,12 +181,12 @@ public class MCTSNode implements TreeNode, Comparable<MCTSNode> {
 	 * 
 	 * @return The game move associated with this node
 	 */
-	public GameMove getMove() {
+	public M getMove() {
 		return move;
 	}
 	
 	@Override
-	public int compareTo(MCTSNode o) {
+	public int compareTo(MCTSNode<M> o) {
 		return Float.compare(uct(), o.uct());
 	}
 	
@@ -195,7 +195,7 @@ public class MCTSNode implements TreeNode, Comparable<MCTSNode> {
 	 * 
 	 * @return The most explored/simulated child node
 	 */
-	public MCTSNode mostExploredChild() {
+	public MCTSNode<M> mostExploredChild() {
 		return Collections.max(exploredChilds, (a, b) -> Integer.compare(a.simulations, b.simulations));
 	}
 
@@ -222,7 +222,7 @@ public class MCTSNode implements TreeNode, Comparable<MCTSNode> {
 		int nodes = 1;
 		
 		if (exploredChilds != null) {
-			for (MCTSNode child : exploredChilds) {
+			for (MCTSNode<M> child : exploredChilds) {
 				nodes += child.totalNodeCount();
 			}
 		}

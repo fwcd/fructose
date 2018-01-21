@@ -7,8 +7,8 @@ public class RandomMoveChooser implements MoveChooser {
 	private final Random random = new Random();
 	
 	@Override
-	public GameMove chooseMove(GameState game) {
-		List<? extends GameMove> moves = game.getLegalMoves();
+	public <M extends GameMove, R extends GameRole> M chooseMove(GameState<M, R> game) {
+		List<? extends M> moves = game.getLegalMoves();
 		return moves.get(random.nextInt(moves.size()));
 	}
 }

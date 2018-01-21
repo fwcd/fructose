@@ -7,7 +7,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
 	NNMatrixTest.class,
-	NNTensorTest.class
+	NNTensorTest.class,
+	MathGraphTest.class
 })
 public class AllTests {
 
