@@ -6,7 +6,7 @@ import java.util.Iterator;
 import com.fredrikw.fructose.ArrayIterator;
 
 /**
- * An immutable "flat" matrix.
+ * An immutable "flat" matrix. (A rank 2-tensor)
  * 
  * @author Fredrik
  *

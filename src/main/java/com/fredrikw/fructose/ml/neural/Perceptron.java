@@ -15,7 +15,7 @@ import com.fredrikw.fructose.ml.math.NNMatrix;
 import com.fredrikw.fructose.ml.math.NNVector;
 
 /**
- * A flexible, multi-layer feed-forward perceptron.
+ * A simple (but flexible), multi-layer feed-forward perceptron.
  * Can be constructed through the nested builder.
  * 
  * @author Fredrik
@@ -182,7 +182,13 @@ public class Perceptron implements NeuralNetwork<NNVector, NNVector> {
 					currentWeightNudges,
 					currentBiasNudges,
 					result.sub(targetOutput)
-							.hadamardProduct(feedBackward(activatedLayers[lastLayerIndex], nonActivatedLayers[lastLayerIndex]))
+							.hadamardProduct(
+									feedBackward(
+											activatedLayers[lastLayerIndex],
+											nonActivatedLayers[lastLayerIndex]
+									)
+							)
+							.multiply(2F) // Because the derivative of x^2 is requires the factor 2
 			);
 			
 			for (int i=0; i<layerCount; i++) {
@@ -222,16 +228,36 @@ public class Perceptron implements NeuralNetwork<NNVector, NNVector> {
 		}
 	}
 	
+	/**
+	 * <p>The core backpropagation function as in
+	 * <a href="http://neuralnetworksanddeeplearning.com/chap2.html#the_backpropagation_algorithm">
+	 * Micheal Nielsen's book "Neural Networks and Deep Learning"</a>.</p>
+	 * 
+	 * <p>It calculates the partial derivative (the slope of the cost function)
+	 * with respect to each weight and bias, thus performing "Gradient descent".
+	 * The code might seem a little confusing at first as it uses a compact vectorized
+	 * notation, but the underlying principle boils down to basic calculus.</p>
+	 * 
+	 * @param activatedLayers - The activated layers (this argument stays constant while recursing)
+	 * @param nonActivatedLayers - The raw weighted sums (this argument stays constant while recursing)
+	 * @param layer - The layer index
+	 * @param weightNudges - The weight gradient (this argument is mutated while recursing, but not swapped)
+	 * @param biasNudges - The bias gradient (this argument is mutated while recursing, but not swapped)
+	 * @param error - The error vector (del cost / del activatedLayer), also called "kronecker delta"
+	 */
 	private void backprop(
 			NNVector[] activatedLayers,
 			NNVector[] nonActivatedLayers,
 			int layer,
 			NNMatrix[] weightNudges,
 			NNVector[] biasNudges,
-			NNVector kroneckerDelta
+			NNVector error
 	) {
-		weightNudges[layer] = kroneckerDelta.multiply(-learnFactor).multiply(activatedLayers[layer - 1].transpose());
-		biasNudges[layer] = kroneckerDelta.multiply(-learnFactor);
+		weightNudges[layer] = error
+				.multiply(-learnFactor) // TODO: Stochastic gradient descent and/or momentum
+				.multiply(activatedLayers[layer - 1].transpose());
+		biasNudges[layer] = error
+				.multiply(-learnFactor);
 		
 		if (layer > 1) {
 			backprop(
@@ -240,8 +266,12 @@ public class Perceptron implements NeuralNetwork<NNVector, NNVector> {
 					layer - 1,
 					weightNudges,
 					biasNudges,
-					allWeights[layer].transpose().multiply(kroneckerDelta)
-							.hadamardProduct(feedBackward(activatedLayers[layer - 1], nonActivatedLayers[layer - 1]))
+					allWeights[layer]
+							.transpose()
+							.multiply(error)
+							.hadamardProduct(
+									feedBackward(activatedLayers[layer - 1], nonActivatedLayers[layer - 1])
+							)
 			);
 		}
 	}

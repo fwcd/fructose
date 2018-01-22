@@ -5,25 +5,27 @@ import java.util.Iterator;
 
 /**
  * This class acts as an bridge between different
- * iterators.
+ * iterators. It can also convert an (otherwise
+ * incompatible) iterator of the supertype "? extends T"
+ * to "T".
  * 
  * @author Fredrik
  *
  * @param <T> - The item data type
  */
 public class Multerator<T> implements Enumeration<T>, Iterator<T>, Iterable<T> {
-	private Enumeration<T> enumeration = null;
-	private Iterator<T> iterator = null;
+	private Enumeration<? extends T> enumeration = null;
+	private Iterator<? extends T> iterator = null;
 	
-	public Multerator(Enumeration<T> enumeration) {
+	public Multerator(Enumeration<? extends T> enumeration) {
 		this.enumeration = enumeration;
 	}
 	
-	public Multerator(Iterator<T> iterator) {
+	public Multerator(Iterator<? extends T> iterator) {
 		this.iterator = iterator;
 	}
 	
-	public Multerator(Iterable<T> iterable) {
+	public Multerator(Iterable<? extends T> iterable) {
 		iterator = iterable.iterator();
 	}
 	

@@ -5,11 +5,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.IntFunction;
+import java.util.function.IntUnaryOperator;
 
 import com.fredrikw.fructose.ListUtils;
 import com.fredrikw.fructose.math.graph.ConstScalar;
 import com.fredrikw.fructose.math.graph.ScalarExponentiation;
+import com.fredrikw.fructose.structs.IntList;
 
 /**
  * A set of utilities for performing custom, useful and common math operations.
@@ -81,11 +82,11 @@ public final class ExtMath {
 	 *            - Specified equation
 	 * @return The sum
 	 */
-	public static int sigma(InclusiveIntRange range, IntFunction<Integer> operation) {
+	public static int sigma(InclusiveIntRange range, IntUnaryOperator operation) {
 		int result = 0;
 
 		for (int n : range) {
-			result += operation.apply(n);
+			result += operation.applyAsInt(n);
 		}
 
 		return result;
@@ -95,8 +96,8 @@ public final class ExtMath {
 		return summarizeFactors(primeFactors(number));
 	}
 
-	public static List<Integer> primeFactors(int number) {
-		List<Integer> subFactors = new ArrayList<>();
+	public static IntList primeFactors(long number) {
+		IntList subFactors = new IntList();
 
 		for (int i = 2; i < number; i++) {
 			if (number % i == 0) {
@@ -107,7 +108,7 @@ public final class ExtMath {
 		}
 
 		if (subFactors.isEmpty()) {
-			subFactors.add(number);
+			subFactors.add((int) number);
 		}
 
 		return subFactors;
@@ -269,6 +270,27 @@ public final class ExtMath {
 		return p.reduce();
 	}
 
+	public static long fibonacci(long index) {
+		if (index < 0) {
+			throw new IllegalArgumentException();
+		} else if (index == 0) {
+			return 0;
+		} else if (index == 1 || index == 2) {
+			return 1;
+		}
+		
+		long lastA = 0;
+		long lastB = 1;
+		
+		for (int i=1; i<index; i++) {
+			long next = Math.addExact(lastA, lastB);
+			lastA = lastB;
+			lastB = next;
+		}
+		
+		return lastB;
+	}
+	
 	/**
 	 * Calculates euler's totient function.
 	 * (Uses a prime check with a certainty of 15, which
@@ -295,10 +317,10 @@ public final class ExtMath {
 	 * @param primeFactors
 	 * @return
 	 */
-	public static int phi(Iterable<Integer> primeFactors) {
+	public static int phi(IntList primeFactors) {
 		int result = 1;
 
-		for (int factor : primeFactors) {
+		for (int factor : primeFactors.toArray()) {
 			result *= primePhi(factor);
 		}
 
@@ -320,8 +342,8 @@ public final class ExtMath {
 		return new ConstScalar(n);
 	}
 	
-	public static List<ScalarExponentiation> summarizeFactors(List<Integer> factors) {
-		Collections.sort(factors);
+	public static List<ScalarExponentiation> summarizeFactors(IntList factors) {
+		Collections.sort(factors.boxed());
 		List<ScalarExponentiation> exponentiations = new ArrayList<>();
 
 		int currentBase = 0;

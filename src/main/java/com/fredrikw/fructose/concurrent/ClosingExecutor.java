@@ -14,7 +14,7 @@ import java.util.concurrent.TimeoutException;
 /**
  * A convenient {@link ExecutorService} wrapper that
  * allows it to be placed inside a try-with-resources
- * statement and thus automatically shutdown.
+ * statement and thus automatically shuts down.
  * 
  * @author Fredrik
  *
