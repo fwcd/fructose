@@ -6,10 +6,10 @@ import java.util.Iterator;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.fredrikw.fructose.ArrayIterator;
+import com.fredrikw.fructose.exception.SizeMismatchException;
 import com.fredrikw.fructose.function.FloatSupplier;
 import com.fredrikw.fructose.function.FloatUnaryOperator;
 import com.fredrikw.fructose.geometry.Vector2D;
-import com.fredrikw.fructose.ml.exception.SizeMismatchException;
 
 /**
  * A mutable float matrix specifically designed

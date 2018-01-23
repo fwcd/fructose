@@ -5,10 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.fredrikw.fructose.ml.data.LabelledData;
-import com.fredrikw.fructose.ml.neural.layers.BackpropResult;
 import com.fredrikw.fructose.ml.neural.layers.NNLayer;
-import com.fredrikw.fructose.structs.ArrayStack;
-import com.fredrikw.fructose.structs.Stack;
 
 /**
  * <p>A layered neural network that generalizes common
@@ -104,14 +101,20 @@ public class LayeredNetwork<I, O> implements NeuralNetwork<I, O> {
 	public static class LayerStackBuilder<I, N> {
 		private final Builder firstBuilder;
 		private final NNLayer<I, ?, ?> inLayer;
-		private final List<NNLayer<?, ?, ?>> hiddenLayers = new ArrayList<>();
+		private final List<NNLayer<?, ?, ?>> hiddenLayers;
 		
 		private LayerStackBuilder(Builder firstBuilder, NNLayer<I, ?, ?> inLayer) {
 			this.firstBuilder = firstBuilder;
 			this.inLayer = inLayer;
+			hiddenLayers = new ArrayList<>();
 		}
 		
-		@SuppressWarnings("unchecked")
+		private LayerStackBuilder(LayerStackBuilder<I, ?> lsb) {
+			firstBuilder = lsb.firstBuilder;
+			inLayer = lsb.inLayer;
+			hiddenLayers = lsb.hiddenLayers;
+		}
+		
 		public <M> LayerStackBuilder<I, M> layer(NNLayer<N, M, ?> layer) {
 			hiddenLayers.add(layer);
 			// This is more or less a hack of the type-system to ensure
@@ -119,7 +122,7 @@ public class LayeredNetwork<I, O> implements NeuralNetwork<I, O> {
 			// If runtimed generics were implemented this would probably require
 			// a new instance of the layer stack builder to be created,
 			// but as of Java 8 this is not the case yet.
-			return (LayerStackBuilder<I, M>) this;
+			return new LayerStackBuilder<>(this);
 		}
 		
 		public <O> ResultBuilder<I, O> outLayer(NNLayer<N, O, ?> layer) {

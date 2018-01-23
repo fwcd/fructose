@@ -1,4 +1,4 @@
-package com.fredrikw.fructose.ml.exception;
+package com.fredrikw.fructose.exception;
 
 public class SizeMismatchException extends RuntimeException {
 	private static final long serialVersionUID = -2987364876345L;

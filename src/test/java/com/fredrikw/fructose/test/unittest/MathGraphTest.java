@@ -16,7 +16,7 @@ public class MathGraphTest {
 		ConstScalar one = ConstScalar.ONE;
 		ConstScalar two = new ConstScalar(2);
 		
-		System.out.println(Math.pow(-4, -2));
+//		System.out.println(Math.pow(-4, -2));
 		
 		Scalar test = x.multiply(y.pow(two)).sub(x);
 		

@@ -2,21 +2,21 @@ package com.fredrikw.fructose.structs;
 
 import java.util.Arrays;
 
-public class FloatList {
-	private float[] data;
+public class DoubleList {
+	private double[] data;
 	private int size = 0;
 	
-	public FloatList() {
+	public DoubleList() {
 		this(10);
 	}
 	
-	public FloatList(int initialSize) {
-		data = new float[initialSize];
+	public DoubleList(int initialSize) {
+		data = new double[initialSize];
 	}
 	
 	private void ensureCapacity() {
 		if (size >= data.length - 1) {
-			float[] newArr = Arrays.copyOf(data, data.length + 10);
+			double[] newArr = Arrays.copyOf(data, data.length + 10);
 			data = newArr;
 		}
 	}
@@ -25,20 +25,20 @@ public class FloatList {
 		return size;
 	}
 	
-	public void add(float v) {
+	public void add(double v) {
 		size++;
 		ensureCapacity();
 		data[size - 1] = v;
 	}
 	
-	public void addAll(float... v) {
+	public void addAll(double... v) {
 		int offset = size;
 		size += v.length;
 		ensureCapacity();
 		System.arraycopy(v, 0, data, offset, v.length);
 	}
 	
-	public void addAll(FloatList list) {
+	public void addAll(DoubleList list) {
 		addAll(list.data);
 	}
 	
@@ -46,7 +46,7 @@ public class FloatList {
 		size--;
 	}
 	
-	public float get(int i) {
+	public double get(int i) {
 		if (i < size) {
 			return data[i];
 		} else {
@@ -54,7 +54,7 @@ public class FloatList {
 		}
 	}
 	
-	public float[] toArray() {
+	public double[] toArray() {
 		return Arrays.copyOf(data, size);
 	}
 }

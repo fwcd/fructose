@@ -1,15 +1,20 @@
 package com.fredrikw.fructose.geometry;
 
+import java.io.Serializable;
 import java.util.function.DoubleBinaryOperator;
 import java.util.function.DoubleUnaryOperator;
 
+import com.fredrikw.fructose.exception.SizeMismatchException;
+import com.fredrikw.fructose.math.Tensor;
+
 /**
- * An immutable, multi-dimensional vector.
+ * An immutable, n-element vector.
  * 
  * @author Fredrik
  *
  */
-public class Vector {
+public class Vector implements Serializable {
+	private static final long serialVersionUID = -6990352776476335167L;
 	private final double[] values;
 	
 	public Vector(double... values) {
@@ -63,7 +68,7 @@ public class Vector {
 	
 	public Vector combine(Vector other, DoubleBinaryOperator operator) {
 		if (size() != other.size()) {
-			throw new IllegalArgumentException("The two vectors need to have the same size!");
+			throw new SizeMismatchException("vector size", size(), "vector size", other.size());
 		}
 		
 		double[] result = new double[size()];
@@ -77,7 +82,7 @@ public class Vector {
 	
 	public double dot(Vector other) {
 		if (size() != other.size()) {
-			throw new IllegalArgumentException("The two vectors need to have the same size!");
+			throw new SizeMismatchException("vector size", size(), "vector size", other.size());
 		}
 		
 		double result = 0;
@@ -99,9 +104,13 @@ public class Vector {
 		return new Matrix(result);
 	}
 	
+	public Tensor asTensor() {
+		return new Tensor(values);
+	}
+	
 	public Vector2D asVector2D() {
 		if (size() != 2) {
-			throw new UnsupportedOperationException("Can't convert a vector of length " + Integer.toString(size()) + " to Vector2D!");
+			throw new SizeMismatchException("vector size", size(), "vector size", 2);
 		}
 		
 		return new Vector2D(values[0], values[1]);
@@ -109,7 +118,7 @@ public class Vector {
 	
 	public Vector3D asVector3D() {
 		if (size() != 3) {
-			throw new UnsupportedOperationException("Can't convert a vector of length " + Integer.toString(size()) + " to Vector3D!");
+			throw new SizeMismatchException("vector size", size(), "vector size", 3);
 		}
 		
 		return new Vector3D(values[0], values[1], values[2]);

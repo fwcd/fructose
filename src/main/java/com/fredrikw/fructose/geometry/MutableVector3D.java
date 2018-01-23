@@ -22,7 +22,7 @@ public class MutableVector3D implements Cloneable {
 	}
 
 	public void setFrom(Matrix matrix) {
-		if (matrix.getRows() != 3 || matrix.getCols() != 1) {
+		if (matrix.getHeight() != 3 || matrix.getWidth() != 1) {
 			throw new RuntimeException("Matrix needs to be 1x3 to be converted to a vector.");
 		}
 		

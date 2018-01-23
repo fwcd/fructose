@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import com.fredrikw.fructose.exception.SizeMismatchException;
 import com.fredrikw.fructose.function.FloatSupplier;
 import com.fredrikw.fructose.ml.data.LabelledData;
-import com.fredrikw.fructose.ml.exception.SizeMismatchException;
 import com.fredrikw.fructose.ml.function.DiffFunction;
 import com.fredrikw.fructose.ml.function.NNFunction;
 import com.fredrikw.fructose.ml.function.NNWeightInit;

@@ -39,7 +39,7 @@ public class IntList {
 		data[size - 1] = v;
 	}
 	
-	public void addAll(int[] arr) {
+	public void addAll(int... arr) {
 		int offset = size;
 		size += arr.length;
 		ensureCapacity();

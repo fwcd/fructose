@@ -25,7 +25,7 @@ public class MutableVector2D implements Cloneable {
 	}
 
 	public void setFrom(Matrix matrix) {
-		if (matrix.getRows() != 2 || matrix.getCols() != 1) {
+		if (matrix.getHeight() != 2 || matrix.getWidth() != 1) {
 			throw new RuntimeException("Matrix needs to be 1x2 to be converted to a vector.");
 		}
 		

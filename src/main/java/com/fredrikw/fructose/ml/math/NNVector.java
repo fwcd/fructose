@@ -5,11 +5,11 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.fredrikw.fructose.exception.SizeMismatchException;
 import com.fredrikw.fructose.function.FloatBinaryOperator;
 import com.fredrikw.fructose.function.FloatSupplier;
 import com.fredrikw.fructose.function.FloatUnaryOperator;
 import com.fredrikw.fructose.function.IntToFloatFunction;
-import com.fredrikw.fructose.ml.exception.SizeMismatchException;
 
 /**
  * A mutable float vector specifically designed
