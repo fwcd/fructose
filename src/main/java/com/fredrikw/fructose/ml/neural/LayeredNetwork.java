@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fredrikw.fructose.annotation.WIP;
+import com.fredrikw.fructose.function.AnyBuilder;
 import com.fredrikw.fructose.ml.data.LabelledData;
 import com.fredrikw.fructose.ml.neural.layers.NNLayer;
 
@@ -24,9 +26,10 @@ import com.fredrikw.fructose.ml.neural.layers.NNLayer;
  * @param <I> - The input data type
  * @param <O> - The output data type
  */
+@WIP(usable = false)
 public class LayeredNetwork<I, O> implements NeuralNetwork<I, O> {
 	private static final long serialVersionUID = -5634042575520289180L;
-	private final Hyperparameters hyperparameters;
+	private final NNParameters hyperparameters;
 	private final NNLayer<I, ?, ?> inLayer;
 	private final List<NNLayer<?, ?, ?>> hiddenLayers;
 	private final NNLayer<?, O, ?> outLayer;
@@ -35,7 +38,7 @@ public class LayeredNetwork<I, O> implements NeuralNetwork<I, O> {
 			NNLayer<I, ?, ?> inLayer,
 			List<NNLayer<?, ?, ?>> hiddenLayers,
 			NNLayer<?, O, ?> outLayer,
-			Hyperparameters hyperparameters
+			NNParameters hyperparameters
 	) {
 		this.inLayer = inLayer;
 		this.hiddenLayers = hiddenLayers;
@@ -133,7 +136,7 @@ public class LayeredNetwork<I, O> implements NeuralNetwork<I, O> {
 	/**
 	 * Final stage of construction. Assembles the actual network.
 	 */
-	public static class ResultBuilder<I, O> implements NNBuilder<LayeredNetwork<I, O>> {
+	public static class ResultBuilder<I, O> implements AnyBuilder<LayeredNetwork<I, O>> {
 		private final Builder firstBuilder;
 		private final LayerStackBuilder<I, ?> layerBuilder;
 		private final NNLayer<?, O, ?> outLayer;
@@ -144,8 +147,8 @@ public class LayeredNetwork<I, O> implements NeuralNetwork<I, O> {
 			this.outLayer = outLayer;
 		}
 		
-		private Hyperparameters compileHyperparameters() {
-			return new Hyperparameters(
+		private NNParameters compileHyperparameters() {
+			return new NNParameters(
 					firstBuilder.learningRate
 			);
 		}

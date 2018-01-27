@@ -55,4 +55,14 @@ public class ArrayBiList<A, B> implements BiList<A, B> {
 			action.accept(aIt.next(), bIt.next());
 		}
 	}
+
+	@Override
+	public A getA(int i) {
+		return aItems.get(i);
+	}
+
+	@Override
+	public B getB(int i) {
+		return bItems.get(i);
+	}
 }

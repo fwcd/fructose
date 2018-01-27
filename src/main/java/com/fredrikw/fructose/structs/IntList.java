@@ -3,6 +3,7 @@ package com.fredrikw.fructose.structs;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.IntBinaryOperator;
+import java.util.function.IntConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -92,6 +93,12 @@ public class IntList {
 		}
 		
 		return result;
+	}
+	
+	public void forEach(IntConsumer consumer) {
+		for (int i=0; i<size; i++) {
+			consumer.accept(data[i]);
+		}
 	}
 	
 	@Override

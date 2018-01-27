@@ -9,7 +9,10 @@ import org.junit.runners.Suite.SuiteClasses;
 	NNMatrixTest.class,
 	TensorTest.class,
 	MathGraphTest.class,
-	MatrixTest.class
+	MatrixTest.class,
+	TableTest.class,
+	ComplexTest.class,
+	PrimitiveListTest.class
 })
 public class AllTests {
 

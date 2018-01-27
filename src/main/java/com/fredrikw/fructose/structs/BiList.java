@@ -1,5 +1,7 @@
 package com.fredrikw.fructose.structs;
 
+import java.util.function.BiConsumer;
+
 import com.fredrikw.fructose.BiIterable;
 import com.fredrikw.fructose.Pair;
 
@@ -18,5 +20,20 @@ public interface BiList<A, B> extends BiIterable<A, B> {
 	
 	int size();
 	
+	A getA(int i);
+	
+	B getB(int i);
+	
 	Pair<A, B> get(int i);
+	
+	default void addAll(BiList<? extends A, ? extends B> list) {
+		list.forEach(this::add);
+	}
+
+	@Override
+	default void forEach(BiConsumer<? super A, ? super B> action) {
+		for (int i=0; i<size(); i++) {
+			action.accept(getA(i), getB(i));
+		}
+	}
 }

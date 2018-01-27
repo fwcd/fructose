@@ -1,5 +1,7 @@
 package com.fredrikw.fructose.ml.neural.layers;
 
+import com.fredrikw.fructose.annotation.WIP;
+
 /**
  * Contains the "gradient" of a layer (in case of a
  * dense layer (as in a perceptron) this would contain the
@@ -10,6 +12,7 @@ package com.fredrikw.fructose.ml.neural.layers;
  * @param <L> - The layer type
  */
 @FunctionalInterface
+@WIP(usable = false)
 public interface LayerGradient<L extends NNLayer<?, ?, ?>> {
 	void apply(L layer);
 }

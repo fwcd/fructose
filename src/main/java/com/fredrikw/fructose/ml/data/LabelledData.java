@@ -25,6 +25,10 @@ public class LabelledData<I, O> implements DataSet<I> {
 		data.put(input, output);
 	}
 	
+	public Map<I, O> getMap() {
+		return data;
+	}
+	
 	@Override
 	public Set<I> getInputs() {
 		return data.keySet();

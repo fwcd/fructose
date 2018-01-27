@@ -257,25 +257,25 @@ public class Matrix implements Iterable<double[]>, Serializable {
 	 * 
 	 * this * other
 	 * 
-	 * @param other
+	 * @param right
 	 * @return MatA * MatB
 	 */
-	public Matrix multiply(Matrix other) {
-		if (getWidth() != other.getHeight()) {
+	public Matrix multiply(Matrix right) {
+		if (getWidth() != right.getHeight()) {
 			throw new ArithmeticException("The width of this matrix need to equal the height of the other matrix.");
 		}
 		
-		double[][] product = new double[other.getWidth()][getHeight()];
+		double[][] product = new double[getHeight()][right.getWidth()];
 		
-		for (int row=0; row<getHeight(); row++) {
-			for (int col=0; col<other.getWidth(); col++) {
+		for (int y=0; y<getHeight(); y++) {
+			for (int x=0; x<right.getWidth(); x++) {
 				double cell = 0;
 				
-				for (int i=0; i<data[row].length; i++) {
-					cell += data[row][i] * other.data[i][col];
+				for (int i=0; i<data[y].length; i++) {
+					cell += data[y][i] * right.data[i][x];
 				}
 				
-				product[row][col] = cell;
+				product[y][x] = cell;
 			}
 		}
 		

@@ -1,9 +1,9 @@
 package com.fredrikw.fructose.ml.neural;
 
-public class Hyperparameters {
+public class NNParameters {
 	private final double learningRate;
 	
-	public Hyperparameters(
+	public NNParameters(
 			double learningRate
 	) {
 		this.learningRate = learningRate;

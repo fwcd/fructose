@@ -1,8 +1,14 @@
 package com.fredrikw.fructose;
 
+import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
@@ -13,13 +19,19 @@ import java.util.stream.Stream;
  * @param <A>
  * @param <B>
  */
-public class Pair<A, B> implements Iterable<Object> {
+public class Pair<A, B> implements Serializable, Iterable<Object> {
+	private static final long serialVersionUID = 6344477728413315385L;
 	private final A a;
 	private final B b;
 	
 	public Pair(A a, B b) {
 		this.a = a;
 		this.b = b;
+	}
+	
+	public Pair(Entry<A, B> entry) {
+		a = entry.getKey();
+		b = entry.getValue();
 	}
 	
 	public A getA() {
@@ -29,12 +41,28 @@ public class Pair<A, B> implements Iterable<Object> {
 	public B getB() {
 		return b;
 	}
-
-	public <T> Pair<T, B> withA(T a) {
+	
+	public <T> T reduce(BiFunction<? super A, ? super B, T> reducer) {
+		return reducer.apply(a, b);
+	}
+	
+	public <X, Y> Pair<X, Y> map(Function<? super A, X> aMapper, Function<? super B, Y> bMapper) {
+		return new Pair<>(aMapper.apply(a), bMapper.apply(b));
+	}
+	
+	public <X> Pair<X, B> mapA(Function<? super A, X> mapper) {
+		return new Pair<>(mapper.apply(a), b);
+	}
+	
+	public <Y> Pair<A, Y> mapB(Function<? super B, Y> mapper) {
+		return new Pair<>(a, mapper.apply(b));
+	}
+	
+	public <X> Pair<X, B> withA(X a) {
 		return new Pair<>(a, b);
 	}
 	
-	public <T> Pair<A, T> withB(T b) {
+	public <Y> Pair<A, Y> withB(Y b) {
 		return new Pair<>(a, b);
 	}
 	
@@ -50,6 +78,10 @@ public class Pair<A, B> implements Iterable<Object> {
 
 	public Stream<Object> stream() {
 		return Stream.of(a, b);
+	}
+	
+	public Map<A, B> asMap() {
+		return Collections.singletonMap(a, b);
 	}
 	
 	public List<Object> asList() {

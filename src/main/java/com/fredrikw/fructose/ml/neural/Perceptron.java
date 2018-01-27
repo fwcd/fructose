@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 
 import com.fredrikw.fructose.exception.SizeMismatchException;
 import com.fredrikw.fructose.function.FloatSupplier;
+import com.fredrikw.fructose.function.AnyBuilder;
 import com.fredrikw.fructose.ml.data.LabelledData;
 import com.fredrikw.fructose.ml.function.DiffFunction;
 import com.fredrikw.fructose.ml.function.NNFunction;
@@ -280,7 +281,7 @@ public class Perceptron implements NeuralNetwork<NNVector, NNVector> {
 		return layerSizes.length;
 	}
 	
-	public static class Builder implements NNBuilder<Perceptron> {
+	public static class Builder implements AnyBuilder<Perceptron> {
 		private final List<Integer> layers = new ArrayList<>();
 		private DiffFunction activationFunction = NNFunction.LEAKY_RELU;
 		private WeightInit weightInit = NNWeightInit.XAVIER;

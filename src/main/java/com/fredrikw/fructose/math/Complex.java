@@ -16,6 +16,11 @@ public class Complex {
 	private final double real;
 	private final double imag;
 	
+	public Complex(double real) {
+		this.real = real;
+		imag = 0;
+	}
+	
 	public Complex(double real, double imag) {
 		this.real = real;
 		this.imag = imag;
@@ -86,7 +91,10 @@ public class Complex {
 		return multiply(other.reciprocal());
 	}
 	
-	public double getTheta() {
+	/**
+	 * @return The angle theta between the real axis and this number
+	 */
+	public double argument() {
 		return Math.atan2(imag, real);
 	}
 	
@@ -117,18 +125,35 @@ public class Complex {
 		return abs * abs;
 	}
 	
-	public Complex pow(int x) {
-		if (x < 1) {
-			throw new IllegalArgumentException("Can't exponentiate a complex number with an exponent below 1 (for now)");
+	public Complex pow(int exponent) {
+		if (exponent < 1) {
+			return pow((double) exponent);
 		}
 		
 		Complex result = this;
 		
-		for (int i=0; i<x-1; i++) {
+		for (int i=0; i<exponent-1; i++) {
 			result = result.multiply(this);
 		}
 		
 		return result;
+	}
+	
+	public Complex pow(double exponent) {
+		return pow(new Complex(exponent)); // TODO: Optimize this?
+	}
+	
+	public Complex pow(Complex exponent) {
+		double a = real;
+		double b = imag;
+		double c = exponent.real;
+		double d = exponent.imag;
+		double aSqPlusBSq = (a * a) + (b * b);
+		double baseArg = argument();
+		double theta = (c * baseArg) + (0.5 * d * Math.log(aSqPlusBSq));
+		
+		return new Complex(Math.cos(theta), Math.sin(theta))
+				.multiply(Math.pow(aSqPlusBSq, c / 2) * Math.exp(-d * baseArg));
 	}
 	
 	@Override
@@ -146,7 +171,12 @@ public class Complex {
 	public int hashCode() {
 		return Objects.hash(real, imag);
 	}
-
+	
+	public boolean equals(Complex other, double tolerance) {
+		return (Math.abs(real - other.real) < tolerance)
+				&& (Math.abs(imag - other.imag) < tolerance);
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
