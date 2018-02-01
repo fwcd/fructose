@@ -16,6 +16,8 @@ A general-purpose Java library that extends far beyond the scope of a simple set
     * Perceptrons
     * Q-learning
 * Genetic algorithms
+* IO
+    * New File API
 * Game AI
     * Minimax/AlphaBeta
     * Monte Carlo tree search
