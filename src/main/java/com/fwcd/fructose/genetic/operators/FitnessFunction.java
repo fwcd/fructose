@@ -10,7 +10,7 @@ import java.io.Serializable;
  *
  */
 @FunctionalInterface
-public interface FitnessFunction extends Serializable {
+public interface FitnessFunction<G> extends Serializable {
 	/**
 	 * Evaluates an individual's genes and returns
 	 * a "fitness rating". It might be desirable to
@@ -19,5 +19,5 @@ public interface FitnessFunction extends Serializable {
 	 * @param genes - The chromosome
 	 * @return The "fitness"
 	 */
-	float getFitness(int[] genes);
+	float getFitness(G genes);
 }

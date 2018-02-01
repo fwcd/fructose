@@ -2,7 +2,7 @@ package com.fwcd.fructose.genetic.operators;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class SinglePointCrossover implements Crossover {
+public class SinglePointFloatCrossover implements Crossover<float[]> {
 	private static final long serialVersionUID = 5698219405477450864L;
 	
 	private float fixedOffsetPercent = 0.5F;
@@ -10,7 +10,7 @@ public class SinglePointCrossover implements Crossover {
 	private boolean randomlyChooseOffset = true; // Will ignore offsetPercent if true
 	
 	@Override
-	public int[] crossover(int[] genesA, int[] genesB) {
+	public float[] crossover(float[] genesA, float[] genesB) {
 		if (genesA.length != genesB.length) {
 			throw new IllegalArgumentException("Both gene sequences should be of the same length!");
 		}
@@ -22,7 +22,7 @@ public class SinglePointCrossover implements Crossover {
 		
 		int length = genesA.length;
 		int offset = (int) (length * offsetPercent);
-		int[] result = new int[length];
+		float[] result = new float[length];
 		
 		for (int i=0; i<length; i++) {
 			if ((i < offset) ^ swapParents) {

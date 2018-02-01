@@ -8,15 +8,16 @@ import java.io.Serializable;
  * 
  * @author Fredrik
  *
- * @param <T> - The (domain-specific) representation of a solution state
+ * @param <P> - The (domain-specific) representation of a solution state (phenotype)
+ * @param <G> - The genotype
  */
-public interface Decoder<T> extends Serializable {
+public interface Decoder<G, P> extends Serializable {
 	/**
-	 * Decodes a solution from the genotype (the computational
-	 * solution space) to phenes suitable for the phenotype.
+	 * Decodes a solution from the genotype (the numeric representation of a solution)
+	 * to the phenotype.
 	 * 
-	 * @param genes - The genes/chromosome
+	 * @param genes - The genotype
 	 * @return The actual solution/state or "phenes"
 	 */
-	T decode(int[] genes);
+	P decode(G genotype);
 }

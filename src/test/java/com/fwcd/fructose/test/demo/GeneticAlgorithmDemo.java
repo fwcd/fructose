@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import com.fwcd.fructose.genetic.core.Population;
+import com.fwcd.fructose.genetic.core.CrossoverPopulation;
 import com.fwcd.fructose.genetic.core.PopulationManager;
 import com.fwcd.fructose.genetic.operators.Decoder;
 import com.fwcd.fructose.genetic.operators.Encoder;
@@ -112,7 +112,7 @@ public class GeneticAlgorithmDemo {
 			return result;
 		};
 		
-		mgr.set(new Population.Builder()
+		mgr.set(new CrossoverPopulation.Builder()
 				.fitnessFunc(decoder, KnapsackSolution::fitness)
 				.spawnIndividuals(encoder, supplier, 100)
 				.build()

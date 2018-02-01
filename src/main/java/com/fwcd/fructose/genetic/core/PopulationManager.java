@@ -20,21 +20,21 @@ import com.fwcd.fructose.exception.SerializationException;
  *
  */
 public class PopulationManager {
-	private Population population;
+	private CrossoverPopulation population;
 	
-	public void map(UnaryOperator<Population> mapper) {
+	public void map(UnaryOperator<CrossoverPopulation> mapper) {
 		set(mapper.apply(get()));
 	}
 	
-	public void usingPopulation(Consumer<Population> consumer) {
+	public void usingPopulation(Consumer<CrossoverPopulation> consumer) {
 		consumer.accept(get());
 	}
 	
-	public void set(Population population) {
+	public void set(CrossoverPopulation population) {
 		this.population = population;
 	}
 	
-	public Population get() {
+	public CrossoverPopulation get() {
 		if (hasPopulation()) {
 			return population;
 		} else {
@@ -47,18 +47,10 @@ public class PopulationManager {
 	}
 	
 	public void load(File file) {
-		try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
-			population = (Population) in.readObject();
-		} catch (ClassNotFoundException | ClassCastException | IOException e) {
-			throw new SerializationException(e);
-		}
+		// TODO
 	}
 	
 	public void save(File file) {
-		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))) {
-			out.writeObject(population);
-		} catch (IOException e) {
-			throw new SerializationException(e);
-		}
+		// TODO
 	}
 }

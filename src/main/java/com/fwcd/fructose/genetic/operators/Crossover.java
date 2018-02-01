@@ -10,7 +10,7 @@ import java.io.Serializable;
  *
  */
 @FunctionalInterface
-public interface Crossover extends Serializable {
+public interface Crossover<G> extends Serializable {
 	/**
 	 * "Cross-breeds" two individual's chromosomes. This function
 	 * should NOT return the same result every time but preferrably
@@ -21,5 +21,5 @@ public interface Crossover extends Serializable {
 	 * @param genesB - The second chromosome
 	 * @return The offspring's genes
 	 */
-	int[] crossover(int[] genesA, int[] genesB);
+	G crossover(G genesA, G genesB);
 }

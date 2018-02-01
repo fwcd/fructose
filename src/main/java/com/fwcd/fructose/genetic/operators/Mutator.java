@@ -9,7 +9,7 @@ import java.io.Serializable;
  *
  */
 @FunctionalInterface
-public interface Mutator extends Serializable {
+public interface Mutator<G> extends Serializable {
 	/**
 	 * Mutates an individual's genes. This function
 	 * should not change the input array's state.
@@ -17,5 +17,5 @@ public interface Mutator extends Serializable {
 	 * @param genes - The chromosome/genes
 	 * @return A mutated version of the chromosome
 	 */
-	int[] mutate(int[] genes);
+	G mutate(G genes);
 }
