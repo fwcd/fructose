@@ -9,8 +9,11 @@ import java.util.stream.Collectors;
 
 import com.fwcd.fructose.genetic.core.CrossoverPopulation;
 import com.fwcd.fructose.genetic.core.PopulationManager;
+import com.fwcd.fructose.genetic.core.SimplePopulation;
 import com.fwcd.fructose.genetic.operators.Decoder;
 import com.fwcd.fructose.genetic.operators.Encoder;
+import com.fwcd.fructose.genetic.operators.GaussianFloatMutator;
+import com.fwcd.fructose.genetic.operators.UniformFloatCrossover;
 
 public class GeneticAlgorithmDemo {
 	private static final List<Stone> TOTAL_STONES = Arrays.asList(
@@ -22,38 +25,38 @@ public class GeneticAlgorithmDemo {
 	);
 	
 	private static class Stone {
-		private final int value;
-		private final int weight;
+		private final float value;
+		private final float weight;
 
-		public Stone(int value, int weight) {
+		public Stone(float value, float weight) {
 			this.value = value;
 			this.weight = weight;
 		}
 		
-		public int getWeight() {
+		public float getWeight() {
 			return weight;
 		}
 		
-		public int getValue() {
+		public float getValue() {
 			return value;
 		}
 		
 		@Override
 		public String toString() {
-			return Integer.toString(value) + "$ at " + Integer.toString(weight) + " kg";
+			return Float.toString(value) + "$ at " + Float.toString(weight) + " kg";
 		}
 	}
 	
 	private static class KnapsackSolution {
 		private final List<Stone> stones;
 		
-		public KnapsackSolution(int[] encoded) {
+		public KnapsackSolution(float[] encoded) {
 			stones = new ArrayList<>();
 			
 			int i = 0;
 			while (i < encoded.length && encoded[i] != 0) {
-				int value = encoded[i++];
-				int weight = encoded[i++];
+				float value = encoded[i++];
+				float weight = encoded[i++];
 				stones.add(new Stone(value, weight));
 			}
 		}
@@ -74,8 +77,8 @@ public class GeneticAlgorithmDemo {
 					.sum();
 		}
 
-		public int[] encode() {
-			int[] result = new int[TOTAL_STONES.size() * 2];
+		public float[] encode() {
+			float[] result = new float[TOTAL_STONES.size() * 2];
 			
 			int i = 0;
 			for (Stone stone : stones) {
@@ -99,9 +102,9 @@ public class GeneticAlgorithmDemo {
 	}
 	
 	public static void main(String[] args) {
-		PopulationManager mgr = new PopulationManager();
-		Encoder<KnapsackSolution> encoder = KnapsackSolution::encode;
-		Decoder<KnapsackSolution> decoder = KnapsackSolution::new;
+		PopulationManager<float[]> mgr = new PopulationManager<>();
+		Encoder<float[], KnapsackSolution> encoder = KnapsackSolution::encode;
+		Decoder<float[], KnapsackSolution> decoder = KnapsackSolution::new;
 		Supplier<KnapsackSolution> supplier = () -> {
 			KnapsackSolution result;
 			
@@ -112,15 +115,17 @@ public class GeneticAlgorithmDemo {
 			return result;
 		};
 		
-		mgr.set(new CrossoverPopulation.Builder()
+		mgr.set(new CrossoverPopulation.Builder<float[]>()
 				.fitnessFunc(decoder, KnapsackSolution::fitness)
+				.crossoverFunc(new UniformFloatCrossover())
+				.mutator(new GaussianFloatMutator())
 				.spawnIndividuals(encoder, supplier, 100)
 				.build()
 		);
 		
 		System.out.println(mgr.get());
 		
-		for (int i=0; i<100; i++) {
+		for (int i=0; i<1000; i++) {
 			mgr.get().evolve();
 			System.out.println("Generation " + mgr.get().getGeneration() + ": " + mgr.get());
 		}

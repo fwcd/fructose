@@ -1,16 +1,9 @@
 package com.fwcd.fructose.genetic.core;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
-
-import com.fwcd.fructose.exception.SerializationException;
 
 /**
  * An object that holds a Population and allows for easy
@@ -19,22 +12,22 @@ import com.fwcd.fructose.exception.SerializationException;
  * @author Fredrik
  *
  */
-public class PopulationManager {
-	private CrossoverPopulation population;
+public class PopulationManager<G> {
+	private Population<G> population;
 	
-	public void map(UnaryOperator<CrossoverPopulation> mapper) {
+	public void map(UnaryOperator<Population<G>> mapper) {
 		set(mapper.apply(get()));
 	}
 	
-	public void usingPopulation(Consumer<CrossoverPopulation> consumer) {
+	public void usingPopulation(Consumer<Population<G>> consumer) {
 		consumer.accept(get());
 	}
 	
-	public void set(CrossoverPopulation population) {
+	public void set(Population<G> population) {
 		this.population = population;
 	}
 	
-	public CrossoverPopulation get() {
+	public Population<G> get() {
 		if (hasPopulation()) {
 			return population;
 		} else {

@@ -1,6 +1,7 @@
 package com.fwcd.fructose.genetic.core;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -16,7 +17,6 @@ import com.fwcd.fructose.genetic.operators.Decoder;
 import com.fwcd.fructose.genetic.operators.Encoder;
 import com.fwcd.fructose.genetic.operators.FitnessFunction;
 import com.fwcd.fructose.genetic.operators.Mutator;
-import com.fwcd.fructose.text.StringUtils;
 
 /**
  * A simple population implementation that uses
@@ -27,14 +27,9 @@ import com.fwcd.fructose.text.StringUtils;
  *
  * @param <G> - The genotype
  */
-public class CrossoverPopulation<G> implements Population<G> {
-	private List<G> individuals;
+public class CrossoverPopulation<G> extends TemplatePopulation<G> {
 	private Crossover<G> crossover;
-	private FitnessFunction<G> fitnessFunc;
 	private Mutator<G> mutator;
-	
-	private float mutationChance; // Between 0 and 1
-	private int generation = 0;
 	
 	public CrossoverPopulation(
 			Crossover<G> crossover,
@@ -43,43 +38,10 @@ public class CrossoverPopulation<G> implements Population<G> {
 			List<G> individuals,
 			float mutationChance
 	) {
+		super(fitnessFunc);
 		this.crossover = crossover;
-		this.fitnessFunc = fitnessFunc;
 		this.mutator = mutator;
-		this.individuals = individuals;
-	}
-	
-	@Override
-	public void setMutationChance(float chance) {
-		mutationChance = chance;
-	}
-	
-	/**
-	 * @return The amount of individuals
-	 */
-	@Override
-	public int size() {
-		return individuals.size();
-	}
-	
-	@Override
-	public int getGeneration() {
-		return generation;
-	}
-	
-	@Override
-	public G getIndividualGenes(int index) {
-		return individuals.get(index);
-	}
-	
-	@Override
-	public void setAllGenes(List<G> individuals) {
-		this.individuals = individuals;
-	}
-	
-	@Override
-	public List<G> getAllGenes() {
-		return individuals;
+		setAllGenes(individuals);
 	}
 	
 	/**
@@ -91,8 +53,9 @@ public class CrossoverPopulation<G> implements Population<G> {
 	private int select() {
 		Distribution<G> dist = new Distribution<>();
 		
-		for (G individual : individuals) {
-			dist.add(individual, fitnessFunc.getFitness(individual));
+		for (G individual : getAllGenes()) {
+			System.out.println(Arrays.toString((float[]) individual));
+			dist.add(individual, Math.max(getFitness(individual), 0));
 		}
 		
 		return dist.pickIndexStochastically();
@@ -103,6 +66,8 @@ public class CrossoverPopulation<G> implements Population<G> {
 	 */
 	private void mutate() {
 		final Random random = ThreadLocalRandom.current();
+		final List<G> individuals = getAllGenes();
+		final float mutationChance = getMutationChance();
 		
 		int individualsCount = individuals.size();
 		for (int i=0; i<individualsCount; i++) {
@@ -126,14 +91,15 @@ public class CrossoverPopulation<G> implements Population<G> {
 			parentB = select();
 		} while (parentA == parentB); // Require two distinct parents
 		
-		G childA = crossover.crossover(individuals.get(parentA), individuals.get(parentB));
-		G childB = crossover.crossover(individuals.get(parentA), individuals.get(parentB));
 		
-		individuals.set(parentA, childA);
-		individuals.set(parentB, childB);
+		G childA = crossover.crossover(getGenes(parentA), getGenes(parentB));
+		G childB = crossover.crossover(getGenes(parentA), getGenes(parentB));
+		
+		setGenes(parentA, childA);
+		setGenes(parentB, childB);
 		
 		mutate();
-		generation++;
+		incrementGeneration();
 	}
 	
 	@Override
@@ -141,8 +107,8 @@ public class CrossoverPopulation<G> implements Population<G> {
 		G bestGenes = null;
 		float maxFitness = Float.NEGATIVE_INFINITY;
 		
-		for (G genes : individuals) {
-			float fitness = fitnessFunc.getFitness(genes);
+		for (G genes : getAllGenes()) {
+			float fitness = getFitness(genes);
 			
 			if (fitness > maxFitness) {
 				maxFitness = fitness;
@@ -153,19 +119,8 @@ public class CrossoverPopulation<G> implements Population<G> {
 		if (bestGenes != null) {
 			return bestGenes;
 		} else {
-			throw new NoSuchElementException("Can't fetch the fittest genes when the genotype is empty!");
+			throw new NoSuchElementException("Can't fetch the fittest genes when there are no individuals!");
 		}
-	}
-	
-	@Override
-	public String toString() {
-		String s = "Population:\n";
-		
-		for (G genes : individuals) {
-			s += StringUtils.toString(genes) + "\n";
-		}
-		
-		return s;
 	}
 	
 	public static class Builder<G> {
