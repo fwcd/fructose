@@ -7,10 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import com.fwcd.fructose.exception.NotImplementedException;
 import com.fwcd.fructose.exception.SerializationException;
 import com.fwcd.fructose.exception.SizeMismatchException;
-import com.fwcd.fructose.ml.data.LabelledData;
 
 /**
  * A basic multi-layer perceptron that
@@ -99,10 +97,5 @@ public class GeneticMLP implements NeuralNetwork<float[], float[]> {
 	
 	private float relu(float x) {
 		return x >= 0 ? x : 0;
-	}
-
-	@Override
-	public void backprop(LabelledData<float[], float[]> data) {
-		throw new NotImplementedException("Backpropagation not yet supported by FastMLP.");
 	}
 }

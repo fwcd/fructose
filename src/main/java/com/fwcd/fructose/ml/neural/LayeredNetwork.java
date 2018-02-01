@@ -27,7 +27,7 @@ import com.fwcd.fructose.ml.neural.layers.NNLayer;
  * @param <O> - The output data type
  */
 @WIP(usable = false)
-public class LayeredNetwork<I, O> implements NeuralNetwork<I, O> {
+public class LayeredNetwork<I, O> implements SupervisedNN<I, O> {
 	private static final long serialVersionUID = -5634042575520289180L;
 	private final NNParameters hyperparameters;
 	private final NNLayer<I, ?, ?> inLayer;
