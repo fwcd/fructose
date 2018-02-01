@@ -22,7 +22,7 @@ import com.fwcd.fructose.genetic.operators.UniformCrossover;
 
 public class Population implements Serializable {
 	private static final long serialVersionUID = -147928374982734L;
-	private int[][] genotype;
+	private int[][] genes;
 	
 	private Crossover crossover;
 	private FitnessFunction fitnessFunc;
@@ -35,13 +35,13 @@ public class Population implements Serializable {
 			Crossover crossover,
 			FitnessFunction fitnessFunc,
 			Mutator mutator,
-			int[][] genotype,
+			int[][] genes,
 			float mutationChance
 	) {
 		this.crossover = crossover;
 		this.fitnessFunc = fitnessFunc;
 		this.mutator = mutator;
-		this.genotype = genotype;
+		this.genes = genes;
 	}
 	
 	public void setMutationChance(float chance) {
@@ -52,7 +52,7 @@ public class Population implements Serializable {
 	 * @return The amount of individuals
 	 */
 	public int size() {
-		return genotype.length;
+		return genes.length;
 	}
 	
 	public int getGeneration() {
@@ -60,19 +60,19 @@ public class Population implements Serializable {
 	}
 	
 	public <T> T getIndividualPhenes(Decoder<T> decoder, int index) {
-		return decoder.decode(genotype[index]);
+		return decoder.decode(genes[index]);
 	}
 	
 	public int[] getIndividualGenes(int index) {
-		return genotype[index];
+		return genes[index];
 	}
 	
-	public void setGenotype(int[][] genotype) {
-		this.genotype = genotype;
+	public void setGenes(int[][] genes) {
+		this.genes = genes;
 	}
 	
 	public int[][] getGenotype() {
-		return genotype;
+		return genes;
 	}
 	
 	/**
@@ -84,7 +84,7 @@ public class Population implements Serializable {
 	private int select() {
 		Distribution<int[]> dist = new Distribution<>();
 		
-		for (int[] individual : genotype) {
+		for (int[] individual : genes) {
 			dist.add(individual, fitnessFunc.getFitness(individual));
 		}
 		
@@ -97,10 +97,10 @@ public class Population implements Serializable {
 	private void mutate() {
 		Random random = ThreadLocalRandom.current();
 		
-		for (int i=0; i<genotype.length; i++) {
+		for (int i=0; i<genes.length; i++) {
 			if (random.nextFloat() < mutationChance) {
-				int[] mutation = mutator.mutate(genotype[i]);
-				genotype[i] = mutation;
+				int[] mutation = mutator.mutate(genes[i]);
+				genes[i] = mutation;
 			}
 		}
 	}
@@ -123,11 +123,11 @@ public class Population implements Serializable {
 			parentB = select();
 		} while (parentA == parentB); // Require two distinct parents
 		
-		int[] childA = crossover.crossover(genotype[parentA], genotype[parentB]);
-		int[] childB = crossover.crossover(genotype[parentA], genotype[parentB]);
+		int[] childA = crossover.crossover(genes[parentA], genes[parentB]);
+		int[] childB = crossover.crossover(genes[parentA], genes[parentB]);
 		
-		genotype[parentA] = childA;
-		genotype[parentB] = childB;
+		genes[parentA] = childA;
+		genes[parentB] = childB;
 		
 		mutate();
 		generation++;
@@ -137,7 +137,7 @@ public class Population implements Serializable {
 		int[] bestGenes = null;
 		float maxFitness = Float.NEGATIVE_INFINITY;
 		
-		for (int[] genes : genotype) {
+		for (int[] genes : genes) {
 			float fitness = fitnessFunc.getFitness(genes);
 			
 			if (fitness > maxFitness) {
@@ -158,7 +158,7 @@ public class Population implements Serializable {
 	}
 	
 	public Stream<int[]> streamGenes() {
-		return Arrays.stream(genotype);
+		return Arrays.stream(genes);
 	}
 	
 	public <T> Stream<T> streamPhenes(Decoder<T> decoder) {
@@ -169,7 +169,7 @@ public class Population implements Serializable {
 	public String toString() {
 		String s = "Population:\n";
 		
-		for (int[] genes : genotype) {
+		for (int[] genes : genes) {
 			s += Arrays.toString(genes) + "\n";
 		}
 		
@@ -181,7 +181,7 @@ public class Population implements Serializable {
 		private Mutator mutator = new GaussianMutator();
 		private FitnessFunction fitnessFunc;
 		private float mutationChance = 0.1F;
-		private Set<int[]> genotype = new HashSet<>();
+		private Set<int[]> genes = new HashSet<>();
 		
 		public Builder crossoverFunc(Crossover crossoverFunc) {
 			this.crossoverFunc = crossoverFunc;
@@ -210,13 +210,13 @@ public class Population implements Serializable {
 		
 		public <T> Builder spawnIndividuals(Encoder<T> encoder, Supplier<T> supplier, int count) {
 			for (int i=0; i<count; i++) {
-				int[] genes = encoder.encode(supplier.get());
+				int[] individualGenes = encoder.encode(supplier.get());
 				
-				if (genes.length == 0) {
+				if (individualGenes.length == 0) {
 					throw new UnsupportedOperationException("Individual can't have a gene sequence length of 0!");
 				}
 				
-				genotype.add(genes);
+				genes.add(individualGenes);
 			}
 			return this;
 		}
@@ -230,7 +230,7 @@ public class Population implements Serializable {
 				throw new IllegalStateException("Missing mutator function.");
 			}
 			
-			return new Population(crossoverFunc, fitnessFunc, mutator, genotype.toArray(new int[0][0]), mutationChance);
+			return new Population(crossoverFunc, fitnessFunc, mutator, genes.toArray(new int[0][0]), mutationChance);
 		}
 	}
 }

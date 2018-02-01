@@ -1,4 +1,4 @@
-package com.fwcd.fructose;
+package com.fwcd.fructose.io;
 
 import java.io.InputStream;
 
