@@ -2,6 +2,7 @@ package com.fwcd.fructose.math;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.function.DoubleBinaryOperator;
 
 import com.fwcd.fructose.exception.SizeMismatchException;
 import com.fwcd.fructose.geometry.Matrix;
@@ -120,6 +121,25 @@ public class Tensor implements Serializable {
 		
 		for (int i=0; i<data.length; i++) {
 			result[i] = data[i] + other.data[i];
+		}
+		
+		return new Tensor(result, dimensions);
+	}
+	
+	public Tensor combineElementwise(Tensor other, DoubleBinaryOperator mapper) {
+		if (!Arrays.equals(dimensions, other.dimensions)) {
+			throw new SizeMismatchException(
+					"tensor size",
+					Arrays.toString(dimensions),
+					"tensor size",
+					Arrays.toString(dimensions)
+			);
+		}
+		
+		double[] result = new double[data.length];
+		
+		for (int i=0; i<data.length; i++) {
+			result[i] = mapper.applyAsDouble(data[i], other.data[i]);
 		}
 		
 		return new Tensor(result, dimensions);
