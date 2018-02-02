@@ -36,3 +36,8 @@ A general-purpose Java library that extends far beyond the scope of a simple set
     * Annotations
 * Properties
 * Parsers
+
+## Dependencies
+
+* JUnit 4.12 (lib folder)
+* Hamcrest 1.3 (lib folder)
