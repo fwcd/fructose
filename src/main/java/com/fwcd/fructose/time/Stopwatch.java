@@ -12,6 +12,7 @@ import java.time.temporal.TemporalUnit;
  */
 public class Stopwatch {
 	private boolean resetted = true;
+	private boolean running = false;
 	private long startTime = 0;
 	private long delta = 0;
 	
@@ -22,6 +23,7 @@ public class Stopwatch {
 	public void start() {
 		startTime = System.currentTimeMillis();
 		resetted = false;
+		running = true;
 	}
 	
 	/**
@@ -30,10 +32,10 @@ public class Stopwatch {
 	 * @return The total time measured in ms.
 	 */
 	public long getMillis() {
-		if (resetted) {
-			throw new IllegalStateException("Stopwatch not running");
-		} else {
+		if (!resetted) {
 			return System.currentTimeMillis() - startTime + delta;
+		} else {
+			throw new IllegalStateException("Stopwatch not running");
 		}
 	}
 	
@@ -47,6 +49,7 @@ public class Stopwatch {
 	private void reset() {
 		resetted = true;
 		delta = 0;
+		running = false;
 	}
 	
 	/**
@@ -57,7 +60,12 @@ public class Stopwatch {
 	public long pause() {
 		long ms = getMillis();
 		delta += ms;
+		running = false;
 		return ms;
+	}
+	
+	public boolean isRunning() {
+		return running;
 	}
 	
 	/**
@@ -66,13 +74,18 @@ public class Stopwatch {
 	 * @return The total time measured in ms
 	 */
 	public long stop() {
-		long ms = getMillis();
-		reset();
-		return ms;
+		if (running) {
+			long ms = getMillis();
+			reset();
+			running = false;
+			return ms;
+		} else {
+			return 0;
+		}
 	}
 	
 	@Override
 	public String toString() {
-		return getMillis() + " ms";
+		return Long.toString(getMillis()) + " ms";
 	}
 }

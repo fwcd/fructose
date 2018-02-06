@@ -19,9 +19,9 @@ public interface QuantumGate {
 	 * @param qubitIndex - The start qubit index of the qubits on which the gate will be applied
 	 * @return An output superposition
 	 */
-	public ComplexVector apply(ComplexVector possibleStates, int qubitIndex);
+	ComplexVector apply(ComplexVector possibleStates, int qubitIndex);
 	
-	public default String getSymbol() {
+	default String getSymbol() {
 		return "?";
 	}
 }

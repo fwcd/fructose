@@ -6,6 +6,7 @@ package com.fwcd.fructose.quantum.core;
  * @author Fredrik
  *
  */
+@FunctionalInterface
 public interface QubitOperation {
-	public QubitSuperpos apply(QubitSuperpos superpos);
+	QubitSuperpos apply(QubitSuperpos superpos);
 }

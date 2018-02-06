@@ -7,6 +7,15 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+/**
+ * A {@link Table} using nested maps.
+ * 
+ * @author Fredrik
+ *
+ * @param <K> - The first key type
+ * @param <S> - The second key type
+ * @param <V> - The value type
+ */
 public class MapTable<K, S, V> implements Table<K, S, V> {
 	private final Supplier<Map<S, V>> keyMapSupplier2;
 	private final Map<K, Map<S, V>> data;

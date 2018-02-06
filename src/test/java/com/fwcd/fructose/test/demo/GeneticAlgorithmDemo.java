@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 
 import com.fwcd.fructose.genetic.core.CrossoverPopulation;
 import com.fwcd.fructose.genetic.core.PopulationManager;
-import com.fwcd.fructose.genetic.core.SimplePopulation;
 import com.fwcd.fructose.genetic.operators.Decoder;
 import com.fwcd.fructose.genetic.operators.Encoder;
 import com.fwcd.fructose.genetic.operators.GaussianFloatMutator;
@@ -94,7 +93,7 @@ public class GeneticAlgorithmDemo {
 			return stones.toString();
 		}
 	}
-	
+
 	private static KnapsackSolution getPossibleSolution() {
 		return new KnapsackSolution(TOTAL_STONES.stream()
 				.filter(x -> ThreadLocalRandom.current().nextBoolean())

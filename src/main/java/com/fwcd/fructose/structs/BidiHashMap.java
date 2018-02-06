@@ -15,9 +15,19 @@ import java.util.Set;
  * @param <V>
  */
 public class BidiHashMap<K, V> implements BidiMap<K, V> {
-	private HashMap<K,V> map = new HashMap<K, V>();
-    private HashMap<V,K> inversedMap = new HashMap<V, K>();
-
+	private final Map<K,V> map;
+    private final Map<V,K> inverse;
+    
+    public BidiHashMap() {
+    	map = new HashMap<>();
+    	inverse = new HashMap<>();
+    }
+    
+    private BidiHashMap(Map<K, V> map, Map<V, K> inverse) {
+    	this.map = map;
+    	this.inverse = inverse;
+    }
+    
 	@Override
 	public int size() {
 		return map.size();
@@ -45,13 +55,17 @@ public class BidiHashMap<K, V> implements BidiMap<K, V> {
 	
 	@Override
 	public K getKey(Object value) {
-		return inversedMap.get(value);
+		return inverse.get(value);
 	}
 
 	@Override
 	public V put(K key, V value) {
 		V returnedValue = map.put(key, value);
-		inversedMap.put(value, key);
+		K prevValueKey = inverse.put(value, key);
+		
+		if (prevValueKey != null) {
+			remove(prevValueKey);
+		}
 		
 		return returnedValue;
 	}
@@ -59,7 +73,7 @@ public class BidiHashMap<K, V> implements BidiMap<K, V> {
 	@Override
 	public V remove(Object key) {
 		V removedValue = map.remove(key);
-		inversedMap.remove(removedValue);
+		inverse.remove(removedValue);
 		
 		return removedValue;
 	}
@@ -69,14 +83,14 @@ public class BidiHashMap<K, V> implements BidiMap<K, V> {
 		map.putAll(m);
 		
 		for (K key : m.keySet()) {
-			inversedMap.put(m.get(key), key);
+			inverse.put(m.get(key), key);
 		}
 	}
 
 	@Override
 	public void clear() {
 		map.clear();
-		inversedMap.clear();
+		inverse.clear();
 	}
 
 	@Override
@@ -85,12 +99,17 @@ public class BidiHashMap<K, V> implements BidiMap<K, V> {
 	}
 
 	@Override
+	public Set<Map.Entry<K, V>> entrySet() {
+		return map.entrySet();
+	}
+
+	@Override
 	public Collection<V> values() {
 		return map.values();
 	}
 
 	@Override
-	public Set<Map.Entry<K, V>> entrySet() {
-		return map.entrySet();
+	public BidiMap<V, K> inverse() {
+		return new BidiHashMap<>(new HashMap<>(inverse), new HashMap<>(map));
 	}
 }

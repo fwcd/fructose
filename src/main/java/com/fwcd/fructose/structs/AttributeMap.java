@@ -4,8 +4,8 @@ package com.fwcd.fructose.structs;
  * A dynamic, map-like data structure that can
  * hold any type. While it's certainly very
  * convenient for some purposes where maximum
- * generalization is desired, it causes much
- * weaker typing and thus it should be used
+ * generality is desired, it causes much
+ * weaker typing and thus should be used
  * judiciously anyway.
  * 
  * @author Fredrik
