@@ -7,7 +7,7 @@ import com.fwcd.fructose.function.IOConsumer;
 import com.fwcd.fructose.function.IOFunction;
 
 /**
- * Represents some content that can be
+ * Represents content that can be
  * read out through an InputStream.
  * 
  * @author Fredrik

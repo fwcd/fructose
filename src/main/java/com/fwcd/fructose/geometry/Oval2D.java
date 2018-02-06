@@ -3,6 +3,12 @@ package com.fwcd.fructose.geometry;
 import com.fwcd.fructose.draw.DrawGraphics;
 import com.fwcd.fructose.draw.Drawable;
 
+/**
+ * An immutable ellipse.
+ * 
+ * @author Fredrik
+ *
+ */
 public class Oval2D implements Shape2D, Drawable {
 	private final Vector2D center;
 	private final double width;

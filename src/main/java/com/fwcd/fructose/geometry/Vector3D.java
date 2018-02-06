@@ -8,30 +8,25 @@ import java.io.Serializable;
  * @author Fredrik
  *
  */
-public class Vector3D implements Serializable {
+public class Vector3D extends TemplateVector<Vector3D> implements Serializable {
 	private static final long serialVersionUID = 387837264876234L;
-	private final double x;
-	private final double y;
-	private final double z;
 	
 	public Vector3D(int x, int y, int z) {
-		this((double) x, (double) y, (double) z);
+		super(x, y, z);
 	}
 	
 	public Vector3D(double x, double y, double z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		super(x, y, z);
 	}
 	
 	public Vector3D(Matrix matrix) {
-		if (matrix.getHeight() != 3 || matrix.getWidth() != 1) {
-			throw new RuntimeException("Matrix needs to be 1x3 to be converted to a vector.");
-		}
-		
-		x = matrix.get(0, 0);
-		y = matrix.get(0, 1);
-		z = matrix.get(0, 2);
+		super(
+				matrix.getHeight() != 3 || matrix.getWidth() != 1,
+				new IllegalArgumentException("Matrix needs to be 1x3 to be converted to a vector."),
+				matrix.get(0, 0),
+				matrix.get(0, 1),
+				matrix.get(0, 2)
+		);
 	}
 	
 	/**
@@ -48,62 +43,6 @@ public class Vector3D implements Serializable {
 	}
 	
 	/**
-	 * Adds another vector to this.<br><br>
-	 * 
-	 * this + otherVec
-	 * 
-	 * @param other
-	 * @return This
-	 */
-	public Vector3D add(Vector3D other) {
-		return new Vector3D(x + other.x, y + other.y, z + other.z);
-	}
-	
-	/**
-	 * Subtracts another vector from this.<br><br>
-	 * 
-	 * this - otherVec
-	 * 
-	 * @param other
-	 * @return This
-	 */
-	public Vector3D sub(Vector3D other) {
-		return new Vector3D(x - other.x, y - other.y, z - other.z);
-	}
-	
-	/**
-	 * Scales this vector.<br><br>
-	 * 
-	 * this * factor
-	 * 
-	 * @param other
-	 * @return This
-	 */
-	public Vector3D scale(double factor) {
-		return new Vector3D(x * factor, y * factor, z * factor);
-	}
-	
-	public Vector3D invert() {
-		return new Vector3D(x * -1, y * -1, z * -1);
-	}
-	
-	public Vector3D hadamardProduct(Vector3D other) {
-		return new Vector3D(x * other.x, y * other.y, z * other.z);
-	}
-	
-	/**
-	 * Dots this vector to another one.<br><br>
-	 * 
-	 * this . otherVec
-	 * 
-	 * @param other
-	 * @return This
-	 */
-	public double dot(Vector3D other) {
-		return (x * other.x) + (y * other.y) + (z * other.z);
-	}
-	
-	/**
 	 * Returns the cross product of this and
 	 * another specified vector.<br><br>
 	 * 
@@ -114,26 +53,10 @@ public class Vector3D implements Serializable {
 	 */
 	public Vector3D cross(Vector3D other) {
 		return new Vector3D(
-				(y * other.z) - (z * other.y),
-				(z * other.x) - (x * other.z),
-				(x * other.y) - (y * other.x)
+				(getY() * other.getZ()) - (getZ() * other.getY()),
+				(getZ() * other.getX()) - (getX() * other.getZ()),
+				(getX() * other.getY()) - (getY() * other.getX())
 		);
-	}
-	
-	public double length() {
-		return Math.sqrt((x*x) + (y*y) + (z*z));
-	}
-	
-	public Vector3D normalize() {
-		return new Vector3D(x / length(), y / length(), z / length());
-	}
-	
-	public Matrix asMatrix() {
-		return new Matrix(new double[][] {
-			{x},
-			{y},
-			{z}
-		});
 	}
 	
 	/**
@@ -188,61 +111,23 @@ public class Vector3D implements Serializable {
 	}
 
 	public double getX() {
-		return x;
+		return get(0);
 	}
 
 	public double getY() {
-		return y;
+		return get(1);
 	}
 	
 	public double getZ() {
-		return z;
-	}
-	
-	@Override
-	public String toString() {
-		return "(" + x + ", " + y + ", " + z + ")";
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		long temp;
-		temp = Double.doubleToLongBits(x);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(y);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(z);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		Vector3D other = (Vector3D) obj;
-		if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x)) {
-			return false;
-		}
-		if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y)) {
-			return false;
-		}
-		if (Double.doubleToLongBits(z) != Double.doubleToLongBits(other.z)) {
-			return false;
-		}
-		return true;
+		return get(2);
 	}
 	
 	public MutableVector3D asMutableVector() {
-		return new MutableVector3D(x, y, z);
+		return new MutableVector3D(getX(), getY(), getZ());
+	}
+
+	@Override
+	protected Vector3D newInstance(double... data) {
+		return new Vector3D(data[0], data[1], data[2]);
 	}
 }

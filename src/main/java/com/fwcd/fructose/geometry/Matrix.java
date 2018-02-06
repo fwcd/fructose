@@ -11,7 +11,7 @@ import com.fwcd.fructose.exception.SizeMismatchException;
 import com.fwcd.fructose.math.Tensor;
 
 /**
- * An immutable "flat" matrix. (A rank 2-tensor)
+ * An immutable, double-valued "flat" matrix. (A rank 2-tensor)
  * 
  * @author Fredrik
  *

@@ -1,5 +1,11 @@
 package com.fwcd.fructose.geometry;
 
+/**
+ * An immutable circle.
+ * 
+ * @author Fredrik
+ *
+ */
 public class Circle2D extends Oval2D {
 	public Circle2D(Vector2D centerPos, double radius) {
 		super(centerPos, radius * 2, radius * 2);

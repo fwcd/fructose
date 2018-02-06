@@ -12,7 +12,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	MatrixTest.class,
 	TableTest.class,
 	ComplexTest.class,
-	PrimitiveListTest.class
+	PrimitiveListTest.class,
+	VectorTest.class
 })
 public class AllTests {
 
