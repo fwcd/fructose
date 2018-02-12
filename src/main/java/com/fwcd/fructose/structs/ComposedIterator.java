@@ -30,4 +30,10 @@ public class ComposedIterator<A, B> implements BiIterator<A, B> {
 	public Pair<A, B> next() {
 		return new Pair<>(a.next(), b.next());
 	}
+
+	@Override
+	public void remove() {
+		a.remove();
+		b.remove();
+	}
 }

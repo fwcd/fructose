@@ -1,17 +1,12 @@
 package com.fwcd.fructose;
 
-import java.util.Spliterator;
-import java.util.Spliterators;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public interface BiIterable<A, B> {
+public interface BiIterable<A, B> extends Iterable<Pair<A, B>> {
+	@Override
 	BiIterator<A, B> iterator();
-	
-	default Spliterator<Pair<A, B>> spliterator() {
-		return Spliterators.spliteratorUnknownSize(iterator(), 0);
-	}
 	
 	default Stream<Pair<A, B>> stream() {
 		return StreamSupport.stream(spliterator(), false);

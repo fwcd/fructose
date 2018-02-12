@@ -3,6 +3,7 @@ package com.fwcd.fructose.structs;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.function.BiConsumer;
 
 import com.fwcd.fructose.BiIterator;
@@ -69,5 +70,51 @@ public class ArrayBiList<A, B> implements BiList<A, B> {
 	@Override
 	public boolean contains(A a, B b) {
 		return aItems.contains(a) && bItems.contains(b);
+	}
+
+	@Override
+	public boolean containsA(A a) {
+		return aItems.contains(a);
+	}
+
+	@Override
+	public boolean containsB(B b) {
+		return bItems.contains(b);
+	}
+	
+	@Override
+	public void remove(A a) {
+		final int index = aItems.indexOf(a);
+		remove(index);
+	}
+
+	@Override
+	public void remove(A a, B b) {
+		Pair<A, B> p = new Pair<>(a, b);
+		BiIterator<A, B> it = iterator();
+		while (it.hasNext()) {
+			if (it.next().equals(p)) {
+				it.remove();
+			}
+		}
+	}
+
+	@Override
+	public int indexOf(A a) {
+		return aItems.indexOf(a);
+	}
+
+	@Override
+	public int indexOf(A a, B b) {
+		Pair<A, B> p = new Pair<>(a, b);
+		int i = 0;
+		for (Pair<A, B> item : this) {
+			if (item.equals(p)) {
+				return i;
+			}
+			i++;
+		}
+		
+		throw new NoSuchElementException("Pair (" + a.toString() + ", " + b.toString() + ") is not contained by the BiList!");
 	}
 }
