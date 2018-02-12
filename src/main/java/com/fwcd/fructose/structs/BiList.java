@@ -16,6 +16,8 @@ import com.fwcd.fructose.Pair;
 public interface BiList<A, B> extends BiIterable<A, B> {
 	void add(A a, B b);
 	
+	void add(int i, A a, B b);
+	
 	void remove(A a);
 	
 	void remove(A a, B b);
@@ -33,6 +35,8 @@ public interface BiList<A, B> extends BiIterable<A, B> {
 	int indexOf(A a);
 	
 	int indexOf(A a, B b);
+	
+	void remap(A a, B b);
 	
 	A getA(int i);
 	

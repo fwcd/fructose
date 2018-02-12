@@ -117,4 +117,15 @@ public class ArrayBiList<A, B> implements BiList<A, B> {
 		
 		throw new NoSuchElementException("Pair (" + a.toString() + ", " + b.toString() + ") is not contained by the BiList!");
 	}
+
+	@Override
+	public void add(int i, A a, B b) {
+		aItems.add(i, a);
+		bItems.add(i, b);
+	}
+
+	@Override
+	public void remap(A a, B b) {
+		bItems.set(aItems.indexOf(a), b);
+	}
 }
