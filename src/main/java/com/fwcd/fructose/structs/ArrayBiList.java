@@ -65,4 +65,9 @@ public class ArrayBiList<A, B> implements BiList<A, B> {
 	public B getB(int i) {
 		return bItems.get(i);
 	}
+
+	@Override
+	public boolean contains(A a, B b) {
+		return aItems.contains(a) && bItems.contains(b);
+	}
 }

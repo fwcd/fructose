@@ -21,7 +21,7 @@ public class Vector3D extends TemplateVector<Vector3D> implements Serializable {
 	
 	public Vector3D(Matrix matrix) {
 		super(
-				matrix.getHeight() != 3 || matrix.getWidth() != 1,
+				matrix.getHeight() == 3 || matrix.getWidth() == 1,
 				new IllegalArgumentException("Matrix needs to be 1x3 to be converted to a vector."),
 				matrix.get(0, 0),
 				matrix.get(0, 1),

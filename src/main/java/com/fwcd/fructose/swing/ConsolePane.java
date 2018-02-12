@@ -1,9 +1,11 @@
 package com.fwcd.fructose.swing;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.io.PrintStream;
 
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
@@ -24,13 +26,29 @@ public class ConsolePane implements Viewable {
 	
 	private final Lazy<PrintStream> errStream = new Lazy<>(this::createErrStream);
 	private final Lazy<PrintStream> outStream = new Lazy<>(this::createOutStream);
+	private boolean autoscroll = true;
 
 	public ConsolePane() {
+		this(true);
+	}
+	
+	public ConsolePane(boolean lineWrap) {
 		textArea = new JTextPane();
 		textArea.setBackground(Color.BLACK);
 		textArea.setForeground(Color.WHITE);
 		
-		view = new JScrollPane(textArea);
+		if (lineWrap) {
+			view = new JScrollPane(textArea);
+		} else {
+			JPanel wrapper = new JPanel();
+			wrapper.setLayout(new BorderLayout());
+			wrapper.add(textArea, BorderLayout.CENTER);
+			view = new JScrollPane(wrapper);
+		}
+	}
+	
+	public void setAutoscrolling(boolean autoscroll) {
+		this.autoscroll  = autoscroll;
 	}
 	
 	public void setForeground(Color color) {
@@ -111,7 +129,9 @@ public class ConsolePane implements Viewable {
 	}
 
 	private void updateView() {
-		textArea.setCaretPosition(textArea.getDocument().getLength());
+		if (autoscroll) {
+			textArea.setCaretPosition(textArea.getDocument().getLength());
+		}
 		SwingUtilities.invokeLater(view::repaint);
 	}
 

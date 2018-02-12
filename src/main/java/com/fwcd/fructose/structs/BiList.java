@@ -18,6 +18,8 @@ public interface BiList<A, B> extends BiIterable<A, B> {
 	
 	void remove(int i);
 	
+	boolean contains(A a, B b);
+	
 	int size();
 	
 	A getA(int i);

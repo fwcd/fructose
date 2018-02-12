@@ -31,8 +31,8 @@ public class Vector2D extends TemplateVector<Vector2D> implements Serializable {
 	
 	public Vector2D(Matrix matrix) {
 		super(
-				matrix.getHeight() != 2 || matrix.getWidth() != 1,
-				new IllegalArgumentException("Matrix needs to be 1x2 to be converted to a vector."),
+				matrix.getHeight() == 2 || matrix.getWidth() == 1,
+				new IllegalArgumentException("Matrix needs to be 1x2 to be converted to a vector: " + matrix.getSize()),
 				matrix.get(0, 0),
 				matrix.get(0, 1)
 		);
