@@ -26,11 +26,11 @@ import com.fwcd.fructose.structs.FloatList;
  * @author Fredrik
  *
  */
-public class SimplePopulation extends TemplatePopulation<float[]> {
+public class SelectionPopulation extends TemplatePopulation<float[]> {
 	private Mutator<float[]> mutator = new GaussianFloatMutator();
 	private int survivorsPerGeneration = 5;
 	
-	public SimplePopulation(FitnessFunction<float[]> fitnessFunc) {
+	public SelectionPopulation(FitnessFunction<float[]> fitnessFunc) {
 		super(fitnessFunc);
 	}
 	

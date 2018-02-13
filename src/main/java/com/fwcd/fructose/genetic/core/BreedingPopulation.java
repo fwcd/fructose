@@ -27,11 +27,11 @@ import com.fwcd.fructose.genetic.operators.Mutator;
  *
  * @param <G> - The genotype
  */
-public class CrossoverPopulation<G> extends TemplatePopulation<G> {
+public class BreedingPopulation<G> extends TemplatePopulation<G> {
 	private Crossover<G> crossover;
 	private Mutator<G> mutator;
 	
-	public CrossoverPopulation(
+	public BreedingPopulation(
 			Crossover<G> crossover,
 			FitnessFunction<G> fitnessFunc,
 			Mutator<G> mutator,
@@ -171,7 +171,7 @@ public class CrossoverPopulation<G> extends TemplatePopulation<G> {
 				throw new IllegalStateException("Missing mutator function.");
 			}
 			
-			return new CrossoverPopulation<>(crossoverFunc, fitnessFunc, mutator, new ArrayList<>(genes), mutationChance);
+			return new BreedingPopulation<>(crossoverFunc, fitnessFunc, mutator, new ArrayList<>(genes), mutationChance);
 		}
 	}
 }

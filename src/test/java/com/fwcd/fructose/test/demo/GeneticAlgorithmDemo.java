@@ -7,8 +7,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import com.fwcd.fructose.genetic.core.CrossoverPopulation;
-import com.fwcd.fructose.genetic.core.PopulationManager;
+import com.fwcd.fructose.genetic.core.BreedingPopulation;
+import com.fwcd.fructose.genetic.core.Population;
 import com.fwcd.fructose.genetic.operators.Decoder;
 import com.fwcd.fructose.genetic.operators.Encoder;
 import com.fwcd.fructose.genetic.operators.GaussianFloatMutator;
@@ -101,7 +101,6 @@ public class GeneticAlgorithmDemo {
 	}
 	
 	public static void main(String[] args) {
-		PopulationManager<float[]> mgr = new PopulationManager<>();
 		Encoder<float[], KnapsackSolution> encoder = KnapsackSolution::encode;
 		Decoder<float[], KnapsackSolution> decoder = KnapsackSolution::new;
 		Supplier<KnapsackSolution> supplier = () -> {
@@ -113,25 +112,23 @@ public class GeneticAlgorithmDemo {
 			
 			return result;
 		};
-		
-		mgr.set(new CrossoverPopulation.Builder<float[]>()
+		Population<float[]> pop = new BreedingPopulation.Builder<float[]>()
 				.fitnessFunc(decoder, KnapsackSolution::fitness)
 				.crossoverFunc(new UniformFloatCrossover())
 				.mutator(new GaussianFloatMutator())
 				.spawnIndividuals(encoder, supplier, 100)
-				.build()
-		);
+				.build();
 		
-		System.out.println(mgr.get());
+		System.out.println(pop);
 		
 		for (int i=0; i<1000; i++) {
-			mgr.get().evolve();
-			System.out.println("Generation " + mgr.get().getGeneration() + ": " + mgr.get());
+			pop.evolve();
+			System.out.println("Generation " + Integer.toString(pop.getGeneration()) + ": " + pop.toString());
 		}
 		
 		// TODO: Still outputting obviously wrong solutions, because mutation
 		// and crossover can destroy the semantics of the encoded results.
 		
-		System.out.println(mgr.get().getFittestPhenes(decoder));
+		System.out.println(pop.getFittestPhenes(decoder).toString());
 	}
 }
