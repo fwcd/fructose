@@ -10,11 +10,11 @@ import com.fwcd.fructose.genetic.operators.Encoder;
 import com.fwcd.fructose.ml.neural.SimplePerceptron;
 import com.fwcd.fructose.time.Timer;
 
-public class GeneticNeuralGameAI extends EvaluatingGameAI {
+public class GeneticNeuralGameAI<M extends GameMove, R extends GameRole> extends EvaluatingGameAI<M, R> {
 	private final ManualPopulation population = new ManualPopulation();
 	private final SimplePerceptron neuralNet;
 	
-	private final Encoder<float[], ? extends GameState<?, ?>> neuralEncoder;
+	private final Encoder<float[], GameState<M, R>> neuralEncoder;
 	private final Decoder<float[], Float> neuralDecoder;
 	
 	/**
@@ -31,7 +31,7 @@ public class GeneticNeuralGameAI extends EvaluatingGameAI {
 	 */
 	public GeneticNeuralGameAI(
 			int[] networkLayerSizes,
-			Encoder<float[], ? extends GameState<?, ?>> neuralEncoder,
+			Encoder<float[], GameState<M, R>> neuralEncoder,
 			Decoder<float[], Float> neuralDecoder
 	) {
 		this.neuralEncoder = neuralEncoder;
@@ -47,23 +47,22 @@ public class GeneticNeuralGameAI extends EvaluatingGameAI {
 	}
 
 	@Override
-	public <M extends GameMove, R extends GameRole> void onGameStart(R role) {
+	public void onGameStart(GameState<M, R> initialState, R role) {
 		sampleNetwork();
 	}
 	
 	@Override
-	public <M extends GameMove, R extends GameRole> void onGameEnd(GameState<M, R> finalState, R role) {
+	public void onGameEnd(GameState<M, R> finalState, R role) {
 		int fitness = finalState.getWinners().contains(role) ? (100 - finalState.getMoveCount()) : 0;
 		population.setFitness(neuralNet.getWeights(), fitness);
 		population.evolve();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	protected <M extends GameMove, R extends GameRole> double rateMove(GameState<M, R> gameBeforeMove, M move, Timer timer) {
+	protected double rateMove(GameState<M, R> gameBeforeMove, M move, Timer timer) {
 		try {
 			GameState<M, R> gameAfterMove = gameBeforeMove.spawnChild(move);
-			return neuralDecoder.decode(neuralNet.compute(((Encoder<float[], GameState<M, R>>) neuralEncoder).encode(gameAfterMove)));
+			return neuralDecoder.decode(neuralNet.compute(neuralEncoder.encode(gameAfterMove)));
 		} catch (Exception e) {
 			throw new Rethrow("An error occurred while rating the move.", e);
 		}

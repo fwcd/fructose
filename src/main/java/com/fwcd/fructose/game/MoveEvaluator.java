@@ -9,7 +9,7 @@ package com.fwcd.fructose.game;
  *
  */
 @FunctionalInterface
-public interface MoveEvaluator {
+public interface MoveEvaluator<M extends GameMove, R extends GameRole> {
 	/**
 	 * Rates a move given a state of the game. The evaluation should
 	 * always happen in favor of the given role.
@@ -19,10 +19,10 @@ public interface MoveEvaluator {
 	 * @param move - The move to be evaluated
 	 * @return A rating of the given move on the board
 	 */
-	<M extends GameMove, R extends GameRole> double rate(
+	double rate(
 			R role,
-			GameState<M, R> gameBeforeMove,
-			GameState<M, R> gameAfterMove,
+			GameState<? extends M, ? extends R> gameBeforeMove,
+			GameState<? extends M, ? extends R> gameAfterMove,
 			M move,
 			double incrementalDepth
 	);

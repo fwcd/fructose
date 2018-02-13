@@ -12,11 +12,11 @@ import com.fwcd.fructose.game.GameState;
 import com.fwcd.fructose.game.MoveChooser;
 import com.fwcd.fructose.game.RandomMoveChooser;
 
-public abstract class TemplateGameAI implements GameAI {
+public abstract class TemplateGameAI<M extends GameMove, R extends GameRole> implements GameAI<M, R> {
 	private long softMaxTime = Long.MAX_VALUE;
 	private long hardMaxTime = Long.MAX_VALUE;
 	
-	private MoveChooser timeoutMoveChooser = new RandomMoveChooser();
+	private MoveChooser<M, R> timeoutMoveChooser = new RandomMoveChooser<>();
 	private long hardMaxBuffer = 50; // A small buffer time in which the timeoutMoveChooser is expected to run
 	
 	@Override
@@ -40,13 +40,13 @@ public abstract class TemplateGameAI implements GameAI {
 	 * @param chooser - The hard timeout move chooser
 	 * @param maxMs - The MAXIMUM time in ms that this chooser will require
 	 */
-	public void setTimeoutMoveChooser(MoveChooser chooser, long maxMs) {
+	public void setTimeoutMoveChooser(MoveChooser<M, R> chooser, long maxMs) {
 		timeoutMoveChooser = chooser;
 		hardMaxBuffer = maxMs;
 	}
 	
 	@Override
-	public <M extends GameMove, R extends GameRole> M chooseMove(GameState<M, R> game) {
+	public M chooseMove(GameState<M, R> game) {
 		RunnableFuture<M> result = new FutureTask<>(() -> selectMove(game, softMaxTime));
 		M move;
 		
@@ -63,8 +63,5 @@ public abstract class TemplateGameAI implements GameAI {
 		return move;
 	}
 	
-	protected abstract <M extends GameMove, R extends GameRole> M selectMove(
-			GameState<M, R> game,
-			long softMaxTime
-	);
+	protected abstract M selectMove(GameState<M, R> game, long softMaxTime);
 }

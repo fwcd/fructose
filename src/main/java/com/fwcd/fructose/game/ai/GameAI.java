@@ -13,7 +13,7 @@ import com.fwcd.fructose.game.MoveChooser;
  * @author Fredrik
  *
  */
-public interface GameAI extends MoveChooser {
+public interface GameAI<M extends GameMove, R extends GameRole> extends MoveChooser<M, R> {
 	/**
 	 * Sets the soft time limit. Usually it is up to the
 	 * algorithm to <i>try</i> to finish in this time period.
@@ -40,7 +40,7 @@ public interface GameAI extends MoveChooser {
 	 * 
 	 * @param role - The role of this AI in the game
 	 */
-	default <M extends GameMove, R extends GameRole> void onGameStart(R role) {}
+	default void onGameStart(GameState<M, R> intialState, R role) {}
 	
 	/**
 	 * Notifies the AI that a game has ended thus providing the
@@ -52,5 +52,5 @@ public interface GameAI extends MoveChooser {
 	 * @param finalState - The final state of the game
 	 * @param role - The role of this AI in the game
 	 */
-	default <M extends GameMove, R extends GameRole> void onGameEnd(GameState<M, R> finalState, R role) {}
+	default void onGameEnd(GameState<M, R> finalState, R role) {}
 }

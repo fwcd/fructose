@@ -14,7 +14,7 @@ import com.fwcd.fructose.time.Timer;
  * @author Fredrik
  *
  */
-public abstract class EvaluatingGameAI extends TemplateGameAI {
+public abstract class EvaluatingGameAI<M extends GameMove, R extends GameRole> extends TemplateGameAI<M, R> {
 	private boolean shouldParallelize = true;
 	
 	protected void setParallelization(boolean enabled) {
@@ -22,7 +22,7 @@ public abstract class EvaluatingGameAI extends TemplateGameAI {
 	}
 	
 	@Override
-	protected <M extends GameMove, R extends GameRole> M selectMove(GameState<M, R> game, long softMaxTime) {
+	protected M selectMove(GameState<M, R> game, long softMaxTime) {
 		final Timer timer = new Timer();
 		timer.start(softMaxTime);
 		
@@ -52,5 +52,5 @@ public abstract class EvaluatingGameAI extends TemplateGameAI {
 		}
 	}
 	
-	protected abstract <M extends GameMove, R extends GameRole> double rateMove(GameState<M, R> gameBeforeMove, M move, Timer timer);
+	protected abstract double rateMove(GameState<M, R> gameBeforeMove, M move, Timer timer);
 }

@@ -8,6 +8,6 @@ package com.fwcd.fructose.game;
  *
  */
 @FunctionalInterface
-public interface MoveChooser {
-	<M extends GameMove, R extends GameRole> M chooseMove(GameState<M, R> game);
+public interface MoveChooser<M extends GameMove, R extends GameRole> {
+	M chooseMove(GameState<M, R> game);
 }

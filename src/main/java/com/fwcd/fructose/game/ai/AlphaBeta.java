@@ -14,8 +14,8 @@ import com.fwcd.fructose.time.Timer;
  * @author Fredrik
  *
  */
-public class AlphaBeta extends EvaluatingGameAI {
-	private MoveEvaluator evaluator;
+public class AlphaBeta<M extends GameMove, R extends GameRole> extends EvaluatingGameAI<M, R> {
+	private MoveEvaluator<M, R> evaluator;
 	private int depth = 0;
 	
 	/**
@@ -25,16 +25,16 @@ public class AlphaBeta extends EvaluatingGameAI {
 	 * for very simple games like Tic-Tac-Toe.
 	 */
 	public AlphaBeta() {
-		this(new WinEvaluator(), Integer.MAX_VALUE);
+		this(new WinEvaluator<>(), Integer.MAX_VALUE);
 	}
 	
-	public AlphaBeta(MoveEvaluator evaluator, int depth) {
+	public AlphaBeta(MoveEvaluator<M, R> evaluator, int depth) {
 		this.evaluator = evaluator;
 		this.depth = depth;
 	}
 
 	@Override
-	protected <M extends GameMove, R extends GameRole> double rateMove(GameState<M, R> gameBeforeMove, M move, Timer timer) {
+	protected double rateMove(GameState<M, R> gameBeforeMove, M move, Timer timer) {
 		if (!gameBeforeMove.getCurrentRole().hasOpponent()) {
 			throw new IllegalStateException("Alpha beta can only operate on two-player games!");
 		}
@@ -42,7 +42,7 @@ public class AlphaBeta extends EvaluatingGameAI {
 		return alphaBeta(gameBeforeMove.getCurrentRole(), gameBeforeMove, move, depth, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, timer);
 	}
 	
-	private <M extends GameMove, R extends GameRole> double alphaBeta(
+	private double alphaBeta(
 			R role,
 			GameState<M, R> gameBeforeMove,
 			M move,

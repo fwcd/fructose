@@ -9,12 +9,12 @@ import java.util.Set;
  * @author Fredrik
  *
  */
-public class WinEvaluator implements MoveEvaluator {
+public class WinEvaluator<M extends GameMove, R extends GameRole> implements MoveEvaluator<M, R> {
 	@Override
-	public <M extends GameMove, R extends GameRole> double rate(
+	public double rate(
 			R role,
-			GameState<M, R> gameBeforeMove,
-			GameState<M, R> gameAfterMove,
+			GameState<? extends M, ? extends R> gameBeforeMove,
+			GameState<? extends M, ? extends R> gameAfterMove,
 			M move,
 			double incrementalDepth
 	) {

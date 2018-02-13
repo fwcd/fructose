@@ -15,7 +15,7 @@ import com.fwcd.fructose.time.Timer;
  * @author Fredrik
  *
  */
-public class MCTS extends TemplateGameAI {
+public class MCTS<M extends GameMove, R extends GameRole> extends TemplateGameAI<M, R> {
 	private Optional<TreePlotter> plotter = Optional.empty();
 
 	public void setPlotter(TreePlotter plotter) {
@@ -23,14 +23,14 @@ public class MCTS extends TemplateGameAI {
 	}
 	
 	@Override
-	protected <M extends GameMove, R extends GameRole> M selectMove(
+	protected M selectMove(
 			GameState<M, R> game,
 			long softMaxTime
 	) {
 		Timer timer = new Timer();
 		timer.start(softMaxTime);
 		
-		MCTSNode<M> node = new MCTSNode<>(game.getCurrentRole(), game);
+		MCTSNode<? extends M, ? extends R> node = new MCTSNode<>(game.getCurrentRole(), game);
 		
 		while (timer.isRunning()) {
 			node.performIteration();

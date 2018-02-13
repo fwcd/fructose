@@ -20,8 +20,8 @@ import com.fwcd.fructose.time.Timer;
  * @author Fredrik
  *
  */
-public class Minimax extends EvaluatingGameAI {
-	private MoveEvaluator evaluator;
+public class Minimax<M extends GameMove, R extends GameRole> extends EvaluatingGameAI<M, R> {
+	private MoveEvaluator<M, R> evaluator;
 	private int depth = 0;
 	
 	/**
@@ -31,16 +31,16 @@ public class Minimax extends EvaluatingGameAI {
 	 * for very simple games like Tic-Tac-Toe.
 	 */
 	public Minimax() {
-		this(new WinEvaluator(), Integer.MAX_VALUE);
+		this(new WinEvaluator<>(), Integer.MAX_VALUE);
 	}
 	
-	public Minimax(MoveEvaluator evaluator, int depth) {
+	public Minimax(MoveEvaluator<M, R> evaluator, int depth) {
 		this.evaluator = evaluator;
 		this.depth = depth;
 	}
 
 	@Override
-	protected <M extends GameMove, R extends GameRole> double rateMove(GameState<M, R> gameBeforeMove, M move, Timer timer) {
+	protected double rateMove(GameState<M, R> gameBeforeMove, M move, Timer timer) {
 		if (!gameBeforeMove.getCurrentRole().hasOpponent()) {
 			throw new IllegalStateException("Minimax can only operate on two-player games!");
 		}
@@ -48,7 +48,7 @@ public class Minimax extends EvaluatingGameAI {
 		return minimax(gameBeforeMove.getCurrentRole(), gameBeforeMove, move, depth, timer);
 	}
 	
-	private <M extends GameMove, R extends GameRole> double minimax(
+	private double minimax(
 			R role,
 			GameState<M, R> gameBeforeMove,
 			M move,
