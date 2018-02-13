@@ -15,7 +15,14 @@ public class Timer {
 	private long endTime = 0;
 	
 	public void start(long durationMs) {
-		endTime = System.currentTimeMillis() + durationMs;
+		long time = System.currentTimeMillis();
+		endTime = time + durationMs;
+		
+		if (endTime < time) {
+			// This will only happen if "endTime" is overflowed
+			endTime = Long.MAX_VALUE;
+		}
+		
 		resetted = false;
 	}
 	

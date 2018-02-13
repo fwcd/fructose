@@ -22,6 +22,11 @@ public class MCTS<M extends GameMove, R extends GameRole> extends TemplateGameAI
 		this.plotter = Optional.of(plotter);
 	}
 	
+	/**
+	 * Selects a move using monte-carlo-tree search. Note that
+	 * this method will block "forever", if not an appropriate
+	 * time limit is provided.
+	 */
 	@Override
 	protected M selectMove(
 			GameState<M, R> game,
@@ -30,7 +35,7 @@ public class MCTS<M extends GameMove, R extends GameRole> extends TemplateGameAI
 		Timer timer = new Timer();
 		timer.start(softMaxTime);
 		
-		MCTSNode<? extends M, ? extends R> node = new MCTSNode<>(game.getCurrentRole(), game);
+		MCTSNode<M, R> node = new MCTSNode<>(game.getCurrentRole(), game);
 		
 		while (timer.isRunning()) {
 			node.performIteration();

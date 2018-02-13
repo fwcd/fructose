@@ -56,7 +56,7 @@ public abstract class TemplateGameAI<M extends GameMove, R extends GameRole> imp
 		} catch (TimeoutException e) {
 			move = timeoutMoveChooser.chooseMove(game);
 		} catch (InterruptedException | ExecutionException e) {
-			System.out.println("[Warning] " + e.getClass().getSimpleName() + ": " + e.getMessage());
+			e.printStackTrace();
 			move = timeoutMoveChooser.chooseMove(game);
 		}
 		

@@ -21,9 +21,17 @@ public class GameDriver<M extends GameMove, R extends GameRole> {
 	private final Supplier<GameState<M, R>> gameCreator;
 	private final List<GameObserver<M, R>> observers = new ArrayList<>();
 	private final Map<R, GameAI<M, R>> players = new HashMap<>();
+
+	private long hardMoveTimeLimit = Long.MAX_VALUE;
+	private long softMoveTimeLimit = Long.MAX_VALUE;
+	private boolean outputToConsole = false;
 	
 	public GameDriver(Supplier<GameState<M, R>> gameCreator) {
 		this.gameCreator = gameCreator;
+	}
+	
+	public void addPlayer(R role, GameAI<M, R> aiPlayer) {
+		players.put(role, aiPlayer);
 	}
 	
 	/**
@@ -44,6 +52,10 @@ public class GameDriver<M extends GameMove, R extends GameRole> {
 			throw new IllegalArgumentException("Needs at least one player to play a game!");
 		}
 		
+		for (GameAI<M, R> ai : players.values()) {
+			ai.setSoftMaxTime(softMoveTimeLimit);
+		}
+		
 		for (int i=0; i<matches; i++) {
 			GameState<M, R> game = gameCreator.get();
 			fireStartListeners(game);
@@ -55,9 +67,14 @@ public class GameDriver<M extends GameMove, R extends GameRole> {
 					throw new IllegalStateException("GameDriver is missing a GameAI for " + game.getCurrentRole().toString());
 				}
 				
+				
 				M move = ai.chooseMove(game);
 				fireMoveListeners(game, move);
 				game.perform(move);
+			}
+			
+			if (outputToConsole) {
+				System.out.println(game.getWinners().toString() + " won the " + Integer.toString(i) + ". match");
 			}
 			
 			fireEndListeners(game);
@@ -94,5 +111,17 @@ public class GameDriver<M extends GameMove, R extends GameRole> {
 	
 	public void removeObserver(GameObserver<M, R> observer) {
 		observers.remove(observer);
+	}
+	
+	public void setHardMoveTimeLimit(long ms) {
+		hardMoveTimeLimit = ms;
+	}
+	
+	public void setSoftMoveTimeLimit(long ms) {
+		softMoveTimeLimit = ms;
+	}
+	
+	public void setOutputToConsole(boolean enabled) {
+		outputToConsole = enabled;
 	}
 }
