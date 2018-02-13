@@ -1,15 +1,13 @@
 package com.fwcd.fructose.game.minimax;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.OptionalDouble;
 import java.util.stream.DoubleStream;
 
+import com.fwcd.fructose.game.EvaluatingGameAI;
 import com.fwcd.fructose.game.GameMove;
 import com.fwcd.fructose.game.GameRole;
 import com.fwcd.fructose.game.GameState;
 import com.fwcd.fructose.game.MoveEvaluator;
-import com.fwcd.fructose.game.TemplateGameAI;
 import com.fwcd.fructose.game.WinEvaluator;
 import com.fwcd.fructose.time.Timer;
 
@@ -23,7 +21,7 @@ import com.fwcd.fructose.time.Timer;
  * @author Fredrik
  *
  */
-public class Minimax extends TemplateGameAI {
+public class Minimax extends EvaluatingGameAI {
 	private MoveEvaluator evaluator;
 	private int depth = 0;
 	
@@ -41,23 +39,14 @@ public class Minimax extends TemplateGameAI {
 		this.evaluator = evaluator;
 		this.depth = depth;
 	}
-	
+
 	@Override
-	protected <M extends GameMove, R extends GameRole> M selectMove(GameState<M, R> game, long softMaxTime) {
-		if (!game.getCurrentRole().hasOpponent()) {
+	protected <M extends GameMove, R extends GameRole> double rateMove(GameState<M, R> gameBeforeMove, M move, Timer timer) {
+		if (!gameBeforeMove.getCurrentRole().hasOpponent()) {
 			throw new IllegalStateException("Minimax can only operate on two-player games!");
 		}
 		
-		Timer timer = new Timer();
-		timer.start(softMaxTime);
-		
-		Comparator<M> comparator =
-				(a, b) -> Double.compare(
-						minimax(game.getCurrentRole(), game, a, depth, timer),
-						minimax(game.getCurrentRole(), game, b, depth, timer)
-				);
-		
-		return Collections.max(game.getLegalMoves(), comparator);
+		return minimax(gameBeforeMove.getCurrentRole(), gameBeforeMove, move, depth, timer);
 	}
 	
 	private <M extends GameMove, R extends GameRole> double minimax(
