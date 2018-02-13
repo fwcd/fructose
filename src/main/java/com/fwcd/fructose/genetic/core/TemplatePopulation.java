@@ -15,15 +15,25 @@ import com.fwcd.fructose.genetic.operators.FitnessFunction;
 import com.fwcd.fructose.text.StringUtils;
 
 public abstract class TemplatePopulation<G> implements Population<G> {
-	private final FitnessFunction<G> fitnessFunc;
+	private FitnessFunction<G> fitnessFunc;
 	private List<G> individuals = new ArrayList<>();
 	private float mutationChance = 0.1F;
 	private int generation = 0;
 	
-	public TemplatePopulation(FitnessFunction<G> fitnessFunc) {
+	public void setFitnessFunction(FitnessFunction<G> fitnessFunc) {
 		this.fitnessFunc = fitnessFunc;
 	}
-
+	
+	@Override
+	public void addGenes(G genes) {
+		individuals.add(genes);
+	}
+	
+	@Override
+	public void clear() {
+		individuals.clear();
+	}
+	
 	@Override
 	public void setMutationChance(float chance) {
 		mutationChance = chance;
@@ -43,7 +53,11 @@ public abstract class TemplatePopulation<G> implements Population<G> {
 	}
 	
 	protected float getFitness(G genes) {
-		return fitnessFunc.getFitness(genes);
+		if (fitnessFunc == null) {
+			throw new IllegalStateException("No fitness function provided.");
+		} else {
+			return fitnessFunc.getFitness(genes);
+		}
 	}
 	
 	protected void incrementGeneration() {
@@ -75,7 +89,7 @@ public abstract class TemplatePopulation<G> implements Population<G> {
 	}
 
 	@Override
-	public G getFittestGenes() {
+	public G selectBestGenes() {
 		float maxFitness = Float.NEGATIVE_INFINITY;
 		G fittestGenes = null;
 		

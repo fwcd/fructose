@@ -8,8 +8,8 @@ import java.io.Serializable;
  * 
  * @author Fredrik
  *
- * @param <P> - The (domain-specific) representation of a solution state (phenotype)
  * @param <G> - The genotype
+ * @param <P> - The (domain-specific) representation of a solution state (phenotype)
  */
 public interface Encoder<G, P> extends Serializable {
 	/**

@@ -129,6 +129,6 @@ public class GeneticAlgorithmDemo {
 		// TODO: Still outputting obviously wrong solutions, because mutation
 		// and crossover can destroy the semantics of the encoded results.
 		
-		System.out.println(pop.getFittestPhenes(decoder).toString());
+		System.out.println(pop.selectFittestPhenes(decoder).toString());
 	}
 }

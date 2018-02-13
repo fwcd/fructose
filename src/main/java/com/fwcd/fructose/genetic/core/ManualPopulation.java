@@ -14,25 +14,23 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-import com.fwcd.fructose.genetic.operators.FitnessFunction;
+import com.fwcd.fructose.genetic.operators.Encoder;
 import com.fwcd.fructose.genetic.operators.GaussianFloatMutator;
 import com.fwcd.fructose.genetic.operators.Mutator;
 import com.fwcd.fructose.structs.FloatList;
 
 /**
  * A basic, selection-based population that uses
- * float[] as it's genotype.
+ * float[] as it's genotype and relies on manually
+ * set fitness values.
  * 
  * @author Fredrik
  *
  */
-public class SelectionPopulation extends TemplatePopulation<float[]> {
+public class ManualPopulation extends TemplatePopulation<float[]> {
+	private final Map<float[], Float> fitnesses = new HashMap<>();
 	private Mutator<float[]> mutator = new GaussianFloatMutator();
 	private int survivorsPerGeneration = 5;
-	
-	public SelectionPopulation(FitnessFunction<float[]> fitnessFunc) {
-		super(fitnessFunc);
-	}
 	
 	public void setMutator(Mutator<float[]> mutator) {
 		this.mutator = mutator;
@@ -40,6 +38,19 @@ public class SelectionPopulation extends TemplatePopulation<float[]> {
 	
 	public void setSurvivorsPerGeneration(int survivors) {
 		survivorsPerGeneration = survivors;
+	}
+	
+	@Override
+	protected float getFitness(float[] genes) {
+		return fitnesses.getOrDefault(genes, Float.NEGATIVE_INFINITY);
+	}
+	
+	public void setFitness(float[] genes, float value) {
+		fitnesses.put(genes, value);
+	}
+	
+	public <P> void setFitness(P phenes, float value, Encoder<float[], P> encoder) {
+		fitnesses.put(encoder.encode(phenes), value);
 	}
 
 	@Override
@@ -70,12 +81,6 @@ public class SelectionPopulation extends TemplatePopulation<float[]> {
 	}
 
 	private void sortByFitnessDescending(List<float[]> genes) {
-		Map<float[], Float> fitnesses = new HashMap<>();
-		
-		for (float[] gene : genes) {
-			fitnesses.put(gene, getFitness(gene));
-		}
-		
 		genes.sort((a, b) -> fitnesses.get(b).compareTo(fitnesses.get(a)));
 	}
 
@@ -119,6 +124,8 @@ public class SelectionPopulation extends TemplatePopulation<float[]> {
 				throw new UncheckedIOException(e);
 			}
 		}
+		
+		setAllGenes(genes);
 	}
 
 	private File getFile(File folder, String namePrefix, int i) {

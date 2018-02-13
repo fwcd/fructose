@@ -1,10 +1,16 @@
-package com.fwcd.fructose.game;
+package com.fwcd.fructose.game.ai;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.RunnableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import com.fwcd.fructose.game.GameMove;
+import com.fwcd.fructose.game.GameRole;
+import com.fwcd.fructose.game.GameState;
+import com.fwcd.fructose.game.MoveChooser;
+import com.fwcd.fructose.game.RandomMoveChooser;
 
 public abstract class TemplateGameAI implements GameAI {
 	private long softMaxTime = Long.MAX_VALUE;

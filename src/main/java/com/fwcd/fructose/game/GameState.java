@@ -45,6 +45,8 @@ public interface GameState<M extends GameMove, R extends GameRole> extends TreeN
 	 */
 	void perform(M move);
 	
+	int getMoveCount();
+	
 	/**
 	 * Deep copies this game state.
 	 * 

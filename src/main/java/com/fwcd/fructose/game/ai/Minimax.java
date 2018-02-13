@@ -1,9 +1,8 @@
-package com.fwcd.fructose.game.minimax;
+package com.fwcd.fructose.game.ai;
 
 import java.util.OptionalDouble;
 import java.util.stream.DoubleStream;
 
-import com.fwcd.fructose.game.EvaluatingGameAI;
 import com.fwcd.fructose.game.GameMove;
 import com.fwcd.fructose.game.GameRole;
 import com.fwcd.fructose.game.GameState;

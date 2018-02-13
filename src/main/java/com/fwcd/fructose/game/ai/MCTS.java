@@ -1,11 +1,10 @@
-package com.fwcd.fructose.game.mcts;
+package com.fwcd.fructose.game.ai;
 
 import java.util.Optional;
 
 import com.fwcd.fructose.game.GameMove;
 import com.fwcd.fructose.game.GameRole;
 import com.fwcd.fructose.game.GameState;
-import com.fwcd.fructose.game.TemplateGameAI;
 import com.fwcd.fructose.swing.TreePlotter;
 import com.fwcd.fructose.time.Timer;
 

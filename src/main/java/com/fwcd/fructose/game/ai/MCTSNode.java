@@ -1,4 +1,4 @@
-package com.fwcd.fructose.game.mcts;
+package com.fwcd.fructose.game.ai;
 
 import java.util.ArrayList;
 import java.util.Collections;

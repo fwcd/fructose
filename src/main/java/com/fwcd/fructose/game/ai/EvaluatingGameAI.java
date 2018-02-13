@@ -1,7 +1,10 @@
-package com.fwcd.fructose.game;
+package com.fwcd.fructose.game.ai;
 
 import java.util.NoSuchElementException;
 
+import com.fwcd.fructose.game.GameMove;
+import com.fwcd.fructose.game.GameRole;
+import com.fwcd.fructose.game.GameState;
 import com.fwcd.fructose.time.Timer;
 
 /**

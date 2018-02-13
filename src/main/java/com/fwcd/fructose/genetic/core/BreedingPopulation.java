@@ -38,7 +38,7 @@ public class BreedingPopulation<G> extends TemplatePopulation<G> {
 			List<G> individuals,
 			float mutationChance
 	) {
-		super(fitnessFunc);
+		setFitnessFunction(fitnessFunc);
 		this.crossover = crossover;
 		this.mutator = mutator;
 		setAllGenes(individuals);
@@ -103,7 +103,7 @@ public class BreedingPopulation<G> extends TemplatePopulation<G> {
 	}
 	
 	@Override
-	public G getFittestGenes() {
+	public G selectBestGenes() {
 		G bestGenes = null;
 		float maxFitness = Float.NEGATIVE_INFINITY;
 		

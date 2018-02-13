@@ -14,8 +14,12 @@ package com.fwcd.fructose.exception;
 public class Rethrow extends RuntimeException {
 	private static final long serialVersionUID = -8354898302253502862L;
 	
-	public Rethrow(Throwable e) {
-		super(e);
+	public Rethrow(Throwable cause) {
+		super(cause);
+	}
+	
+	public Rethrow(String message, Throwable cause) {
+		super(message, cause);
 	}
 	
 	/**

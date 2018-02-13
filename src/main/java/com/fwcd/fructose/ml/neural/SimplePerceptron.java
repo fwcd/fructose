@@ -44,35 +44,6 @@ public class SimplePerceptron implements NeuralNetwork<float[], float[]> {
 		}
 	}
 	
-	public void saveWeights(OutputStream out) {
-		try (DataOutputStream dos = new DataOutputStream(out)) {
-			// First serialize array length
-			dos.writeInt(weights.length);
-			
-			// Then serialize values
-			for (float weight : weights) {
-				dos.writeFloat(weight);
-			}
-		} catch (IOException e) {
-			throw new SerializationException(e);
-		}
-	}
-	
-	public void loadWeights(InputStream in) {
-		try (DataInputStream dis = new DataInputStream(in)) {
-			// First read array length
-			weights = new float[dis.readInt()];
-			
-			// Then deserialize values
-			int i = 0;
-			while (dis.available() > 0) {
-				weights[i++] = dis.readFloat();
-			}
-		} catch (IOException e) {
-			throw new SerializationException(e);
-		}
-	}
-	
 	@Override
 	public float[] compute(float[] input) {
 		if (input.length != layerSizes[0]) {
@@ -104,5 +75,42 @@ public class SimplePerceptron implements NeuralNetwork<float[], float[]> {
 	
 	private float relu(float x) {
 		return x >= 0 ? x : 0;
+	}
+	
+	public float[] getWeights() {
+		return weights;
+	}
+	
+	public void setWeights(float[] weights) {
+		this.weights = weights;
+	}
+	
+	public void saveWeights(OutputStream out) {
+		try (DataOutputStream dos = new DataOutputStream(out)) {
+			// First serialize array length
+			dos.writeInt(weights.length);
+			
+			// Then serialize values
+			for (float weight : weights) {
+				dos.writeFloat(weight);
+			}
+		} catch (IOException e) {
+			throw new SerializationException(e);
+		}
+	}
+	
+	public void loadWeights(InputStream in) {
+		try (DataInputStream dis = new DataInputStream(in)) {
+			// First read array length
+			weights = new float[dis.readInt()];
+			
+			// Then deserialize values
+			int i = 0;
+			while (dis.available() > 0) {
+				weights[i++] = dis.readFloat();
+			}
+		} catch (IOException e) {
+			throw new SerializationException(e);
+		}
 	}
 }
