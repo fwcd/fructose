@@ -1,5 +1,6 @@
 package com.fwcd.fructose.game.ai;
 
+import com.fwcd.fructose.annotation.WIP;
 import com.fwcd.fructose.exception.Rethrow;
 import com.fwcd.fructose.game.GameMove;
 import com.fwcd.fructose.game.GameRole;
@@ -11,6 +12,16 @@ import com.fwcd.fructose.genetic.operators.GaussianFloatMutator;
 import com.fwcd.fructose.ml.neural.SimplePerceptron;
 import com.fwcd.fructose.time.Timer;
 
+/**
+ * An experimental game AI that combines a seletive, genetic
+ * algorithm with feed-forward perceptrons.
+ * 
+ * @author Fredrik
+ *
+ * @param <M> - The game move type
+ * @param <R> - The game role type
+ */
+@WIP(usable = false)
 public class GeneticNeuralGameAI<M extends GameMove, R extends GameRole> extends EvaluatingGameAI<M, R> {
 	private final ManualPopulation population = new ManualPopulation();
 	private final SimplePerceptron neuralNet;
@@ -19,6 +30,9 @@ public class GeneticNeuralGameAI<M extends GameMove, R extends GameRole> extends
 	private final Decoder<float[], Float> neuralDecoder;
 	
 	private boolean debugOutput = false;
+	
+	// TODO: This class needs a lot more testing and experimentation
+	// TODO: Currently there are a lot of "fixed" hyperparameters here - these should be adjustable in the future
 	
 	/**
 	 * Create a new GeneticNeuralAI.
@@ -41,7 +55,7 @@ public class GeneticNeuralGameAI<M extends GameMove, R extends GameRole> extends
 		this.neuralDecoder = neuralDecoder;
 		
 		neuralNet = new SimplePerceptron(networkLayerSizes);
-		population.setMutationChance(0.5F);
+		population.setMutationChance(1F);
 		population.setMutator(new GaussianFloatMutator(-500, 500, 0.5F, 1));
 		population.spawn(20, () -> new SimplePerceptron(networkLayerSizes).getWeights());
 		sampleNetwork();
@@ -58,7 +72,8 @@ public class GeneticNeuralGameAI<M extends GameMove, R extends GameRole> extends
 	
 	@Override
 	public void onGameEnd(GameState<M, R> finalState, R role) {
-		int fitness = finalState.getWinners().contains(role) ? (100 - finalState.getMoveCount()) : 0;
+		int moveCount = finalState.getMoveCount();
+		int fitness = finalState.getWinners().contains(role) ? (100 - moveCount) : (-100 + moveCount);
 		population.setFitness(neuralNet.getWeights(), fitness);
 		population.evolve();
 		if (debugOutput) {
