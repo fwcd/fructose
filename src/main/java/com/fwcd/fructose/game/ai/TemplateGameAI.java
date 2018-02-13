@@ -12,7 +12,7 @@ import com.fwcd.fructose.game.GameState;
 import com.fwcd.fructose.game.MoveChooser;
 import com.fwcd.fructose.game.RandomMoveChooser;
 
-public abstract class TemplateGameAI<M extends GameMove, R extends GameRole> implements GameAI<M, R> {
+public abstract class TemplateGameAI<M extends GameMove, R extends GameRole> implements GamePlayer<M, R> {
 	private long softMaxTime = Long.MAX_VALUE;
 	private long hardMaxTime = Long.MAX_VALUE;
 	

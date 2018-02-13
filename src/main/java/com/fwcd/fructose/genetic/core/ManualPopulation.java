@@ -59,7 +59,7 @@ public class ManualPopulation extends TemplatePopulation<float[]> {
 		sortByFitnessDescending(genes);
 		
 		int geneCount = genes.size();
-		mutate(genes, geneCount - survivorsPerGeneration, geneCount);
+		mutate(genes, survivorsPerGeneration, geneCount);
 	}
 	
 	/**
@@ -81,7 +81,7 @@ public class ManualPopulation extends TemplatePopulation<float[]> {
 	}
 
 	private void sortByFitnessDescending(List<float[]> genes) {
-		genes.sort((a, b) -> fitnesses.get(b).compareTo(fitnesses.get(a)));
+		genes.sort((a, b) -> Float.compare(getFitness(a), getFitness(b)));
 	}
 
 	public void saveIndividualsTo(File folder, String namePrefix) {

@@ -6,14 +6,13 @@ import com.fwcd.fructose.game.GameState;
 import com.fwcd.fructose.game.MoveChooser;
 
 /**
- * A move chooser that is intended to be used as
- * an AI. Thus it provides additional methods
- * like time limits.
+ * A smart move chooser (i.e. an AI).
+ * Thus it provides additional methods like time limits.
  * 
  * @author Fredrik
  *
  */
-public interface GameAI<M extends GameMove, R extends GameRole> extends MoveChooser<M, R> {
+public interface GamePlayer<M extends GameMove, R extends GameRole> extends MoveChooser<M, R> {
 	/**
 	 * Sets the soft time limit. Usually it is up to the
 	 * algorithm to <i>try</i> to finish in this time period.
@@ -24,7 +23,7 @@ public interface GameAI<M extends GameMove, R extends GameRole> extends MoveChoo
 	
 	/**
 	 * Sets the hard time limit. Although it is not an absolute
-	 * requirement that the AI responds in this exact time period,
+	 * requirement that the player responds in this exact time period,
 	 * it <i>should</i> do so in any usual environment.
 	 * 
 	 * @param ms - The hard max time limit
@@ -32,8 +31,8 @@ public interface GameAI<M extends GameMove, R extends GameRole> extends MoveChoo
 	void setHardMaxTime(long ms);
 	
 	/**
-	 * Notifies the AI that a game has started thus providing the
-	 * AI with an opportunity to prepare.
+	 * Notifies the player that a game has started thus providing the
+	 * player with an opportunity to prepare.
 	 * 
 	 * <p><b>Note that it is not guaranteed that this method
 	 * will ever be called.</b></p>
@@ -43,8 +42,8 @@ public interface GameAI<M extends GameMove, R extends GameRole> extends MoveChoo
 	default void onGameStart(GameState<M, R> intialState, R role) {}
 	
 	/**
-	 * Notifies the AI that a game has ended thus providing the
-	 * AI with an opportunity to "learn" from wins/losses.
+	 * Notifies the player that a game has ended thus providing the
+	 * player with an opportunity to "learn" from wins/losses.
 	 * 
 	 * <p><b>Note that it is not guaranteed that this method
 	 * will ever be called.</b></p>

@@ -7,6 +7,7 @@ import com.fwcd.fructose.game.GameState;
 import com.fwcd.fructose.genetic.core.ManualPopulation;
 import com.fwcd.fructose.genetic.operators.Decoder;
 import com.fwcd.fructose.genetic.operators.Encoder;
+import com.fwcd.fructose.genetic.operators.GaussianFloatMutator;
 import com.fwcd.fructose.ml.neural.SimplePerceptron;
 import com.fwcd.fructose.time.Timer;
 
@@ -16,6 +17,8 @@ public class GeneticNeuralGameAI<M extends GameMove, R extends GameRole> extends
 	
 	private final Encoder<float[], GameState<M, R>> neuralEncoder;
 	private final Decoder<float[], Float> neuralDecoder;
+	
+	private boolean debugOutput = false;
 	
 	/**
 	 * Create a new GeneticNeuralAI.
@@ -38,6 +41,8 @@ public class GeneticNeuralGameAI<M extends GameMove, R extends GameRole> extends
 		this.neuralDecoder = neuralDecoder;
 		
 		neuralNet = new SimplePerceptron(networkLayerSizes);
+		population.setMutationChance(0.5F);
+		population.setMutator(new GaussianFloatMutator(-500, 500, 0.5F, 1));
 		population.spawn(20, () -> new SimplePerceptron(networkLayerSizes).getWeights());
 		sampleNetwork();
 	}
@@ -56,6 +61,9 @@ public class GeneticNeuralGameAI<M extends GameMove, R extends GameRole> extends
 		int fitness = finalState.getWinners().contains(role) ? (100 - finalState.getMoveCount()) : 0;
 		population.setFitness(neuralNet.getWeights(), fitness);
 		population.evolve();
+		if (debugOutput) {
+			System.out.println(population);
+		}
 	}
 
 	@Override
@@ -66,5 +74,9 @@ public class GeneticNeuralGameAI<M extends GameMove, R extends GameRole> extends
 		} catch (Exception e) {
 			throw new Rethrow("An error occurred while rating the move.", e);
 		}
+	}
+	
+	public void setDebugOutput(boolean enabled) {
+		debugOutput = enabled;
 	}
 }

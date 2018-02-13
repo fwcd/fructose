@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import com.fwcd.fructose.game.ai.GameAI;
+import com.fwcd.fructose.game.ai.GamePlayer;
 
 /**
  * A class that automatically plays games
- * using {@link GameAI} instances.
+ * using {@link GamePlayer} instances.
  * 
  * @author Fredrik
  *
@@ -20,7 +20,7 @@ import com.fwcd.fructose.game.ai.GameAI;
 public class GameDriver<M extends GameMove, R extends GameRole> {
 	private final Supplier<GameState<M, R>> gameCreator;
 	private final List<GameObserver<M, R>> observers = new ArrayList<>();
-	private final Map<R, GameAI<M, R>> players = new HashMap<>();
+	private final Map<R, GamePlayer<M, R>> players = new HashMap<>();
 
 	private long hardMoveTimeLimit = Long.MAX_VALUE;
 	private long softMoveTimeLimit = Long.MAX_VALUE;
@@ -30,7 +30,7 @@ public class GameDriver<M extends GameMove, R extends GameRole> {
 		this.gameCreator = gameCreator;
 	}
 	
-	public void addPlayer(R role, GameAI<M, R> aiPlayer) {
+	public void addPlayer(R role, GamePlayer<M, R> aiPlayer) {
 		players.put(role, aiPlayer);
 	}
 	
@@ -52,7 +52,8 @@ public class GameDriver<M extends GameMove, R extends GameRole> {
 			throw new IllegalArgumentException("Needs at least one player to play a game!");
 		}
 		
-		for (GameAI<M, R> ai : players.values()) {
+		for (GamePlayer<M, R> ai : players.values()) {
+			ai.setHardMaxTime(hardMoveTimeLimit);
 			ai.setSoftMaxTime(softMoveTimeLimit);
 		}
 		
@@ -61,7 +62,7 @@ public class GameDriver<M extends GameMove, R extends GameRole> {
 			fireStartListeners(game);
 			
 			while (!game.isGameOver()) {
-				GameAI<M, R> ai = players.get(game.getCurrentRole());
+				GamePlayer<M, R> ai = players.get(game.getCurrentRole());
 				
 				if (ai == null) {
 					throw new IllegalStateException("GameDriver is missing a GameAI for " + game.getCurrentRole().toString());

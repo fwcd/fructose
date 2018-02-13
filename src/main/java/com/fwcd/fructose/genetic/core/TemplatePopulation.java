@@ -8,7 +8,6 @@ import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import com.fwcd.fructose.exception.Rethrow;
 import com.fwcd.fructose.genetic.operators.FitnessFunction;
@@ -90,11 +89,15 @@ public abstract class TemplatePopulation<G> implements Population<G> {
 
 	@Override
 	public G selectBestGenes() {
+		if (individuals.size() == 0) {
+			throw new IllegalStateException("Can't fetch the best genes on an empty population");
+		}
+		
 		float maxFitness = Float.NEGATIVE_INFINITY;
 		G fittestGenes = null;
 		
 		for (G individual : individuals) {
-			float fitness = fitnessFunc.getFitness(individual);
+			float fitness = getFitness(individual);
 			if (fitness > maxFitness) {
 				maxFitness = fitness;
 				fittestGenes = individual;
@@ -102,7 +105,7 @@ public abstract class TemplatePopulation<G> implements Population<G> {
 		}
 		
 		if (fittestGenes == null) {
-			throw new NoSuchElementException();
+			return individuals.get(0);
 		} else {
 			return fittestGenes;
 		}

@@ -14,6 +14,10 @@ public class FloatList {
 		data = new float[initialSize];
 	}
 	
+	public FloatList(float[] data) {
+		this.data = data;
+	}
+	
 	private void ensureCapacity() {
 		if (size >= data.length - 1) {
 			float[] newArr = Arrays.copyOf(data, data.length + 10);
@@ -56,5 +60,15 @@ public class FloatList {
 	
 	public float[] toArray() {
 		return Arrays.copyOf(data, size);
+	}
+
+	public float sum() {
+		float sum = 0;
+		
+		for (int i=0; i<size; i++) {
+			sum += data[i];
+		}
+		
+		return sum;
 	}
 }

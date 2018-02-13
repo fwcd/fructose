@@ -1,23 +1,27 @@
 package com.fwcd.fructose.genetic.operators;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GaussianFloatMutator implements Mutator<float[]> {
 	private static final long serialVersionUID = 23465873645873645L;
 	
-	private final float bound;
+	private final float upperBound;
+	private final float lowerBound;
 	private final float multiplier;
 	private final float bias;
 
 	public GaussianFloatMutator() {
-		bound = Float.POSITIVE_INFINITY;
+		upperBound = Float.POSITIVE_INFINITY;
+		lowerBound = Float.NEGATIVE_INFINITY;
 		multiplier = 5;
 		bias = 0;
 	}
 	
-	public GaussianFloatMutator(float bound, float multiplier, float bias) {
-		this.bound = bound;
+	public GaussianFloatMutator(float lowerBound, float upperBound, float multiplier, float bias) {
+		this.upperBound = upperBound;
+		this.lowerBound = lowerBound;
 		this.multiplier = multiplier;
 		this.bias = bias;
 	}
@@ -30,14 +34,16 @@ public class GaussianFloatMutator implements Mutator<float[]> {
 	public float[] mutate(float[] genes) {
 		Random random = ThreadLocalRandom.current();
 		float probability = probability(genes);
-		float[] result = new float[genes.length];
-		
+		float[] result = Arrays.copyOf(genes, genes.length);
+
 		for (int i=0; i<genes.length; i++) {
 			if (random.nextFloat() < probability) {
-				result[i] += (random.nextGaussian() * multiplier) + bias;
+				result[i] = (result[i] * (float) random.nextGaussian() * multiplier) + bias;
 				
-				if (result[i] > bound) {
-					result[i] = bound;
+				if (result[i] < lowerBound) {
+					result[i] = lowerBound;
+				} else if (result[i] > upperBound) {
+					result[i] = upperBound;
 				}
 			}
 		}
