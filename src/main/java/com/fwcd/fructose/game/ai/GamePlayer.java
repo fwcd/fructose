@@ -31,6 +31,26 @@ public interface GamePlayer<M extends GameMove, R extends GameRole> extends Move
 	void setHardMaxTime(long ms);
 	
 	/**
+	 * Sets a "level" property that could be used
+	 * to represent the tree search depth or something similar.
+	 * 
+	 * <p><b>Does nothing by default.</b></p>
+	 * 
+	 * @param level - The value used
+	 */
+	default void setLevel(int level) {}
+	
+	/**
+	 * Returns a "level" property that could be used
+	 * to represent the tree search depth or something similar.
+	 * 
+	 * <p><b>Always returns 0 by default.</b></p>
+	 * 
+	 * @return The "level" value
+	 */
+	default int getLevel() { return 0; }
+	
+	/**
 	 * Notifies the player that a game has started thus providing the
 	 * player with an opportunity to prepare.
 	 * 

@@ -4,6 +4,8 @@ import com.fwcd.fructose.game.GameMove;
 import com.fwcd.fructose.game.GameRole;
 import com.fwcd.fructose.game.GameState;
 import com.fwcd.fructose.game.MoveEvaluator;
+import com.fwcd.fructose.game.MovePruner;
+import com.fwcd.fructose.game.NeverPruner;
 import com.fwcd.fructose.game.WinEvaluator;
 import com.fwcd.fructose.time.Timer;
 
@@ -15,7 +17,8 @@ import com.fwcd.fructose.time.Timer;
  *
  */
 public class AlphaBeta<M extends GameMove, R extends GameRole> extends EvaluatingGameAI<M, R> {
-	private MoveEvaluator<M, R> evaluator;
+	private final MoveEvaluator<M, R> evaluator;
+	private final MovePruner<M, R> pruner;
 	private int depth = 0;
 	
 	/**
@@ -31,6 +34,13 @@ public class AlphaBeta<M extends GameMove, R extends GameRole> extends Evaluatin
 	public AlphaBeta(MoveEvaluator<M, R> evaluator, int depth) {
 		this.evaluator = evaluator;
 		this.depth = depth;
+		pruner = new NeverPruner<>();
+	}
+	
+	public AlphaBeta(MoveEvaluator<M, R> evaluator, MovePruner<M, R> pruner, int depth) {
+		this.evaluator = evaluator;
+		this.depth = depth;
+		this.pruner = pruner;
 	}
 
 	@Override
@@ -53,7 +63,10 @@ public class AlphaBeta<M extends GameMove, R extends GameRole> extends Evaluatin
 	) {
 		GameState<M, R> gameAfterMove = gameBeforeMove.spawnChild(move);
 		
-		if (!timer.isRunning() || decrementalDepth == 0 || gameAfterMove.isGameOver()) {
+		if (!timer.isRunning()
+				|| decrementalDepth == 0
+				|| pruner.pruneMove(role, gameBeforeMove, gameAfterMove, move, depth - decrementalDepth)
+				|| gameAfterMove.isGameOver()) {
 			return evaluator.rate(role, gameBeforeMove, gameAfterMove, move, depth - decrementalDepth);
 		} else {
 			boolean maximizing = gameAfterMove.getCurrentRole().equals(role);
@@ -87,5 +100,15 @@ public class AlphaBeta<M extends GameMove, R extends GameRole> extends Evaluatin
 			
 			return bestRating;
 		}
+	}
+
+	@Override
+	public void setLevel(int depth) {
+		this.depth = depth;
+	}
+
+	@Override
+	public int getLevel() {
+		return depth;
 	}
 }

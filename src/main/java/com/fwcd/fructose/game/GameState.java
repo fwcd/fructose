@@ -42,8 +42,9 @@ public interface GameState<M extends GameMove, R extends GameRole> extends TreeN
 	/** Executes the given move.
 	 * 
 	 * @param move - The game move to be performed
+	 * @return Whether the move was performed successfully
 	 */
-	void perform(M move);
+	boolean perform(M move);
 	
 	int getMoveCount();
 	
