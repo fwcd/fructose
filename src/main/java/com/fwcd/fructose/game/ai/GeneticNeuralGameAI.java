@@ -21,13 +21,13 @@ import com.fwcd.fructose.time.Timer;
  * @param <M> - The game move type
  * @param <R> - The game role type
  */
-@WIP(usable = false)
+@WIP(usable = true)
 public class GeneticNeuralGameAI<M extends GameMove, R extends GameRole> extends EvaluatingGameAI<M, R> {
-	private final ManualPopulation population = new ManualPopulation();
-	private final SimplePerceptron neuralNet;
-	
 	private final Encoder<float[], GameState<M, R>> neuralEncoder;
 	private final Decoder<float[], Float> neuralDecoder;
+	
+	private final ManualPopulation population = new ManualPopulation();
+	private final SimplePerceptron neuralNet;
 	
 	private boolean debugOutput = false;
 	
@@ -47,6 +47,7 @@ public class GeneticNeuralGameAI<M extends GameMove, R extends GameRole> extends
 	 * @param neuralDecoder - The decoder (converts the neural net output to a game-state rating)
 	 */
 	public GeneticNeuralGameAI(
+			int populationSize,
 			int[] networkLayerSizes,
 			Encoder<float[], GameState<M, R>> neuralEncoder,
 			Decoder<float[], Float> neuralDecoder
@@ -55,9 +56,9 @@ public class GeneticNeuralGameAI<M extends GameMove, R extends GameRole> extends
 		this.neuralDecoder = neuralDecoder;
 		
 		neuralNet = new SimplePerceptron(networkLayerSizes);
-		population.setMutationChance(1F);
+		population.setMutationChance(0.8F);
 		population.setMutator(new GaussianFloatMutator(-500, 500, 0.5F, 1));
-		population.spawn(20, () -> new SimplePerceptron(networkLayerSizes).getWeights());
+		population.spawn(populationSize, () -> new SimplePerceptron(networkLayerSizes).getWeights());
 		sampleNetwork();
 	}
 	

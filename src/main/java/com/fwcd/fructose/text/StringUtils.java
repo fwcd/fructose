@@ -20,24 +20,28 @@ public class StringUtils {
 	 * @return A string representation
 	 */
 	public static String toString(Object obj) {
-		if (obj instanceof int[]) {
-			return Arrays.toString((int[]) obj);
-		} else if (obj instanceof double[]) {
-			return Arrays.toString((double[]) obj);
-		} else if (obj instanceof float[]) {
-			return Arrays.toString((float[]) obj);
-		} else if (obj instanceof boolean[]) {
-			return Arrays.toString((boolean[]) obj);
-		} else if (obj instanceof long[]) {
-			return Arrays.toString((long[]) obj);
-		} else if (obj instanceof char[]) {
-			return Arrays.toString((char[]) obj);
-		} else if (obj instanceof byte[]) {
-			return Arrays.toString((byte[]) obj);
-		} else if (obj instanceof short[]) {
-			return Arrays.toString((short[]) obj);
-		} else if (obj instanceof Object[]) {
-			return Arrays.deepToString((Object[]) obj);
+		Class<?> clazz = obj.getClass();
+		
+		if (clazz.isArray()) {
+			if (clazz == int[].class) {
+				return Arrays.toString((int[]) obj);
+			} else if (clazz == double[].class) {
+				return Arrays.toString((double[]) obj);
+			} else if (clazz == float[].class) {
+				return Arrays.toString((float[]) obj);
+			} else if (clazz == boolean[].class) {
+				return Arrays.toString((boolean[]) obj);
+			} else if (clazz == long[].class) {
+				return Arrays.toString((long[]) obj);
+			} else if (clazz == char[].class) {
+				return Arrays.toString((char[]) obj);
+			} else if (clazz == byte[].class) {
+				return Arrays.toString((byte[]) obj);
+			} else if (clazz == short[].class) {
+				return Arrays.toString((short[]) obj);
+			} else {
+				return Arrays.deepToString((Object[]) obj);
+			}
 		} else {
 			return obj.toString();
 		}

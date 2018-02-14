@@ -8,6 +8,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +33,12 @@ public class ManualPopulation extends TemplatePopulation<float[]> {
 	private final Map<float[], Float> fitnesses = new HashMap<>();
 	private Mutator<float[]> mutator = new GaussianFloatMutator();
 	private int survivorsPerGeneration = 5;
+	
+	private float selectorEpsilon = 0.5F; // The probability that random genes will be selected instead of those with the highest fitness
+	
+	public void setSelectorEpsilon(float epsilon) {
+		selectorEpsilon = epsilon;
+	}
 	
 	public void setMutator(Mutator<float[]> mutator) {
 		this.mutator = mutator;
@@ -75,13 +83,13 @@ public class ManualPopulation extends TemplatePopulation<float[]> {
 		
 		for (int i=startIndex; i<endIndex; i++) {
 			if (r.nextFloat() < mutationChance) {
-				genes.set(i, mutator.mutate(genes.get(i)));
+				mutator.mutateInPlace(genes.get(i));
 			}
 		}
 	}
 
 	private void sortByFitnessDescending(List<float[]> genes) {
-		genes.sort((a, b) -> Float.compare(getFitness(a), getFitness(b)));
+		genes.sort((a, b) -> Float.compare(getFitness(b), getFitness(a)));
 	}
 
 	public void saveIndividualsTo(File folder, String namePrefix) {
@@ -130,5 +138,29 @@ public class ManualPopulation extends TemplatePopulation<float[]> {
 
 	private File getFile(File folder, String namePrefix, int i) {
 		return new File(folder.getAbsolutePath() + "/" + namePrefix + Integer.toString(i));
+	}
+
+	@Override
+	public String toString() {
+		String s = "Population:\n";
+		
+		for (float[] genes : getAllGenes()) {
+			s += Float.toString(getFitness(genes)) + "\t-> " + Arrays.toString(genes) + "\n";
+		}
+		
+		return s;
+	}
+
+	@Override
+	public float[] selectBestGenes() {
+		Random random = ThreadLocalRandom.current();
+		List<float[]> allGenes = getAllGenes();
+		
+		// Use epsilon-greedy strategy to select genes
+		if (random.nextFloat() < selectorEpsilon) {
+			return allGenes.get(random.nextInt(allGenes.size()));
+		} else {
+			return Collections.max(allGenes, (a, b) -> Float.compare(getFitness(a), getFitness(b)));
+		}
 	}
 }

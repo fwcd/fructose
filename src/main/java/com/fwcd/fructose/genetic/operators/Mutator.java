@@ -18,4 +18,8 @@ public interface Mutator<G> extends Serializable {
 	 * @return A mutated version of the chromosome
 	 */
 	G mutate(G genes);
+	
+	default void mutateInPlace(G genes) {
+		throw new UnsupportedOperationException("In-place mutation not supported");
+	}
 }

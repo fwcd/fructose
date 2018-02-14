@@ -30,8 +30,8 @@ public class GameDriver<M extends GameMove, R extends GameRole> {
 		this.gameCreator = gameCreator;
 	}
 	
-	public void addPlayer(R role, GamePlayer<M, R> aiPlayer) {
-		players.put(role, aiPlayer);
+	public void setPlayer(R role, GamePlayer<M, R> player) {
+		players.put(role, player);
 	}
 	
 	/**
@@ -65,7 +65,7 @@ public class GameDriver<M extends GameMove, R extends GameRole> {
 				GamePlayer<M, R> ai = players.get(game.getCurrentRole());
 				
 				if (ai == null) {
-					throw new IllegalStateException("GameDriver is missing a GameAI for " + game.getCurrentRole().toString());
+					throw new IllegalStateException("GameDriver is missing a player for " + game.getCurrentRole().toString());
 				}
 				
 				

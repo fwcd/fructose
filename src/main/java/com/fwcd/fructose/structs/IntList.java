@@ -100,7 +100,17 @@ public class IntList {
 			consumer.accept(data[i]);
 		}
 	}
-	
+
+	@Override
+	public int hashCode() {
+		return Arrays.hashCode(data);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return Arrays.equals(data, ((IntList) obj).data);
+	}
+
 	@Override
 	public String toString() {
 		return Arrays.toString(data);

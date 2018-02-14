@@ -32,22 +32,26 @@ public class GaussianFloatMutator implements Mutator<float[]> {
 	
 	@Override
 	public float[] mutate(float[] genes) {
+		float[] result = Arrays.copyOf(genes, genes.length);
+		mutateInPlace(result);
+		return result;
+	}
+
+	@Override
+	public void mutateInPlace(float[] genes) {
 		Random random = ThreadLocalRandom.current();
 		float probability = probability(genes);
-		float[] result = Arrays.copyOf(genes, genes.length);
 
 		for (int i=0; i<genes.length; i++) {
 			if (random.nextFloat() < probability) {
-				result[i] = (result[i] * (float) random.nextGaussian() * multiplier) + bias;
+				genes[i] = (genes[i] * (float) random.nextGaussian() * multiplier) + bias;
 				
-				if (result[i] < lowerBound) {
-					result[i] = lowerBound;
-				} else if (result[i] > upperBound) {
-					result[i] = upperBound;
+				if (genes[i] < lowerBound) {
+					genes[i] = lowerBound;
+				} else if (genes[i] > upperBound) {
+					genes[i] = upperBound;
 				}
 			}
 		}
-		
-		return result;
 	}
 }

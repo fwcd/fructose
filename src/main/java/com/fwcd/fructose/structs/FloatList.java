@@ -10,12 +10,13 @@ public class FloatList {
 		this(10);
 	}
 	
-	public FloatList(int initialSize) {
-		data = new float[initialSize];
+	public FloatList(int initialCapacity) {
+		data = new float[initialCapacity];
 	}
 	
 	public FloatList(float[] data) {
 		this.data = data;
+		size = data.length;
 	}
 	
 	private void ensureCapacity() {
@@ -58,6 +59,10 @@ public class FloatList {
 		}
 	}
 	
+	public float[] getMutableUntrimmedArray() {
+		return data;
+	}
+	
 	public float[] toArray() {
 		return Arrays.copyOf(data, size);
 	}
@@ -70,5 +75,26 @@ public class FloatList {
 		}
 		
 		return sum;
+	}
+
+	@Override
+	public int hashCode() {
+		return Arrays.hashCode(data);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return Arrays.equals(data, ((FloatList) obj).data);
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder s = new StringBuilder("[");
+		
+		for (int i=0; i<size; i++) {
+			s.append(data[i]).append(", ");
+		}
+		
+		return s.delete(s.length() - 2, s.length()).append(']').toString();
 	}
 }
