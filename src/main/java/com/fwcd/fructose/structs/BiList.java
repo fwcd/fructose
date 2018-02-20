@@ -54,4 +54,6 @@ public interface BiList<A, B> extends BiIterable<A, B> {
 			action.accept(getA(i), getB(i));
 		}
 	}
+	
+	void clear();
 }

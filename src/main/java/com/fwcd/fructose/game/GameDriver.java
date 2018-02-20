@@ -26,6 +26,8 @@ public class GameDriver<M extends GameMove, R extends GameRole> {
 	private long softMoveTimeLimit = Long.MAX_VALUE;
 	private boolean outputToConsole = false;
 	
+	// TODO: Implement maximum move count
+	
 	public GameDriver(Supplier<GameState<M, R>> gameCreator) {
 		this.gameCreator = gameCreator;
 	}

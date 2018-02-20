@@ -128,4 +128,10 @@ public class ArrayBiList<A, B> implements BiList<A, B> {
 	public void remap(A a, B b) {
 		bItems.set(aItems.indexOf(a), b);
 	}
+
+	@Override
+	public void clear() {
+		aItems.clear();
+		bItems.clear();
+	}
 }
