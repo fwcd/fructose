@@ -37,9 +37,7 @@ A general-purpose Java library that extends far beyond the scope of a simple set
 * Properties
 * Parsers
 
-## Setup VSCode for development
-* Setup Gradle
-* Run: gradle eclipse
+## Dependencies
 
-## Compile
-* Run: gradle build
+* JUnit 4.12 (lib folder)
+* Hamcrest 1.3 (lib folder)

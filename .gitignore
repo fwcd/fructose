@@ -3,6 +3,3 @@
 .idea/
 .project
 bin/
-build/
-.gradle/
-.vscode/
