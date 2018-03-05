@@ -37,7 +37,6 @@ A general-purpose Java library that extends far beyond the scope of a simple set
 * Properties
 * Parsers
 
-## Dependencies
-
-* JUnit 4.12 (lib folder)
-* Hamcrest 1.3 (lib folder)
+## Setup
+* Run: gradle eclipse
+* Open the folder in your IDE of choice
