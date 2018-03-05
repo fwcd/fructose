@@ -120,7 +120,7 @@ public class ArrayStack<T> implements Stack<T> {
 			Double sum = 0D;
 			
 			for (T item : contents) {
-				sum += (double) item;
+				sum += (Double) item;
 			}
 			
 			return (T) sum;

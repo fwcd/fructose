@@ -119,8 +119,6 @@ public class GeneticAlgorithmDemo {
 				.spawnIndividuals(encoder, supplier, 100)
 				.build();
 		
-		System.out.println(pop);
-		
 		for (int i=0; i<1000; i++) {
 			pop.evolve();
 			System.out.println("Generation " + Integer.toString(pop.getGeneration()) + ": " + pop.toString());
