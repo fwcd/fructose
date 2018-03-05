@@ -37,10 +37,9 @@ A general-purpose Java library that extends far beyond the scope of a simple set
 * Properties
 * Parsers
 
-## Setup
+## Setup VSCode for development
 * Setup Gradle
 * Run: gradle eclipse
-* Open the folder in your IDE of choice
 
 ## Compile
 * Run: gradle build
