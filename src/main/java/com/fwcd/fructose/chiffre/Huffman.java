@@ -22,18 +22,7 @@ import com.fwcd.fructose.exception.Rethrow;
 public class Huffman implements StringEncoding {
 	@Override
 	public byte[] encode(String data) {
-		Queue<HuffmanTree> queue = toPriorityQueue(distributionOf(data));
-		
-		while (queue.size() > 1) {
-			// Pick the two items with the lowest probability (thus highest priority)
-			HuffmanTree a = queue.poll();
-			HuffmanTree b = queue.poll();
-			
-			// Probabilities of the child trees are added together
-			queue.offer(new HuffmanTree(a, b));
-		}
-		
-		HuffmanTree tree = queue.poll();
+		HuffmanTree tree = generateTree(data);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		
 		try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
@@ -49,6 +38,22 @@ public class Huffman implements StringEncoding {
 		}
 		
 		return baos.toByteArray();
+	}
+
+	public HuffmanTree generateTree(String data) {
+		Queue<HuffmanTree> queue = toPriorityQueue(distributionOf(data));
+		
+		while (queue.size() > 1) {
+			// Pick the two items with the lowest probability (thus highest priority)
+			HuffmanTree a = queue.poll();
+			HuffmanTree b = queue.poll();
+			
+			// Probabilities of the child trees are added together
+			queue.offer(new HuffmanTree(a, b));
+		}
+		
+		HuffmanTree tree = queue.poll();
+		return tree;
 	}
 
 	@Override

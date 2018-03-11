@@ -1,15 +1,19 @@
 package com.fwcd.fructose.chiffre;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.BooleanSupplier;
 
+import com.fwcd.fructose.structs.TreeNode;
+
 /**
- * The binary huffman tree.
+ * A binary huffman tree.
  *
  * @param <T> - The item data type
  */
-public class HuffmanTree implements Comparable<HuffmanTree>, Serializable {
+public class HuffmanTree implements Comparable<HuffmanTree>, TreeNode, Serializable {
 	private static final long serialVersionUID = -8986725416846768964L;
 	private final boolean isLeaf;
 	private HuffmanTree zero = null;
@@ -30,6 +34,7 @@ public class HuffmanTree implements Comparable<HuffmanTree>, Serializable {
 		isLeaf = false;
 	}
 	
+	@Override
 	public boolean isLeaf() {
 		return isLeaf;
 	}
@@ -83,5 +88,10 @@ public class HuffmanTree implements Comparable<HuffmanTree>, Serializable {
 		} else {
 			return getChild(bitStream.getAsBoolean()).decode(bitStream);
 		}
+	}
+
+	@Override
+	public List<? extends TreeNode> getChildren() {
+		return Arrays.asList(zero, one);
 	}
 }
