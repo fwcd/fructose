@@ -9,16 +9,17 @@ import javax.swing.JPanel;
 
 public class InputForm implements Viewable {
 	private final JPanel view;
-	
 	private HintTextField textField;
 	private JButton button;
+	
+	private boolean allowEmptySubmit = false;
 	
 	public InputForm(String textFieldHint, Consumer<String> onSubmit, int width) {
 		view = new JPanel();
 		view.setLayout(new BorderLayout());
 		
 		ActionListener action = (l) -> {
-			if (!textField.getText().isEmpty()) {
+			if (allowEmptySubmit || !textField.getText().isEmpty()) {
 				onSubmit.accept(textField.getText());
 				textField.setText("");
 				textField.repaint();
@@ -34,16 +35,16 @@ public class InputForm implements Viewable {
 		view.add(button, BorderLayout.EAST);
 	}
 	
-	public void requestFocus() {
-		textField.requestFocus();
-	}
+	public void setAllowEmptySubmit(boolean allowEmptySubmit) { this.allowEmptySubmit = allowEmptySubmit; }
+	
+	public boolean doesAllowEmptySubmit() { return allowEmptySubmit; }
+	
+	public void requestFocus() { textField.requestFocus(); }
 	
 	@Override
-	public JPanel getView() {
-		return view;
-	}
+	public JPanel getView() { return view; }
 
-	public HintTextField getTextField() {
-		return textField;
-	}
+	public JButton getButton() { return button; }
+	
+	public HintTextField getTextField() { return textField; }
 }

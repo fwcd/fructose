@@ -61,12 +61,16 @@ public class TransparentButton extends JButton {
 	}
 	
 	@Override
-	public Color getBackground() {
-		return standardBG;
-	}
+	public Color getBackground() { return standardBG; }
 	
 	@Override
-	public void setBackground(Color color) {
-		this.standardBG = color;
-	}
+	public void setBackground(Color color) { standardBG = color; }
+	
+	public Color getPressedBackground() { return pressedBG; }
+	
+	public void setPressedBackground(Color color) { pressedBG = color; }
+	
+	public Color getHoverBackground() { return hoverBG; }
+	
+	public void setHoverBackground(Color color) { hoverBG = color; }
 }

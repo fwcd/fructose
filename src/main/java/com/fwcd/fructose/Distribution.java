@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 import com.fwcd.fructose.structs.DoubleList;
 
@@ -20,11 +22,15 @@ import com.fwcd.fructose.structs.DoubleList;
  *
  * @param <E> - The item type
  */
-public class Distribution<E> {
+public class Distribution<E> implements BiIterable<E, Double> {
 	private static final ThreadLocalRandom RANDOM = ThreadLocalRandom.current();
 	private final List<E> items = new ArrayList<>();
 	private DoubleList probabilities = new DoubleList();
 	private double total = 0;
+	
+	public static enum Normalizer {
+		NONE, NORMALIZE, SOFTMAX;
+	}
 	
 	public Distribution() {
 		
@@ -34,8 +40,13 @@ public class Distribution<E> {
 		addAll(distribution);
 	}
 	
+	@Deprecated
 	public Distribution(Map<E, Double> distribution, boolean softmaxed) {
 		addAll(distribution, softmaxed);
+	}
+	
+	public Distribution(Map<E, Double> distribution, Normalizer normalizer) {
+		addAll(distribution, normalizer);
 	}
 	
 	public void applySoftmax() {
@@ -52,29 +63,62 @@ public class Distribution<E> {
 		}
 	}
 	
+	@Deprecated
 	public void addAll(Map<E, Double> distribution, boolean softmaxed) {
-		if (softmaxed) {
-			Map<E, Double> copy = new HashMap<>(distribution);
+		addAll(distribution, Normalizer.SOFTMAX);
+	}
+	
+	public void addAll(Map<E, Double> distribution, Normalizer normalizer) {
+		switch (normalizer) {
+		case SOFTMAX:
+			Map<E, Double> softmaxed = new HashMap<>(distribution);
 			
-			double sum = 0;
-			Set<Entry<E, Double>> entries = copy.entrySet();
-			for (Map.Entry<E, Double> entry : entries) {
-				double res = Math.exp(entry.getValue());
-				sum += res;
-				entry.setValue(res);
+			double expSum = 0;
+			Set<Entry<E, Double>> softmaxedEntries = softmaxed.entrySet();
+			for (Map.Entry<E, Double> entry : softmaxedEntries) {
+				double exp = Math.exp(entry.getValue());
+				expSum += exp;
+				entry.setValue(exp);
 			}
-			for (Map.Entry<E, Double> entry : entries) {
-				double v = entry.getValue();
-				if (v == 0D) {
-					entry.setValue(v);
+			for (Map.Entry<E, Double> entry : softmaxedEntries) {
+				double exp = entry.getValue();
+				if (exp == 0D) {
+					entry.setValue(exp);
 				} else {
-					entry.setValue(v / sum);
+					entry.setValue(exp / expSum);
 				}
 			}
-			addAll(copy);
-		} else {
+			addAll(softmaxed);
+			break;
+		case NORMALIZE:
+			Map<E, Double> normalized = new HashMap<>(distribution);
+			
+			double sum = normalized.entrySet().stream()
+					.mapToDouble(Entry::getValue)
+					.sum();
+			normalized = normalized.entrySet().stream()
+					.collect(Collectors.toMap(Entry::getKey, e -> e.getValue() / sum));
+			addAll(normalized);
+			
+			break;
+		case NONE:
 			addAll(distribution);
+			break;
+		default:
+			throw new IllegalArgumentException("Unsupported normalizer.");
 		}
+	}
+	
+	public Map<E, Double> asMap() {
+		Map<E, Double> map = new HashMap<>();
+		for (int i=0; i<items.size(); i++) {
+			map.put(items.get(i), probabilities.get(i));
+		}
+		return map;
+	}
+	
+	public double getProbability(E item) {
+		return probabilities.get(items.indexOf(item));
 	}
 	
 	public void add(E item, double probability) {
@@ -120,5 +164,31 @@ public class Distribution<E> {
 		}
 		
 		return s.delete(s.length() - 2, s.length()).append("}").toString();
+	}
+
+	@Override
+	public BiIterator<E, Double> iterator() {
+		return new BiIterator<E, Double>() {
+			int i = 0;
+			
+			@Override
+			public boolean hasNext() {
+				return i < items.size();
+			}
+
+			@Override
+			public Pair<E, Double> next() {
+				Pair<E, Double> pair = new Pair<>(items.get(i), probabilities.get(i));
+				i++;
+				return pair;
+			}
+		};
+	}
+
+	@Override
+	public void forEach(BiConsumer<? super E, ? super Double> action) {
+		for (int i=0; i<items.size(); i++) {
+			action.accept(items.get(i), probabilities.get(i));
+		}
 	}
 }

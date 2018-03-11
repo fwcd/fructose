@@ -22,6 +22,14 @@ import com.fwcd.fructose.structs.IntList;
 public final class ExtMath {
 	private ExtMath() {}
 	
+	public static int ceilDivide(int counter, int denominator) {
+		if (counter <= 0) {
+			return (int) Math.ceil((double) counter / (double) denominator);
+		} else {
+			return (counter + denominator - 1) / denominator;
+		}
+	}
+	
 	public static int log2Floor(int n) {
 		if (n <= 0) {
 			throw new IllegalArgumentException();
