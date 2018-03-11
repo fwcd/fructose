@@ -15,7 +15,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	PrimitiveListTest.class,
 	VectorTest.class,
 	ByteSequenceTest.class,
-	HuffmanTest.class
+	HuffmanTest.class,
+	RSATest.class
 })
 public class AllTests {
 

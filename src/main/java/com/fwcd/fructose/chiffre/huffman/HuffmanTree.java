@@ -1,4 +1,4 @@
-package com.fwcd.fructose.chiffre;
+package com.fwcd.fructose.chiffre.huffman;
 
 import java.io.Serializable;
 import java.util.Arrays;

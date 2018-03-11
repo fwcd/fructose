@@ -5,8 +5,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.fwcd.fructose.chiffre.Huffman;
-import com.fwcd.fructose.chiffre.HuffmanTree;
+import com.fwcd.fructose.chiffre.huffman.Huffman;
+import com.fwcd.fructose.chiffre.huffman.HuffmanTree;
 
 public class HuffmanTest {
 	@Test

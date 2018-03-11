@@ -1,4 +1,4 @@
-package com.fwcd.fructose.chiffre;
+package com.fwcd.fructose.chiffre.huffman;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -13,6 +13,7 @@ import java.util.Queue;
 
 import com.fwcd.fructose.Distribution;
 import com.fwcd.fructose.Distribution.Normalizer;
+import com.fwcd.fructose.chiffre.StringEncoding;
 import com.fwcd.fructose.exception.Rethrow;
 
 /**
