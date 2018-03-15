@@ -13,7 +13,7 @@ import com.fwcd.fructose.function.IOFunction;
  * @author Fredrik
  *
  */
-public interface AnyFile {
+public interface Readable {
 	/**
 	 * <p>Performs an action using the
 	 * open input stream to produce a result.</p>

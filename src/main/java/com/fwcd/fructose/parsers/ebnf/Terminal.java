@@ -11,13 +11,17 @@ import java.util.OptionalInt;
  *
  */
 public class Terminal implements Token {
-	private final char syntax;
+	private final String syntax;
 
-	public Terminal(char syntax) {
+	public Terminal(String syntax) {
 		this.syntax = syntax;
 	}
 	
-	public char getSyntax() {
+	public Terminal(char syntax) {
+		this.syntax = Character.toString(syntax);
+	}
+	
+	public String getSyntax() {
 		return syntax;
 	}
 
@@ -38,32 +42,31 @@ public class Terminal implements Token {
 	
 	@Override
 	public String toString() {
-		return "'" + Character.toString(syntax) + "'";
+		return "'" + syntax + "'";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + syntax;
+		result = prime * result + ((syntax == null) ? 0 : syntax.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		if (obj == null) {
+		if (obj == null)
 			return false;
-		}
-		if (getClass() != obj.getClass()) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
 		Terminal other = (Terminal) obj;
-		if (syntax != other.syntax) {
+		if (syntax == null) {
+			if (other.syntax != null)
+				return false;
+		} else if (!syntax.equals(other.syntax))
 			return false;
-		}
 		return true;
 	}
 }
