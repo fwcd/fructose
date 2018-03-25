@@ -4,8 +4,6 @@ package com.fwcd.fructose.math;
  * Fundamental physical and scientific constants.
  */
 public class SciConstants {
-	private SciConstants() {}
-	
 	public static final double TAU = Math.PI * 2; // = 2pi
 	public static final double G = 6.674210e-11; // m^3/(kg*s^2) - Gravitational constant
 	public static final double H = 6.626069311e-34; // Js - Planck's constant
@@ -15,4 +13,6 @@ public class SciConstants {
 	public static final double U = 1.6605388628e-27; // kg - Atomic mass constant
 	public static final double RY = 10973731.56852573; // 1/m - Rydberg constant
 	public static final double M_E = 9.109382616e-31; // kg - Electron mass
+	
+	private SciConstants() {}
 }
