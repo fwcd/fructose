@@ -55,7 +55,7 @@ public class QTrainer<S extends QState<S, A>, A extends QAction> {
 	}
 
 	public void train(S state, int episodes, int maxSteps) {
-		for (int i = 0; i < episodes; i++) {
+		for (int i=0; i<episodes; i++) {
 			trainEpisode(state, maxSteps);
 		}
 	}

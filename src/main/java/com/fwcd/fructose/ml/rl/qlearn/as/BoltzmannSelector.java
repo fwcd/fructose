@@ -3,6 +3,7 @@ package com.fwcd.fructose.ml.rl.qlearn.as;
 import java.util.Map;
 
 import com.fwcd.fructose.Distribution;
+import com.fwcd.fructose.Distribution.Normalizer;
 import com.fwcd.fructose.ml.rl.qlearn.env.QAction;
 
 /**
@@ -19,6 +20,6 @@ public class BoltzmannSelector<A extends QAction> implements QActionSelector<A> 
 
 	@Override
 	public A selectAction(Map<A, Double> actions) {
-		return new Distribution<>(actions, true).pickStochastically();
+		return new Distribution<>(actions, Normalizer.SCALED_SOFTMAX).pickStochastically();
 	}
 }

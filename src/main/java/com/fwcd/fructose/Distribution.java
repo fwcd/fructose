@@ -29,7 +29,7 @@ public class Distribution<E> implements BiIterable<E, Double> {
 	private double total = 0;
 	
 	public static enum Normalizer {
-		NONE, NORMALIZE, SOFTMAX;
+		NONE, NORMALIZE, SOFTMAX, SCALED_SOFTMAX;
 	}
 	
 	public Distribution() {
@@ -70,6 +70,12 @@ public class Distribution<E> implements BiIterable<E, Double> {
 	
 	public void addAll(Map<E, Double> distribution, Normalizer normalizer) {
 		switch (normalizer) {
+		case SCALED_SOFTMAX:
+			double max = distribution.values().stream()
+					.mapToDouble(Double::doubleValue)
+					.max().orElse(1);
+			distribution.entrySet().forEach(e -> e.setValue(e.getValue() / max));
+			//$FALL-THROUGH$
 		case SOFTMAX:
 			Map<E, Double> softmaxed = new HashMap<>(distribution);
 			
@@ -93,8 +99,8 @@ public class Distribution<E> implements BiIterable<E, Double> {
 		case NORMALIZE:
 			Map<E, Double> normalized = new HashMap<>(distribution);
 			
-			double sum = normalized.entrySet().stream()
-					.mapToDouble(Entry::getValue)
+			double sum = normalized.values().stream()
+					.mapToDouble(Double::doubleValue)
 					.sum();
 			normalized = normalized.entrySet().stream()
 					.collect(Collectors.toMap(Entry::getKey, e -> e.getValue() / sum));
