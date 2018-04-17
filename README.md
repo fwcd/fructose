@@ -39,5 +39,7 @@ A general-purpose Java library that extends far beyond the scope of a simple set
 
 ## Dependencies
 * Java 8
-* JUnit 4.12 (lib folder)
-* Hamcrest 1.3 (lib folder)
+
+## Build
+* Use gradlew:
+>`gradlew build`
