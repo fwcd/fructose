@@ -13,104 +13,99 @@ import java.util.stream.Stream;
 
 /**
  * An immutable tuple consisting of two objects.
- * 
+ *
  * @author Fredrik
  *
- * @param <A>
- * @param <B>
+ * @param <L>
+ * @param <R>
  */
-public class Pair<A, B> implements Serializable, Iterable<Object> {
+public class Pair<L, R> implements Serializable, Iterable<Either<L, R>> {
 	private static final long serialVersionUID = 6344477728413315385L;
-	private final A a;
-	private final B b;
-	
-	public Pair(A a, B b) {
-		this.a = a;
-		this.b = b;
-	}
-	
-	public Pair(Entry<A, B> entry) {
-		a = entry.getKey();
-		b = entry.getValue();
-	}
-	
-	public A getA() {
-		return a;
-	}
-	
-	public B getB() {
-		return b;
-	}
-	
-	public <T> T reduce(BiFunction<? super A, ? super B, T> reducer) {
-		return reducer.apply(a, b);
-	}
-	
-	public <X, Y> Pair<X, Y> map(Function<? super A, X> aMapper, Function<? super B, Y> bMapper) {
-		return new Pair<>(aMapper.apply(a), bMapper.apply(b));
-	}
-	
-	public <X> Pair<X, B> mapA(Function<? super A, X> mapper) {
-		return new Pair<>(mapper.apply(a), b);
-	}
-	
-	public <Y> Pair<A, Y> mapB(Function<? super B, Y> mapper) {
-		return new Pair<>(a, mapper.apply(b));
-	}
-	
-	public <X> Pair<X, B> withA(X a) {
-		return new Pair<>(a, b);
-	}
-	
-	public <Y> Pair<A, Y> withB(Y b) {
-		return new Pair<>(a, b);
-	}
-	
-	@SuppressWarnings("unlikely-arg-type")
-	public boolean areBothEqual() {
-		return a.equals(b);
-	}
-	
-	@Override
-	public String toString() {
-		return "<" + a.toString() + ", " + b.toString() + ">";
+	private final L left;
+	private final R right;
+
+	public Pair(L left, R right) {
+		this.left = left;
+		this.right = right;
 	}
 
-	public Stream<Object> stream() {
-		return Stream.of(a, b);
+	public Pair(Entry<L, R> entry) {
+		left = entry.getKey();
+		right = entry.getValue();
 	}
-	
-	public Map<A, B> asMap() {
-		return Collections.singletonMap(a, b);
+
+	public static <L, R> Pair<L, R> of(L left, R right) {
+		return new Pair<>(left, right);
 	}
-	
-	public List<Object> asList() {
-		return Arrays.asList(a, b);
+
+	public L getLeft() { return left; }
+
+	public R getRight() { return right; }
+
+	public <T> T reduce(BiFunction<? super L, ? super R, T> reducer) {
+		return reducer.apply(left, right);
 	}
-	
+
+	public <X, Y> Pair<X, Y> map(Function<? super L, X> aMapper, Function<? super R, Y> bMapper) {
+		return new Pair<>(aMapper.apply(left), bMapper.apply(right));
+	}
+
+	public <X> Pair<X, R> mapLeft(Function<? super L, X> mapper) {
+		return new Pair<>(mapper.apply(left), right);
+	}
+
+	public <Y> Pair<L, Y> mapRight(Function<? super R, Y> mapper) {
+		return new Pair<>(left, mapper.apply(right));
+	}
+
+	public <X> Pair<X, R> withLeft(X left) {
+		return new Pair<>(left, this.right);
+	}
+
+	public <Y> Pair<L, Y> withRight(Y right) {
+		return new Pair<>(this.left, right);
+	}
+
+	@SuppressWarnings("unlikely-arg-type")
+	public boolean areBothEqual() {
+		return left.equals(right);
+	}
+
 	@Override
-	public Iterator<Object> iterator() {
-		return new Iterator<Object>() {
+	public String toString() {
+		return "<" + left.toString() + ", " + right.toString() + ">";
+	}
+
+	public Stream<Either<L, R>> stream() {
+		return Stream.of(Either.ofLeft(left), Either.ofRight(right));
+	}
+
+	public Map<L, R> asMap() {
+		return Collections.singletonMap(left, right);
+	}
+
+	public List<Either<L, R>> asList() {
+		return Arrays.asList(Either.ofLeft(left), Either.ofRight(right));
+	}
+
+	@Override
+	public Iterator<Either<L, R>> iterator() {
+		return new Iterator<Either<L, R>>() {
 			private int i = 0;
-			
+
 			@Override
 			public boolean hasNext() {
 				return i < 2;
 			}
 
 			@Override
-			public Object next() {
+			public Either<L, R> next() {
 				i++;
-				
+
 				switch (i) {
-				
-				case 1:
-					return a;
-				case 2:
-					return b;
-				default:
-					throw new RuntimeException("Wrong index.");
-				
+					case 1: return Either.ofLeft(left);
+					case 2: return Either.ofRight(right);
+					default: throw new RuntimeException("Wrong index.");
 				}
 			}
 		};
@@ -120,8 +115,8 @@ public class Pair<A, B> implements Serializable, Iterable<Object> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((a == null) ? 0 : a.hashCode());
-		result = prime * result + ((b == null) ? 0 : b.hashCode());
+		result = prime * result + ((left == null) ? 0 : left.hashCode());
+		result = prime * result + ((right == null) ? 0 : right.hashCode());
 		return result;
 	}
 
@@ -137,20 +132,38 @@ public class Pair<A, B> implements Serializable, Iterable<Object> {
 			return false;
 		}
 		Pair<?, ?> other = (Pair<?, ?>) obj;
-		if (a == null) {
-			if (other.a != null) {
+		if (left == null) {
+			if (other.left != null) {
 				return false;
 			}
-		} else if (!a.equals(other.a)) {
+		} else if (!left.equals(other.left)) {
 			return false;
 		}
-		if (b == null) {
-			if (other.b != null) {
+		if (right == null) {
+			if (other.right != null) {
 				return false;
 			}
-		} else if (!b.equals(other.b)) {
+		} else if (!right.equals(other.right)) {
 			return false;
 		}
 		return true;
 	}
+
+	@Deprecated
+	public L getA() { return getLeft(); }
+
+	@Deprecated
+	public R getB() { return getRight(); }
+
+	@Deprecated
+	public <X> Pair<X, R> mapA(Function<? super L, X> mapper) { return mapLeft(mapper); }
+
+	@Deprecated
+	public <Y> Pair<L, Y> mapB(Function<? super R, Y> mapper) { return mapRight(mapper); }
+
+	@Deprecated
+	public <X> Pair<X, R> withA(X a) { return withLeft(a); }
+
+	@Deprecated
+	public <Y> Pair<L, Y> withB(Y b) { return withRight(b); }
 }
