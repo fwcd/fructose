@@ -46,10 +46,10 @@ public class Result<T, E extends Throwable> {
 	}
 
 	public E expectError() {
-		if (value.isLeft()) {
+		if (value.isRight()) {
 			return value.expectRight();
 		} else {
-			throw new IllegalStateException("Invalidly expected a failed result", value.expectRight());
+			throw new IllegalStateException("Invalidly expected a failed result: " + value.expectLeft());
 		}
 	}
 }

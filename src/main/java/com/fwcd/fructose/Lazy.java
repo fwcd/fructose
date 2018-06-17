@@ -27,6 +27,10 @@ public class Lazy<T> {
 		return new Lazy<>(value);
 	}
 
+	public boolean hasBeenInitialized() {
+		return value != null;
+	}
+
 	public <R> Lazy<R> map(Function<? super T, ? extends R> mapper) {
 		if (value == null) {
 			return of(() -> mapper.apply(value));

@@ -20,7 +20,7 @@ public final class Safe {
 		}
 	}
 
-	public <T> Result<T, Throwable> attempt(ThrowingSupplier<T, Throwable> supplier) {
+	public static <T> Result<T, Throwable> attempt(ThrowingSupplier<T, Throwable> supplier) {
 		try {
 			return Result.of(supplier.get());
 		} catch (Throwable e) {
