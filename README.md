@@ -28,11 +28,15 @@ A general-purpose Java library that extends far beyond the scope of a simple set
 * Time
     * Stopwatches
     * Timers
+* Functional monads
+    * Either
+    * Pair
+    * NonNull
+    * Lazy
+    * Result
 * Small, noteworthy classes
     * Probability distributions
     * Permutators
-    * Lazy initializers
-    * 2-tuples
     * Annotations
 * Properties
 * Parsers
@@ -41,5 +45,5 @@ A general-purpose Java library that extends far beyond the scope of a simple set
 * Java 8
 
 ## Build
-* Use gradlew:
->`gradlew build`
+* Use the Gradle wrapper:
+>`./gradlew build` or `gradlew build`
