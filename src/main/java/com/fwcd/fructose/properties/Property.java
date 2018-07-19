@@ -1,9 +1,15 @@
 package com.fwcd.fructose.properties;
 
+import com.fwcd.fructose.Observable;
+
 /**
- * A property wrapping an object.
+ * <p>A property wrapping an object.
  * May be used to implement bi-directional
- * binds between view and model.
+ * binds between view and model.</p>
+ * 
+ * <p><b>Favor {@link Observable} instead as it does
+ * not require you to know the type of the bound
+ * object (thus creating a looser coupling).</b></p>
  * 
  * @author Fredrik
  *

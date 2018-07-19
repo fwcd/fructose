@@ -2,6 +2,11 @@ package com.fwcd.fructose;
 
 import java.util.function.Consumer;
 
+/**
+ * A read-only value that can be listened to. It is not
+ * immutable as the mutable subclass {@link Observable}
+ * conforms to this class.
+ */
 public class ReadOnlyObservable<T> {
 	private final EventListenerList<T> listeners = new EventListenerList<>();
 	private T value;
