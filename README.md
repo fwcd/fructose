@@ -10,7 +10,7 @@ A general-purpose Java library that extends far beyond the scope of a simple set
     * Prime sieves
     * Geometry
 * New data structures
-    * Proper stacks
+    * Stacks
     * Tables
     * Trees
     * Graphs
@@ -23,8 +23,6 @@ A general-purpose Java library that extends far beyond the scope of a simple set
 * Game AI
     * Minimax/AlphaBeta
     * Monte Carlo tree search
-* Quantum computing (just through simulation - at least for now)
-    * Superposition and entanglement
 * Swing
     * Lots of useful GUI utility classes
 * Time
@@ -40,6 +38,7 @@ A general-purpose Java library that extends far beyond the scope of a simple set
     * Probability distributions
     * Permutators
     * Annotations
+* Observables
 * Properties
 * Parsers
 

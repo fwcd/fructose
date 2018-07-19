@@ -2,6 +2,9 @@ package com.fwcd.fructose.math;
 
 import java.util.Arrays;
 
+/**
+ * An immutable matrix of complex numbers.
+ */
 public class ComplexMatrix {
 	private final Complex[][] data;
 	
@@ -33,6 +36,10 @@ public class ComplexMatrix {
 		return data.length;
 	}
 	
+	/**
+	 * The Kroncker product (also called tensor product) of this
+	 * matrix with another matrix.
+	 */
 	public ComplexMatrix kroneckerProduct(ComplexMatrix other) {
 		Complex[][] result = new Complex[height() * other.height()][width() * other.width()];
 		

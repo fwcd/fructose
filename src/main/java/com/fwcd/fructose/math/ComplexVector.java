@@ -4,9 +4,6 @@ import java.util.Arrays;
 
 /**
  * An immutable vector of complex numbers.
- * 
- * @author Fredrik
- *
  */
 public class ComplexVector {
 	private final Complex[] data;
