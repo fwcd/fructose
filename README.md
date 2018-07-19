@@ -1,5 +1,7 @@
 # Fructose
-A general-purpose Java library that extends far beyond the scope of a simple set with utility classes. It provides:
+A general-purpose Java library that extends far beyond the scope of a simple set with utility classes.
+
+[![Build Status](https://travis-ci.org/fwcd/Fructose.svg?branch=master)](https://travis-ci.org/fwcd/Fructose)
 
 * Math
     * Complex numbers
