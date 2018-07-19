@@ -6,3 +6,4 @@
 .gradle/
 bin/
 build/
+.DS_Store
