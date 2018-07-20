@@ -8,11 +8,11 @@ package com.fwcd.fructose.math.graph;
  * @author Fredrik
  *
  */
-public class ScalarProduct implements Scalar {
-	private final Scalar[] factors;
+public class ScalarProduct implements ScalarTerm {
+	private final ScalarTerm[] factors;
 
-	public ScalarProduct(Scalar factorA, Scalar factorB) {
-		factors = new Scalar[] {factorA, factorB};
+	public ScalarProduct(ScalarTerm factorA, ScalarTerm factorB) {
+		factors = new ScalarTerm[] {factorA, factorB};
 	}
 	
 	@Override
@@ -20,11 +20,11 @@ public class ScalarProduct implements Scalar {
 		return "(" + getFactorA().toString() + " * " + getFactorB().toString() + ")";
 	}
 	
-	public Scalar getFactorA() {
+	public ScalarTerm getFactorA() {
 		return factors[0];
 	}
 	
-	public Scalar getFactorB() {
+	public ScalarTerm getFactorB() {
 		return factors[1];
 	}
 	
@@ -34,11 +34,11 @@ public class ScalarProduct implements Scalar {
 	}
 
 	@Override
-	public Scalar partialDerivative(Scalar arg) {
-		Scalar u = getFactorA();
-		Scalar v = getFactorB();
-		Scalar uDeriv = u.partialDerivative(arg);
-		Scalar vDeriv = v.partialDerivative(arg);
+	public ScalarTerm partialDerivative(ScalarTerm arg) {
+		ScalarTerm u = getFactorA();
+		ScalarTerm v = getFactorB();
+		ScalarTerm uDeriv = u.partialDerivative(arg);
+		ScalarTerm vDeriv = v.partialDerivative(arg);
 		
 		return u.multiply(vDeriv).add(uDeriv.multiply(v));
 	}

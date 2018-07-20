@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.fwcd.fructose.math.graph.ConstScalar;
-import com.fwcd.fructose.math.graph.Scalar;
+import com.fwcd.fructose.math.graph.ScalarTerm;
 import com.fwcd.fructose.math.graph.VarScalar;
 
 public class MathGraphTest {
@@ -18,7 +18,7 @@ public class MathGraphTest {
 		
 //		System.out.println(Math.pow(-4, -2));
 		
-		Scalar test = x.multiply(y.pow(two)).sub(x);
+		ScalarTerm test = x.multiply(y.pow(two)).sub(x);
 		
 		for (int i=-2; i<2; i++) {
 			x.set(i * 3);

@@ -3,12 +3,9 @@ package com.fwcd.fructose.math;
 import java.util.Objects;
 
 /**
- * A complex number.
- * 
- * @author Fredrik
- *
+ * A complex number (represented using two doubles).
  */
-public class Complex {
+public class Complex implements Numeric<Complex> {
 	public static final Complex ZERO = new Complex(0, 0);
 	public static final Complex ONE = new Complex(1, 0);
 	public static final Complex I = new Complex(0, 1);
@@ -16,14 +13,17 @@ public class Complex {
 	private final double real;
 	private final double imag;
 	
-	public Complex(double real) {
-		this.real = real;
-		imag = 0;
-	}
-	
-	public Complex(double real, double imag) {
+	private Complex(double real, double imag) {
 		this.real = real;
 		this.imag = imag;
+	}
+	
+	public static Complex ofReal(double real) {
+		return new Complex(real, 0);
+	}
+	
+	public static Complex of(double real, double imag) {
+		return new Complex(real, imag);
 	}
 	
 	public double getReal() {
@@ -34,12 +34,14 @@ public class Complex {
 		return imag;
 	}
 	
-	public Complex add(Complex other) {
-		return new Complex(real + other.real, imag + other.imag);
+	@Override
+	public Complex add(Complex rhs) {
+		return new Complex(real + rhs.real, imag + rhs.imag);
 	}
 	
-	public Complex sub(Complex other) {
-		return new Complex(real - other.real, imag - other.imag);
+	@Override
+	public Complex sub(Complex rhs) {
+		return new Complex(real - rhs.real, imag - rhs.imag);
 	}
 	
 	public Complex invertReal() {
@@ -82,6 +84,7 @@ public class Complex {
 		return divide(abs());
 	}
 	
+	@Override
 	public Complex reciprocal() {
 		double scale = (real * real) + (imag * imag);
 		return new Complex(real / scale, -imag / scale);
@@ -98,6 +101,7 @@ public class Complex {
 		return Math.atan2(imag, real);
 	}
 	
+	@Override
 	public Complex multiply(Complex other) {
 		// Firsts + outers + inners + lasts:
 		// (a+bi)(c+di) = ac + adi + bci + bdi^2
@@ -140,7 +144,7 @@ public class Complex {
 	}
 	
 	public Complex pow(double exponent) {
-		return pow(new Complex(exponent)); // TODO: Optimize this?
+		return pow(Complex.ofReal(exponent));
 	}
 	
 	public Complex pow(Complex exponent) {
@@ -172,6 +176,7 @@ public class Complex {
 		return Objects.hash(real, imag);
 	}
 	
+	@Override
 	public boolean equals(Complex other, double tolerance) {
 		return (Math.abs(real - other.real) < tolerance)
 				&& (Math.abs(imag - other.imag) < tolerance);
@@ -189,5 +194,25 @@ public class Complex {
 		
 		Complex other = (Complex) obj;
 		return real == other.real && imag == other.imag;
+	}
+
+	@Override
+	public Complex add(Real rhs) {
+		return of(real + rhs.value(), imag);
+	}
+
+	@Override
+	public Complex sub(Real rhs) {
+		return of(real - rhs.value(), imag);
+	}
+
+	@Override
+	public Complex multiply(Real rhs) {
+		return multiply(rhs.value());
+	}
+
+	@Override
+	public Complex divide(Real rhs) {
+		return divide(rhs.value());
 	}
 }

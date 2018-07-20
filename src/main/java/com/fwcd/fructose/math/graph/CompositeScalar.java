@@ -1,16 +1,16 @@
 package com.fwcd.fructose.math.graph;
 
-public abstract class CompositeScalar implements Scalar {
-	protected abstract Scalar[] getParents();
+public abstract class CompositeScalar implements ScalarTerm {
+	protected abstract ScalarTerm[] getParents();
 	
-	protected abstract Scalar partialDerivForParent(Scalar parent);
+	protected abstract ScalarTerm partialDerivForParent(ScalarTerm parent);
 	
 	@Override
-	public Scalar partialDerivative(Scalar arg) {
-		Scalar result = null;
+	public ScalarTerm partialDerivative(ScalarTerm arg) {
+		ScalarTerm result = null;
 		
-		for (Scalar parent : getParents()) {
-			Scalar deriv;
+		for (ScalarTerm parent : getParents()) {
+			ScalarTerm deriv;
 			
 			if (parent.equals(arg)) {
 				deriv = partialDerivForParent(parent);
@@ -30,7 +30,7 @@ public abstract class CompositeScalar implements Scalar {
 
 	@Override
 	public boolean isConstant() {
-		for (Scalar parent : getParents()) {
+		for (ScalarTerm parent : getParents()) {
 			if (!parent.isConstant()) {
 				return false;
 			}

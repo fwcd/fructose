@@ -1,10 +1,10 @@
 package com.fwcd.fructose.math.graph;
 
 public class ScalarInversion extends CompositeScalar {
-	private final Scalar[] parents;
+	private final ScalarTerm[] parents;
 
-	public ScalarInversion(Scalar arg) {
-		parents = new Scalar[] {arg};
+	public ScalarInversion(ScalarTerm arg) {
+		parents = new ScalarTerm[] {arg};
 	}
 	
 	@Override
@@ -12,17 +12,17 @@ public class ScalarInversion extends CompositeScalar {
 		return -getArgument().compute();
 	}
 	
-	public Scalar getArgument() {
+	public ScalarTerm getArgument() {
 		return parents[0];
 	}
 
 	@Override
-	protected Scalar[] getParents() {
+	protected ScalarTerm[] getParents() {
 		return parents;
 	}
 
 	@Override
-	protected Scalar partialDerivForParent(Scalar parent) {
+	protected ScalarTerm partialDerivForParent(ScalarTerm parent) {
 		return ConstScalar.MINUS_ONE;
 	}
 

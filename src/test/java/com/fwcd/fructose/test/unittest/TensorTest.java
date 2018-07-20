@@ -2,24 +2,21 @@ package com.fwcd.fructose.test.unittest;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 
-import com.fwcd.fructose.math.Tensor;
+import com.fwcd.fructose.math.DoubleTensor;
 
 public class TensorTest {
 	@Test
-	public void test() {
-		Tensor vec = new Tensor(8, 5, 3);
-//		System.out.println(vec);
-		
-		Tensor mat1 = new Tensor(new double[][] {
+	public void testDoubleTensor() {
+		DoubleTensor vec = new DoubleTensor(8, 5, 3);
+		DoubleTensor mat1 = new DoubleTensor(new double[][] {
 			{1, 4, 6},
 			{5, 7, 2}
 		});
-//		System.out.println(mat1);
-		
-		Tensor mat2 = new Tensor(new double[] {1, 4, 6, 5, 7, 2}, new int[] {3, 2});
-//		System.out.println(mat2);
+		DoubleTensor mat2 = new DoubleTensor(new double[] {1, 4, 6, 5, 7, 2}, new int[] {3, 2});
 		
 		assertEquals(mat1, mat2);
 		assertEquals(vec.asVector().asTensor(), vec);

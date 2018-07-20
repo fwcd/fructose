@@ -138,7 +138,7 @@ public class Rectangle2D extends Polygon2D {
 	}
 
 	@Override
-	public Rectangle2D transformedBy(Matrix transform) {
+	public Rectangle2D transformedBy(DoubleMatrix transform) {
 		return new Rectangle2D(
 				new Vector2D(transform.multiply(getTopLeft())),
 				new Vector2D(transform.multiply(getBottomRight()))

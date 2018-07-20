@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.function.DoubleBinaryOperator;
 
 import com.fwcd.fructose.exception.SizeMismatchException;
-import com.fwcd.fructose.geometry.Matrix;
-import com.fwcd.fructose.geometry.Vector;
+import com.fwcd.fructose.geometry.DoubleMatrix;
+import com.fwcd.fructose.geometry.DoubleVector;
 import com.fwcd.fructose.structs.DoubleList;
 
 /**
@@ -16,7 +16,7 @@ import com.fwcd.fructose.structs.DoubleList;
  * @author Fredrik
  *
  */
-public class Tensor implements Serializable {
+public class DoubleTensor implements Serializable {
 	private static final long serialVersionUID = 2125389524338803099L;
 	/**
 	 * <p>The components. Data is stored in the following order
@@ -42,7 +42,7 @@ public class Tensor implements Serializable {
 	 */
 	private final int[] dimensions;
 	
-	public Tensor(double... vector) {
+	public DoubleTensor(double... vector) {
 		data = vector;
 		
 		if (vector.length > 1) {
@@ -52,7 +52,7 @@ public class Tensor implements Serializable {
 		}
 	}
 	
-	public Tensor(double[][] matrix) {
+	public DoubleTensor(double[][] matrix) {
 		int width = matrix[0].length;
 		int height = matrix.length;
 		DoubleList buffer = new DoubleList(width * height);
@@ -65,7 +65,7 @@ public class Tensor implements Serializable {
 		dimensions = new int[] {width, height};
 	}
 	
-	public Tensor(double[][][] data3d) {
+	public DoubleTensor(double[][][] data3d) {
 		int width = data3d[0][0].length;
 		int height = data3d[0].length;
 		int depth = data3d.length;
@@ -81,7 +81,7 @@ public class Tensor implements Serializable {
 		dimensions = new int[] {width, height, depth};
 	}
 	
-	public Tensor(double[] data, int[] dimensions) {
+	public DoubleTensor(double[] data, int[] dimensions) {
 		this.data = data;
 		this.dimensions = dimensions;
 	}
@@ -99,15 +99,15 @@ public class Tensor implements Serializable {
 	 * @param higherRank - The new rank (must be higher or equal to the current)
 	 * @return The resulting tensor
 	 */
-	public Tensor withRank(int higherRank) {
+	public DoubleTensor withRank(int higherRank) {
 		if (higherRank < getRank()) {
 			throw new IllegalArgumentException("New rank has to be larger or equal to the current rank");
 		}
 		
-		return new Tensor(data, Arrays.copyOf(dimensions, higherRank));
+		return new DoubleTensor(data, Arrays.copyOf(dimensions, higherRank));
 	}
 	
-	public Tensor add(Tensor other) {
+	public DoubleTensor add(DoubleTensor other) {
 		if (!Arrays.equals(dimensions, other.dimensions)) {
 			throw new SizeMismatchException(
 					"tensor size",
@@ -123,10 +123,10 @@ public class Tensor implements Serializable {
 			result[i] = data[i] + other.data[i];
 		}
 		
-		return new Tensor(result, dimensions);
+		return new DoubleTensor(result, dimensions);
 	}
 	
-	public Tensor combineElementwise(Tensor other, DoubleBinaryOperator mapper) {
+	public DoubleTensor combineElementwise(DoubleTensor other, DoubleBinaryOperator mapper) {
 		if (!Arrays.equals(dimensions, other.dimensions)) {
 			throw new SizeMismatchException(
 					"tensor size",
@@ -142,7 +142,7 @@ public class Tensor implements Serializable {
 			result[i] = mapper.applyAsDouble(data[i], other.data[i]);
 		}
 		
-		return new Tensor(result, dimensions);
+		return new DoubleTensor(result, dimensions);
 	}
 	
 	public boolean isScalar() {
@@ -200,27 +200,27 @@ public class Tensor implements Serializable {
 	}
 	
 	/**
-	 * Creates a new {@link Vector} from this tensor.
+	 * Creates a new {@link DoubleVector} from this tensor.
 	 * Note that both row and column vectors will be accepted.
 	 * 
 	 * @return The vector
 	 * @throws IllegalStateException If the tensor is neither a row nor a column vector
 	 */
-	public Vector asVector() {
+	public DoubleVector asVector() {
 		if (isRowVector() || isColVector()) {
-			return new Vector(data);
+			return new DoubleVector(data);
 		} else {
 			throw new IllegalStateException("Tensor needs to be of rank 1 to conform to a vector.");
 		}
 	}
 	
 	/**
-	 * Creates a new {@link Matrix} from this tensor.
+	 * Creates a new {@link DoubleMatrix} from this tensor.
 	 * 
 	 * @return The matrix
 	 * @throws IllegalStateException If the tensor is not a matrix
 	 */
-	public Matrix asMatrix() {
+	public DoubleMatrix asMatrix() {
 		if (isMatrix()) {
 			int width = dimensions[0];
 			int height = dimensions[1];
@@ -234,7 +234,7 @@ public class Tensor implements Serializable {
 				result[y][x] = data[i];
 			}
 			
-			return new Matrix(result);
+			return new DoubleMatrix(result);
 		} else {
 			throw new IllegalStateException("Tensor needs to be of rank 2 to conform to a matrix.");
 		}
@@ -358,7 +358,7 @@ public class Tensor implements Serializable {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		Tensor other = (Tensor) obj;
+		DoubleTensor other = (DoubleTensor) obj;
 		if (!Arrays.equals(data, other.data)) {
 			return false;
 		}

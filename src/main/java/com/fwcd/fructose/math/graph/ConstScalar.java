@@ -1,6 +1,6 @@
 package com.fwcd.fructose.math.graph;
 
-public class ConstScalar implements Scalar {
+public class ConstScalar implements ScalarTerm {
 	public static final ConstScalar MINUS_ONE = new ConstScalar(-1);
 	public static final ConstScalar ZERO = new ConstScalar(0);
 	public static final ConstScalar ONE = new ConstScalar(1);
@@ -22,7 +22,7 @@ public class ConstScalar implements Scalar {
 	}
 
 	@Override
-	public Scalar partialDerivative(Scalar arg) {
+	public ScalarTerm partialDerivative(ScalarTerm arg) {
 		return ZERO;
 	}
 
@@ -62,57 +62,57 @@ public class ConstScalar implements Scalar {
 	}
 
 	@Override
-	public Scalar add(Scalar other) {
+	public ScalarTerm add(ScalarTerm other) {
 		if (other.isConstant()) {
 			return new ConstScalar(value + other.compute());
 		} else {
-			return Scalar.super.add(other);
+			return ScalarTerm.super.add(other);
 		}
 	}
 
 	@Override
-	public Scalar sub(Scalar other) {
+	public ScalarTerm sub(ScalarTerm other) {
 		if (other.isConstant()) {
 			return new ConstScalar(value - other.compute());
 		} else {
-			return Scalar.super.sub(other);
+			return ScalarTerm.super.sub(other);
 		}
 	}
 
 	@Override
-	public Scalar multiply(Scalar other) {
+	public ScalarTerm multiply(ScalarTerm other) {
 		if (other.isConstant()) {
 			return new ConstScalar(value * other.compute());
 		} else {
-			return Scalar.super.multiply(other);
+			return ScalarTerm.super.multiply(other);
 		}
 	}
 
 	@Override
-	public Scalar divide(Scalar other) {
+	public ScalarTerm divide(ScalarTerm other) {
 		if (other.isConstant()) {
 			return new ConstScalar(value / other.compute());
 		} else {
-			return Scalar.super.divide(other);
+			return ScalarTerm.super.divide(other);
 		}
 	}
 
 	@Override
-	public Scalar pow(Scalar other) {
+	public ScalarTerm pow(ScalarTerm other) {
 		if (other.isConstant()) {
 			return new ConstScalar(Math.pow(value, other.compute()));
 		} else {
-			return Scalar.super.pow(other);
+			return ScalarTerm.super.pow(other);
 		}
 	}
 
 	@Override
-	public Scalar invert() {
+	public ScalarTerm invert() {
 		return new ConstScalar(-value);
 	}
 
 	@Override
-	public Scalar reciprocal() {
+	public ScalarTerm reciprocal() {
 		return new ConstScalar(1D / value);
 	}
 }

@@ -92,7 +92,7 @@ public class Polygon2D implements Shape2D, Serializable, Iterable<Vector2D>, Dra
 		return vertices[i];
 	}
 	
-	public Polygon2D transformedBy(Matrix transform) {
+	public Polygon2D transformedBy(DoubleMatrix transform) {
 		return new Polygon2D(Arrays.stream(vertices)
 				.map(transform::multiply)
 				.map(Vector2D::new)

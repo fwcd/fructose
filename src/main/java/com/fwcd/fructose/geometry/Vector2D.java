@@ -2,6 +2,9 @@ package com.fwcd.fructose.geometry;
 
 import java.io.Serializable;
 
+import com.fwcd.fructose.operations.Addable;
+import com.fwcd.fructose.operations.Subtractable;
+
 /**
  * A simple, immutable 2D vector implementation.
  * 
@@ -29,7 +32,7 @@ public class Vector2D extends TemplateVector<Vector2D> implements Serializable {
 		super(Math.cos(angleRad) * length, Math.sin(angleRad) * length);
 	}
 	
-	public Vector2D(Matrix matrix) {
+	public Vector2D(DoubleMatrix matrix) {
 		super(
 				matrix.getHeight() == 2 || matrix.getWidth() == 1,
 				new IllegalArgumentException("Matrix needs to be 1x2 to be converted to a vector: " + matrix.getSize()),
@@ -83,7 +86,7 @@ public class Vector2D extends TemplateVector<Vector2D> implements Serializable {
 	 * @return This
 	 */
 	public Vector2D rotateCCW(double angleRad) {
-		Matrix rotationMatrix = new Matrix(new double[][] {
+		DoubleMatrix rotationMatrix = new DoubleMatrix(new double[][] {
 			{Math.cos(angleRad), -Math.sin(angleRad)},
 			{Math.sin(angleRad), Math.cos(angleRad)}
 		});

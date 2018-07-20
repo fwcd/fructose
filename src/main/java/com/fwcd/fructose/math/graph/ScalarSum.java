@@ -1,17 +1,17 @@
 package com.fwcd.fructose.math.graph;
 
-public class ScalarSum implements Scalar {
-	private final Scalar[] summands;
+public class ScalarSum implements ScalarTerm {
+	private final ScalarTerm[] summands;
 
-	public ScalarSum(Scalar summandA, Scalar summandB) {
-		summands = new Scalar[] {summandA, summandB};
+	public ScalarSum(ScalarTerm summandA, ScalarTerm summandB) {
+		summands = new ScalarTerm[] {summandA, summandB};
 	}
 	
-	public Scalar getSummandA() {
+	public ScalarTerm getSummandA() {
 		return summands[0];
 	}
 	
-	public Scalar getSummandB() {
+	public ScalarTerm getSummandB() {
 		return summands[1];
 	}
 	
@@ -26,7 +26,7 @@ public class ScalarSum implements Scalar {
 	}
 
 	@Override
-	public Scalar partialDerivative(Scalar arg) {
+	public ScalarTerm partialDerivative(ScalarTerm arg) {
 		return getSummandA().partialDerivative(arg).add(getSummandB().partialDerivative(arg));
 	}
 

@@ -8,19 +8,26 @@ import java.util.function.ToDoubleFunction;
 import com.fwcd.fructose.ArrayIterator;
 import com.fwcd.fructose.GridPos;
 import com.fwcd.fructose.exception.SizeMismatchException;
-import com.fwcd.fructose.math.Tensor;
+import com.fwcd.fructose.math.DoubleTensor;
+import com.fwcd.fructose.operations.Addable;
+import com.fwcd.fructose.operations.Multipliable;
+import com.fwcd.fructose.operations.Subtractable;
+import com.fwcd.fructose.operations.ToleranceEquatable;
 
 /**
- * An immutable, double-valued "flat" matrix. (A rank 2-tensor)
- * 
- * @author Fredrik
- *
+ * An immutable, double-valued matrix. (A rank 2-tensor)
  */
-public class Matrix implements Iterable<double[]>, Serializable {
+public class DoubleMatrix implements
+		Iterable<double[]>,
+		Serializable,
+		Addable<DoubleMatrix, DoubleMatrix>,
+		Subtractable<DoubleMatrix, DoubleMatrix>,
+		Multipliable<DoubleMatrix, DoubleMatrix>,
+		ToleranceEquatable<DoubleMatrix> {
 	private static final long serialVersionUID = 6699594319631613838L;
 	private double[][] data;
 	
-	public Matrix(int width, int height, ToDoubleFunction<GridPos> generator) {
+	public DoubleMatrix(int width, int height, ToDoubleFunction<GridPos> generator) {
 		data = new double[height][width];
 		
 		for (int y=0; y<height; y++) {
@@ -30,7 +37,7 @@ public class Matrix implements Iterable<double[]>, Serializable {
 		}
 	}
 	
-	public Matrix(double[][] contents) {
+	public DoubleMatrix(double[][] contents) {
 		data = contents;
 	}
 	
@@ -38,7 +45,8 @@ public class Matrix implements Iterable<double[]>, Serializable {
 		return data[y][x];
 	}
 	
-	public Matrix add(Matrix other) {
+	@Override
+	public DoubleMatrix add(DoubleMatrix other) {
 		verifyEqualSize(other);
 		
 		int width = getWidth();
@@ -51,10 +59,11 @@ public class Matrix implements Iterable<double[]>, Serializable {
 			}
 		}
 		
-		return new Matrix(sum);
+		return new DoubleMatrix(sum);
 	}
 	
-	public Matrix sub(Matrix other) {
+	@Override
+	public DoubleMatrix sub(DoubleMatrix other) {
 		verifyEqualSize(other);
 		
 		int width = getWidth();
@@ -67,7 +76,7 @@ public class Matrix implements Iterable<double[]>, Serializable {
 			}
 		}
 		
-		return new Matrix(difference);
+		return new DoubleMatrix(difference);
 	}
 	
 	public boolean isIdentity(double tolerance) {
@@ -109,7 +118,7 @@ public class Matrix implements Iterable<double[]>, Serializable {
 		return determinant(data);
 	}
 	
-	public Matrix transpose() {
+	public DoubleMatrix transpose() {
 		int width = getWidth();
 		int height = getHeight();
 		
@@ -121,7 +130,7 @@ public class Matrix implements Iterable<double[]>, Serializable {
 			}
 		}
 		
-		return new Matrix(result);
+		return new DoubleMatrix(result);
 	}
 	
 	/**
@@ -130,7 +139,7 @@ public class Matrix implements Iterable<double[]>, Serializable {
 	 * @return The inverse
 	 * @throws IllegalStateException If the matrix is not square-shaped or the determinant is zero
 	 */
-	public Matrix inverse() {
+	public DoubleMatrix inverse() {
 		if (!isSquareShaped()) {
 			throw new IllegalStateException("Can't calculate the inverse of a non-square matrix.");
 		} else if (determinant() == 0) {
@@ -162,7 +171,7 @@ public class Matrix implements Iterable<double[]>, Serializable {
 			}
 		}
 		
-		return new Matrix(inverse);
+		return new DoubleMatrix(inverse);
 	}
 	
 	private double determinant(double[][] mat) {
@@ -212,11 +221,11 @@ public class Matrix implements Iterable<double[]>, Serializable {
 	 * @param col - The column to be excluded
 	 * @return The minor
 	 */
-	public Matrix minor(int row, int col) {
-		return new Matrix(minor(data, row, col));
+	public DoubleMatrix minor(int row, int col) {
+		return new DoubleMatrix(minor(data, row, col));
 	}
 
-	public void verifyEqualSize(Matrix other) {
+	public void verifyEqualSize(DoubleMatrix other) {
 		if (!getSize().equals(other.getSize())) {
 			throw new SizeMismatchException("matrix size", getSize(), "matrix size", other.getSize());
 		}
@@ -226,7 +235,7 @@ public class Matrix implements Iterable<double[]>, Serializable {
 		return new Vector2D(getWidth(), getHeight());
 	}
 	
-	public Matrix multiply(double scalar) {
+	public DoubleMatrix multiply(double scalar) {
 		int width = getWidth();
 		int height = getHeight();
 		double[][] product = new double[width][height];
@@ -237,18 +246,18 @@ public class Matrix implements Iterable<double[]>, Serializable {
 			}
 		}
 		
-		return new Matrix(product);
+		return new DoubleMatrix(product);
 	}
 	
-	public Matrix multiply(Vector vector) {
+	public DoubleMatrix multiply(DoubleVector vector) {
 		return multiply(vector.asMatrix());
 	}
 	
-	public Matrix multiply(Vector2D vector) {
+	public DoubleMatrix multiply(Vector2D vector) {
 		return multiply(vector.asMatrix());
 	}
 	
-	public Matrix multiply(Vector3D vector) {
+	public DoubleMatrix multiply(Vector3D vector) {
 		return multiply(vector.asMatrix());
 	}
 	
@@ -260,7 +269,8 @@ public class Matrix implements Iterable<double[]>, Serializable {
 	 * @param right
 	 * @return MatA * MatB
 	 */
-	public Matrix multiply(Matrix right) {
+	@Override
+	public DoubleMatrix multiply(DoubleMatrix right) {
 		if (getWidth() != right.getHeight()) {
 			throw new ArithmeticException("The width of this matrix need to equal the height of the other matrix.");
 		}
@@ -279,7 +289,7 @@ public class Matrix implements Iterable<double[]>, Serializable {
 			}
 		}
 		
-		return new Matrix(product);
+		return new DoubleMatrix(product);
 	}
 
 	public int getWidth() {
@@ -300,8 +310,8 @@ public class Matrix implements Iterable<double[]>, Serializable {
 		return getWidth();
 	}
 	
-	public Tensor asTensor() {
-		return new Tensor(data);
+	public DoubleTensor asTensor() {
+		return new DoubleTensor(data);
 	}
 	
 	@Override
@@ -332,8 +342,9 @@ public class Matrix implements Iterable<double[]>, Serializable {
 		return result;
 	}
 
-	public boolean equals(Matrix other, double tolerance) {
-		if (getSize() != other.getSize()) {
+	@Override
+	public boolean equals(DoubleMatrix other, double tolerance) {
+		if (!getSize().equals(other.getSize())) {
 			return false;
 		}
 		
@@ -362,7 +373,7 @@ public class Matrix implements Iterable<double[]>, Serializable {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		Matrix other = (Matrix) obj;
+		DoubleMatrix other = (DoubleMatrix) obj;
 		if (!Arrays.deepEquals(data, other.data)) {
 			return false;
 		}

@@ -19,7 +19,7 @@ public class Vector3D extends TemplateVector<Vector3D> implements Serializable {
 		super(x, y, z);
 	}
 	
-	public Vector3D(Matrix matrix) {
+	public Vector3D(DoubleMatrix matrix) {
 		super(
 				matrix.getHeight() == 3 || matrix.getWidth() == 1,
 				new IllegalArgumentException("Matrix needs to be 1x3 to be converted to a vector."),
@@ -67,7 +67,7 @@ public class Vector3D extends TemplateVector<Vector3D> implements Serializable {
 	 * @return This
 	 */
 	public Vector3D rotateXAxisCCW(double angleRad) {
-		Matrix rotationMatrix = new Matrix(new double[][] {
+		DoubleMatrix rotationMatrix = new DoubleMatrix(new double[][] {
 			{1, 0, 0},
 			{0, Math.cos(angleRad), -Math.sin(angleRad)},
 			{0, Math.sin(angleRad), Math.cos(angleRad)}
@@ -84,7 +84,7 @@ public class Vector3D extends TemplateVector<Vector3D> implements Serializable {
 	 * @return This
 	 */
 	public Vector3D rotateYAxisCCW(double angleRad) {
-		Matrix rotationMatrix = new Matrix(new double[][] {
+		DoubleMatrix rotationMatrix = new DoubleMatrix(new double[][] {
 			{Math.cos(angleRad), 0, Math.sin(angleRad)},
 			{0, 1, 0},
 			{-Math.sin(angleRad), 0, Math.cos(angleRad)}
@@ -101,7 +101,7 @@ public class Vector3D extends TemplateVector<Vector3D> implements Serializable {
 	 * @return This
 	 */
 	public Vector3D rotateZAxisCCW(double angleRad) {
-		Matrix rotationMatrix = new Matrix(new double[][] {
+		DoubleMatrix rotationMatrix = new DoubleMatrix(new double[][] {
 			{Math.cos(angleRad), -Math.sin(angleRad), 0},
 			{Math.sin(angleRad), Math.cos(angleRad), 0},
 			{0, 0, 1}

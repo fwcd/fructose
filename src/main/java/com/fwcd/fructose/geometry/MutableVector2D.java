@@ -20,11 +20,11 @@ public class MutableVector2D implements Cloneable {
 		y = Math.sin(angleInRad) * length;
 	}
 	
-	public MutableVector2D(Matrix matrix) {
+	public MutableVector2D(DoubleMatrix matrix) {
 		setFrom(matrix);
 	}
 
-	public void setFrom(Matrix matrix) {
+	public void setFrom(DoubleMatrix matrix) {
 		if (matrix.getHeight() != 2 || matrix.getWidth() != 1) {
 			throw new RuntimeException("Matrix needs to be 1x2 to be converted to a vector.");
 		}
@@ -98,8 +98,8 @@ public class MutableVector2D implements Cloneable {
 		return this;
 	}
 	
-	public Matrix asMatrix() {
-		return new Matrix(new double[][] {
+	public DoubleMatrix asMatrix() {
+		return new DoubleMatrix(new double[][] {
 			{x},
 			{y}
 		});
@@ -113,7 +113,7 @@ public class MutableVector2D implements Cloneable {
 	 * @return This
 	 */
 	public MutableVector2D rotateCCW(double angleRad) {
-		Matrix rotationMatrix = new Matrix(new double[][] {
+		DoubleMatrix rotationMatrix = new DoubleMatrix(new double[][] {
 			{Math.cos(angleRad), -Math.sin(angleRad)},
 			{Math.sin(angleRad), Math.cos(angleRad)}
 		});

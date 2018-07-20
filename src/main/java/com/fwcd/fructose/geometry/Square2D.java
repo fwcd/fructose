@@ -13,7 +13,7 @@ public class Square2D extends Rectangle2D {
 	}
 
 	@Override
-	public Square2D transformedBy(Matrix transform) {
+	public Square2D transformedBy(DoubleMatrix transform) {
 		// TODO: Implement proportional square transforms
 		return this;
 	}

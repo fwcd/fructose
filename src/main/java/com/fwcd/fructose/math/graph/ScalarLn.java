@@ -1,13 +1,13 @@
 package com.fwcd.fructose.math.graph;
 
 public class ScalarLn extends CompositeScalar {
-	private final Scalar[] parents;
+	private final ScalarTerm[] parents;
 
-	public ScalarLn(Scalar arg) {
-		parents = new Scalar[] {arg};
+	public ScalarLn(ScalarTerm arg) {
+		parents = new ScalarTerm[] {arg};
 	}
 	
-	public Scalar getArgument() {
+	public ScalarTerm getArgument() {
 		return parents[0];
 	}
 	
@@ -17,12 +17,12 @@ public class ScalarLn extends CompositeScalar {
 	}
 
 	@Override
-	protected Scalar[] getParents() {
+	protected ScalarTerm[] getParents() {
 		return parents;
 	}
 
 	@Override
-	protected Scalar partialDerivForParent(Scalar parent) {
+	protected ScalarTerm partialDerivForParent(ScalarTerm parent) {
 		return parent.reciprocal();
 	}
 

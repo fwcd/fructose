@@ -73,7 +73,7 @@ public class LineSeg2D extends Path2D {
 	}
 
 	@Override
-	public LineSeg2D transformedBy(Matrix transform) {
+	public LineSeg2D transformedBy(DoubleMatrix transform) {
 		return new LineSeg2D(
 				new Vector2D(transform.multiply(getStart())),
 				new Vector2D(transform.multiply(getEnd()))

@@ -1,10 +1,10 @@
 package com.fwcd.fructose.math.graph;
 
 public class ScalarExponentiation extends CompositeScalar {
-	private final Scalar[] parents;
+	private final ScalarTerm[] parents;
 	
-	public ScalarExponentiation(Scalar base, Scalar exponent) {
-		parents = new Scalar[] {base, exponent};
+	public ScalarExponentiation(ScalarTerm base, ScalarTerm exponent) {
+		parents = new ScalarTerm[] {base, exponent};
 	}
 	
 	@Override
@@ -17,23 +17,23 @@ public class ScalarExponentiation extends CompositeScalar {
 		return "(" + getBase().toString() + " ^ " + getExponent().toString() + ")";
 	}
 	
-	public Scalar getBase() {
+	public ScalarTerm getBase() {
 		return parents[0];
 	}
 
-	public Scalar getExponent() {
+	public ScalarTerm getExponent() {
 		return parents[1];
 	}
 
 	@Override
-	protected Scalar[] getParents() {
+	protected ScalarTerm[] getParents() {
 		return parents;
 	}
 
 	@Override
-	protected Scalar partialDerivForParent(Scalar parent) {
-		Scalar base = getBase();
-		Scalar exp = getExponent();
+	protected ScalarTerm partialDerivForParent(ScalarTerm parent) {
+		ScalarTerm base = getBase();
+		ScalarTerm exp = getExponent();
 		
 		if (parent.equals(base)) {
 			return exp.multiply(base.pow(exp.sub(ConstScalar.ONE)));

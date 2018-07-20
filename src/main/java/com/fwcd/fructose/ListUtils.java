@@ -7,13 +7,37 @@ import java.util.List;
 import java.util.function.IntFunction;
 import java.util.stream.IntStream;
 
+import com.fwcd.fructose.function.BiIntFunction;
+
 /**
  * Array and List utilities.
  * 
  * @author Fredrik
  *
  */
-public class ListUtils {
+public final class ListUtils {
+	private ListUtils() {}
+	
+	public static <T> List<T> makeList(int length, IntFunction<T> generator) {
+		List<T> result = new ArrayList<>();
+		for (int i=0; i<length; i++) {
+			result.add(generator.apply(i));
+		}
+		return result;
+	}
+	
+	public static <T> List<List<T>> make2DList(int yLength, int xLength, BiIntFunction<T> generator) {
+		List<List<T>> result = new ArrayList<>();
+		for (int y=0; y<yLength; y++) {
+			List<T> row = new ArrayList<>();
+			for (int x=0; x<xLength; x++) {
+				row.add(generator.apply(x, y));
+			}
+			result.add(row);
+		}
+		return result;
+	}
+	
 	public static int toInt(int[] digits) {
 		int num = 0;
 		int f = (int) Math.pow(10, digits.length - 1);

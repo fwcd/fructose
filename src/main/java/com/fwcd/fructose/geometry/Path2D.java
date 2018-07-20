@@ -24,7 +24,7 @@ public class Path2D implements Serializable, Iterable<Vector2D>, Drawable {
 		return vertices[i];
 	}
 	
-	public Path2D transformedBy(Matrix transform) {
+	public Path2D transformedBy(DoubleMatrix transform) {
 		return new Path2D(Arrays.stream(vertices)
 				.map(transform::multiply)
 				.map(Vector2D::new)

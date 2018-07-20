@@ -5,7 +5,10 @@ import java.util.function.DoubleBinaryOperator;
 import java.util.function.DoubleUnaryOperator;
 
 import com.fwcd.fructose.exception.SizeMismatchException;
-import com.fwcd.fructose.math.Tensor;
+import com.fwcd.fructose.math.DoubleTensor;
+import com.fwcd.fructose.operations.Addable;
+import com.fwcd.fructose.operations.Subtractable;
+import com.fwcd.fructose.operations.ToleranceEquatable;
 
 /**
  * Provides high-performance template implementations for
@@ -16,7 +19,10 @@ import com.fwcd.fructose.math.Tensor;
  *
  * @param <V> - The sub type
  */
-public abstract class TemplateVector<V extends TemplateVector<V>> {
+public abstract class TemplateVector<V extends TemplateVector<V>> implements
+		Addable<V, V>,
+		Subtractable<V, V>,
+		ToleranceEquatable<V> {
 	private final double[] data;
 	
 	public TemplateVector(double... data) {
@@ -47,6 +53,7 @@ public abstract class TemplateVector<V extends TemplateVector<V>> {
 	 * @param other - The other vector
 	 * @return this + other
 	 */
+	@Override
 	public V add(V other) {
 		final int size = size();
 		assertEqualSize(size, other.size());
@@ -65,6 +72,7 @@ public abstract class TemplateVector<V extends TemplateVector<V>> {
 	 * @param other - The other vector
 	 * @return this - other
 	 */
+	@Override
 	public V sub(V other) {
 		final int size = size();
 		assertEqualSize(size, other.size());
@@ -254,7 +262,7 @@ public abstract class TemplateVector<V extends TemplateVector<V>> {
 	/**
 	 * @return A matrix representing this vector as a column vector
 	 */
-	public Matrix asMatrix() {
+	public DoubleMatrix asMatrix() {
 		final int size = size();
 		double[][] result = new double[size][1];
 		
@@ -262,14 +270,14 @@ public abstract class TemplateVector<V extends TemplateVector<V>> {
 			result[i][0] = get(i);
 		}
 		
-		return new Matrix(result);
+		return new DoubleMatrix(result);
 	}
 	
 	/**
 	 * @return A tensor representing this vector
 	 */
-	public Tensor asTensor() {
-		return new Tensor(data);
+	public DoubleTensor asTensor() {
+		return new DoubleTensor(data);
 	}
 
 	private void assertEqualSize(int size, int otherSize) {
@@ -286,6 +294,7 @@ public abstract class TemplateVector<V extends TemplateVector<V>> {
 		return result;
 	}
 
+	@Override
 	public boolean equals(V other, double tolerance) {
 		final int size = size();
 		if (size != other.size()) {

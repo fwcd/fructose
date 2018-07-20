@@ -13,10 +13,10 @@ import com.fwcd.fructose.exception.SizeMismatchException;
  * @author Fredrik
  *
  */
-public class Vector extends TemplateVector<Vector> implements Serializable {
+public class DoubleVector extends TemplateVector<DoubleVector> implements Serializable {
 	private static final long serialVersionUID = -6990352776476335167L;
 	
-	public Vector(double... values) {
+	public DoubleVector(double... values) {
 		super(values);
 	}
 	
@@ -42,7 +42,7 @@ public class Vector extends TemplateVector<Vector> implements Serializable {
 	}
 
 	@Override
-	protected Vector newInstance(double... data) {
-		return new Vector(data);
+	protected DoubleVector newInstance(double... data) {
+		return new DoubleVector(data);
 	}
 }

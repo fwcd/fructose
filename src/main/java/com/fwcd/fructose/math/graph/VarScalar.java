@@ -2,7 +2,7 @@ package com.fwcd.fructose.math.graph;
 
 import java.util.NoSuchElementException;
 
-public class VarScalar implements Scalar {
+public class VarScalar implements ScalarTerm {
 	private String name;
 	private Double value;
 	private boolean hasValue;
@@ -41,7 +41,7 @@ public class VarScalar implements Scalar {
 	}
 
 	@Override
-	public Scalar partialDerivative(Scalar arg) {
+	public ScalarTerm partialDerivative(ScalarTerm arg) {
 		if (hasValue && equals(arg)) {
 			return ConstScalar.ONE;
 		} else {

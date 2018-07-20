@@ -1,6 +1,6 @@
 package com.fwcd.fructose.math.graph;
 
-public interface Scalar extends Term<Double> {
+public interface ScalarTerm extends Term<Double> {
 	/**
 	 * Calculates the partial derivative with respect
 	 * to a given argument.
@@ -8,11 +8,11 @@ public interface Scalar extends Term<Double> {
 	 * @param arg - The variable we will differentiate (the other's are kept constant)
 	 * @return del this / del arg (or null if there is none)
 	 */
-	Scalar partialDerivative(Scalar arg);
+	ScalarTerm partialDerivative(ScalarTerm arg);
 	
 	boolean isConstant();
 	
-	default Scalar add(Scalar other) {
+	default ScalarTerm add(ScalarTerm other) {
 		if (other.isConstant()) {
 			if (other.compute() == 0D) {
 				return this;
@@ -26,11 +26,11 @@ public interface Scalar extends Term<Double> {
 		return new ScalarSum(this, other);
 	}
 	
-	default Scalar sub(Scalar other) {
+	default ScalarTerm sub(ScalarTerm other) {
 		return add(other.invert());
 	}
 	
-	default Scalar multiply(Scalar other) {
+	default ScalarTerm multiply(ScalarTerm other) {
 		if (other.isConstant()) {
 			double val = other.compute();
 			if (val == 0D) {
@@ -50,11 +50,11 @@ public interface Scalar extends Term<Double> {
 		return new ScalarProduct(this, other);
 	}
 	
-	default Scalar divide(Scalar other) {
+	default ScalarTerm divide(ScalarTerm other) {
 		return multiply(other.reciprocal());
 	}
 	
-	default Scalar pow(Scalar other) {
+	default ScalarTerm pow(ScalarTerm other) {
 		if (other.isConstant()) {
 			if (other.compute() == 1D) {
 				return this;
@@ -68,11 +68,11 @@ public interface Scalar extends Term<Double> {
 		return new ScalarExponentiation(this, other);
 	}
 	
-	default Scalar invert() {
+	default ScalarTerm invert() {
 		return new ScalarInversion(this);
 	}
 	
-	default Scalar reciprocal() {
+	default ScalarTerm reciprocal() {
 		return new ScalarExponentiation(this, ConstScalar.MINUS_ONE);
 	}
 }

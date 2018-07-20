@@ -1,10 +1,13 @@
 package com.fwcd.fructose.structs;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.DoubleBinaryOperator;
 import java.util.function.DoubleConsumer;
+import java.util.function.DoubleFunction;
 import java.util.function.DoublePredicate;
 import java.util.function.DoubleUnaryOperator;
+import java.util.stream.DoubleStream;
 
 import com.fwcd.fructose.Copyable;
 
@@ -28,6 +31,10 @@ public class DoubleList implements Copyable<DoubleList> {
 	public DoubleList(DoubleList other) {
 		data = Arrays.copyOf(other.data, other.data.length);
 		size = other.size;
+	}
+	
+	public DoubleStream stream() {
+		return Arrays.stream(data);
 	}
 	
 	private void ensureCapacity() {
