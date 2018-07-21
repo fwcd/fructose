@@ -2,10 +2,12 @@ package com.fwcd.fructose.math;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.BinaryOperator;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.fwcd.fructose.ListUtils;
 import com.fwcd.fructose.operations.Addable;
@@ -20,7 +22,8 @@ public class Matrix<V extends Numeric<V>> implements
 		Addable<Matrix<V>, Matrix<V>>,
 		Subtractable<Matrix<V>, Matrix<V>>,
 		Multipliable<Matrix<V>, Matrix<V>>,
-		ToleranceEquatable<Matrix<V>> {
+		ToleranceEquatable<Matrix<V>>,
+		Iterable<List<V>> {
 	private final List<List<V>> data;
 	
 	public Matrix(V[][] data) {
@@ -315,5 +318,14 @@ public class Matrix<V extends Numeric<V>> implements
 	@Override
 	public String toString() {
 		return data.toString();
+	}
+	
+	@Override
+	public Iterator<List<V>> iterator() {
+		return data.iterator();
+	}
+	
+	public Stream<Stream<V>> stream() {
+		return data.stream().map(it -> it.stream());
 	}
 }

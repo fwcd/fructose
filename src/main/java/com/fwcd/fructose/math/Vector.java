@@ -3,7 +3,9 @@ package com.fwcd.fructose.math;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Stream;
 
 import com.fwcd.fructose.operations.Addable;
 import com.fwcd.fructose.operations.Multipliable;
@@ -17,7 +19,8 @@ public class Vector<V extends Numeric<V>> implements
 			Addable<Vector<V>, Vector<V>>,
 			Subtractable<Vector<V>, Vector<V>>,
 			Multipliable<V, Vector<V>>,
-			ToleranceEquatable<Vector<V>> {
+			ToleranceEquatable<Vector<V>>,
+			Iterable<V> {
 	private final List<V> data;
 	
 	@SafeVarargs
@@ -117,5 +120,14 @@ public class Vector<V extends Numeric<V>> implements
 	@Override
 	public String toString() {
 		return data.toString();
+	}
+	
+	@Override
+	public Iterator<V> iterator() {
+		return data.iterator();
+	}
+	
+	public Stream<V> stream() {
+		return data.stream();
 	}
 }
