@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
+import com.fwcd.fructose.ListUtils;
 import com.fwcd.fructose.operations.Addable;
 import com.fwcd.fructose.operations.Multipliable;
 import com.fwcd.fructose.operations.Subtractable;
@@ -68,6 +69,7 @@ public class Vector<V extends Numeric<V>> implements
 		return new Vector<>(result);
 	}
 	
+	/** The dot product (inner product) with another vector. */
 	public V dot(Vector<V> rhs) {
 		V result = data.get(0).multiply(rhs.data.get(0));
 		
@@ -103,10 +105,31 @@ public class Vector<V extends Numeric<V>> implements
 		return true;
 	}
 	
+	/** The outer product with another vector. */
+	public Matrix<V> outer(Vector<V> rhs) {
+		return asColumnMatrix().multiply(rhs.asRowMatrix());
+	}
+	
+	/**
+	 * The Kronecker product with another vector.
+	 * Both vectors are interpreted as column vectors.
+	 */
+	public Vector<V> kronecker(Vector<V> rhs) {
+		int lSize = size();
+		int rSize = rhs.size();
+		List<V> result = ListUtils.makeList(lSize * rSize, i -> null);
+		for (int i=0; i<lSize; i++) {
+			for (int j=0; j<rSize; j++) {
+				result.set((i * rSize) + j, get(i).multiply(rhs.get(j)));
+			}
+		}
+		return new Vector<>(result);
+	}
+	
 	/**
 	 * @return A matrix representing this vector as a column vector
 	 */
-	public Matrix<V> asMatrix() {
+	public Matrix<V> asColumnMatrix() {
 		final int size = size();
 		List<List<V>> result = new ArrayList<>(size);
 		
@@ -117,6 +140,13 @@ public class Vector<V extends Numeric<V>> implements
 		return new Matrix<>(result);
 	}
 	
+	/**
+	 * @return A matrix representing this vector as a row vector
+	 */
+	public Matrix<V> asRowMatrix() {
+		return new Matrix<>(Collections.singletonList(data));
+	}
+	
 	@Override
 	public String toString() {
 		return data.toString();
@@ -125,6 +155,22 @@ public class Vector<V extends Numeric<V>> implements
 	@Override
 	public Iterator<V> iterator() {
 		return data.iterator();
+	}
+	
+	public Vector<V> withAt(int index, V value) {
+		List<V> result = new ArrayList<>(data);
+		result.set(index, value);
+		return new Vector<>(result);
+	}
+	
+	@SafeVarargs
+	public final Vector<V> appendedBy(V... values) {
+		List<V> result = new ArrayList<>(data.size() + values.length);
+		result.addAll(data);
+		for (V value : values) {
+			result.add(value);
+		}
+		return new Vector<>(result);
 	}
 	
 	public Stream<V> stream() {

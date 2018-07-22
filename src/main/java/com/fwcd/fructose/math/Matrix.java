@@ -23,7 +23,7 @@ public class Matrix<V extends Numeric<V>> implements
 		Subtractable<Matrix<V>, Matrix<V>>,
 		Multipliable<Matrix<V>, Matrix<V>>,
 		ToleranceEquatable<Matrix<V>>,
-		Iterable<List<V>> {
+		Iterable<Iterable<V>> {
 	private final List<List<V>> data;
 	
 	public Matrix(V[][] data) {
@@ -116,10 +116,10 @@ public class Matrix<V extends Numeric<V>> implements
 	}
 	
 	/**
-	 * The Tensor product (also called Kronecker product) of this
+	 * The Kronecker product (also called Tensor product) of this
 	 * matrix with another matrix.
 	 */
-	public Matrix<V> tensorProduct(Matrix<V> other) {
+	public Matrix<V> kronecker(Matrix<V> other) {
 		int width = width();
 		int height = height();
 		List<List<V>> result = ListUtils.make2DList(height * other.height(), width * other.width(), (x, y) -> null);
@@ -321,8 +321,16 @@ public class Matrix<V extends Numeric<V>> implements
 	}
 	
 	@Override
-	public Iterator<List<V>> iterator() {
-		return data.iterator();
+	public Iterator<Iterable<V>> iterator() {
+		return new Iterator<Iterable<V>>() {
+			private Iterator<List<V>> it = data.iterator();
+			
+			@Override
+			public boolean hasNext() { return it.hasNext(); }
+			
+			@Override
+			public Iterable<V> next() { return it.next(); }
+		};
 	}
 	
 	public Stream<Stream<V>> stream() {

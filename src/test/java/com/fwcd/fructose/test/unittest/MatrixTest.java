@@ -80,7 +80,7 @@ public class MatrixTest {
 			{1, 2},
 			{3, 4},
 			{5, 6}
-		}).tensorProduct(rMat(new double[][] {
+		}).kronecker(rMat(new double[][] {
 			{7, 8},
 			{9, 0}
 		})), approxEquals(rMat(new double[][] {

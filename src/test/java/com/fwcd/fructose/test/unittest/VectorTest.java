@@ -30,13 +30,19 @@ public class VectorTest {
 	
 	@Test
 	public void testBoxedVector() {
-		assertThat(boxVec(4, 3), approxEquals(boxVec(4, 3), 0.1D));
-		assertThat(boxVec(4, 3).add(boxVec(1, 2)), approxEquals(boxVec(5, 5), 0.1D));
-		assertThat(boxVec(9, 2).sub(boxVec(2, 1)), approxEquals(boxVec(7, 1), 0.1D));
-		assertEquals(boxVec(2, 5, 4).dot(boxVec(1, 2, 3)).value(), 24, 0.1D);
+		assertThat(vec(4, 3), approxEquals(vec(4, 3), 0.1D));
+		assertThat(vec(4, 3).add(vec(1, 2)), approxEquals(vec(5, 5), 0.1D));
+		assertThat(vec(9, 2).sub(vec(2, 1)), approxEquals(vec(7, 1), 0.1D));
+		assertEquals(vec(2, 5, 4).dot(vec(1, 2, 3)).value(), 24, 0.1D);
+		assertThat(vec(1, 3, 2).outer(vec(2, 1, 0, 3)), approxEquals(Numbers.realMatrix(new double[][] {
+			{2, 1, 0, 3},
+			{6, 3, 0, 9},
+			{4, 2, 0, 6}
+		}), 0.1D));
+		assertThat(vec(1, 4).kronecker(vec(9, 3, 2)), approxEquals(vec(9, 3, 2, 36, 12, 8), 0.1D));
 	}
 	
-	private Vector<Real> boxVec(double... values) {
+	private Vector<Real> vec(double... values) {
 		return Numbers.realVector(values);
 	}
 	
