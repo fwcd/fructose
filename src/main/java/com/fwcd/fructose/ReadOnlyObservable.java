@@ -36,4 +36,8 @@ public class ReadOnlyObservable<T> {
 	public void listen(Consumer<T> listener) {
 		listeners.add(listener);
 	}
+	
+	public void unlisten(Consumer<T> listener) {
+		listeners.remove(listener);
+	}
 }
