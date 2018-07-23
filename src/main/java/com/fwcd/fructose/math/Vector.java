@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 
 import com.fwcd.fructose.ListUtils;
 import com.fwcd.fructose.operations.Addable;
+import com.fwcd.fructose.operations.Divisible;
 import com.fwcd.fructose.operations.Multipliable;
 import com.fwcd.fructose.operations.Subtractable;
 import com.fwcd.fructose.operations.ToleranceEquatable;
@@ -24,6 +25,7 @@ public class Vector<V extends Numeric<V>> implements
 			Addable<Vector<V>, Vector<V>>,
 			Subtractable<Vector<V>, Vector<V>>,
 			Multipliable<V, Vector<V>>,
+			Divisible<V, Vector<V>>,
 			ToleranceEquatable<Vector<V>>,
 			Iterable<V> {
 	private final List<V> data;
@@ -50,6 +52,11 @@ public class Vector<V extends Numeric<V>> implements
 	@Override
 	public Vector<V> multiply(V scalar) {
 		return map(v -> v.multiply(scalar));
+	}
+	
+	@Override
+	public Vector<V> divide(V scalar) {
+		return map(v -> v.divide(scalar));
 	}
 	
 	/** The dot product (inner product) with another vector. */
