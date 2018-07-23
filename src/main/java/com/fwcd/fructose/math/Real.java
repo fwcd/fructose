@@ -38,6 +38,9 @@ public class Real extends Number implements Numeric<Real> {
 	@Override
 	public Real reciprocal() { return of(1D / value); }
 	
+	@Override
+	public Real negate() { return of(-value); }
+	
 	public double value() { return value; }
 
 	@Override

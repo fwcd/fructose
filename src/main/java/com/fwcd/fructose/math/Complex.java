@@ -6,9 +6,9 @@ import java.util.Objects;
  * A complex number (represented using two doubles).
  */
 public class Complex implements Numeric<Complex> {
-	public static final Complex ZERO = new Complex(0, 0);
-	public static final Complex ONE = new Complex(1, 0);
-	public static final Complex I = new Complex(0, 1);
+	public static final Complex ZERO = of(0, 0);
+	public static final Complex ONE = of(1, 0);
+	public static final Complex I = of(0, 1);
 	
 	private final double real;
 	private final double imag;
@@ -19,7 +19,7 @@ public class Complex implements Numeric<Complex> {
 	}
 	
 	public static Complex ofReal(double real) {
-		return new Complex(real, 0);
+		return of(real, 0);
 	}
 	
 	public static Complex of(double real, double imag) {
@@ -36,20 +36,20 @@ public class Complex implements Numeric<Complex> {
 	
 	@Override
 	public Complex add(Complex rhs) {
-		return new Complex(real + rhs.real, imag + rhs.imag);
+		return of(real + rhs.real, imag + rhs.imag);
 	}
 	
 	@Override
 	public Complex sub(Complex rhs) {
-		return new Complex(real - rhs.real, imag - rhs.imag);
+		return of(real - rhs.real, imag - rhs.imag);
 	}
 	
 	public Complex invertReal() {
-		return new Complex(-real, imag);
+		return of(-real, imag);
 	}
 	
 	public Complex invertImag() {
-		return new Complex(real, -imag);
+		return of(real, -imag);
 	}
 	
 	public Complex conjugate() {
@@ -57,23 +57,23 @@ public class Complex implements Numeric<Complex> {
 	}
 	
 	public Complex multiply(double factor) {
-		return new Complex(factor * real, factor * imag);
+		return of(factor * real, factor * imag);
 	}
 	
 	public Complex divide(double denom) {
-		return new Complex(real / denom, imag / denom);
+		return of(real / denom, imag / denom);
 	}
 	
 	public Complex exp() {
-		return new Complex(Math.exp(real) * Math.cos(imag), Math.exp(real) * Math.sin(imag));
+		return of(Math.exp(real) * Math.cos(imag), Math.exp(real) * Math.sin(imag));
 	}
 	
 	public Complex sin() {
-		return new Complex(Math.sin(real) * Math.cosh(imag), Math.cos(real) * Math.sinh(imag));
+		return of(Math.sin(real) * Math.cosh(imag), Math.cos(real) * Math.sinh(imag));
 	}
 	
 	public Complex cos() {
-		return new Complex(Math.cos(real) * Math.cosh(imag), -Math.sin(real) * Math.sinh(imag));
+		return of(Math.cos(real) * Math.cosh(imag), -Math.sin(real) * Math.sinh(imag));
 	}
 	
 	public Complex tan() {
@@ -87,7 +87,12 @@ public class Complex implements Numeric<Complex> {
 	@Override
 	public Complex reciprocal() {
 		double scale = (real * real) + (imag * imag);
-		return new Complex(real / scale, -imag / scale);
+		return of(real / scale, -imag / scale);
+	}
+	
+	@Override
+	public Complex negate() {
+		return of(-real, -imag);
 	}
 	
 	public Complex divide(Complex other) {
@@ -110,7 +115,7 @@ public class Complex implements Numeric<Complex> {
 		// (a+bi)(c+di) = ac + adi + bci - bd
 		//              = (ac - bd) + (ad + bc)i
 		
-		return new Complex(
+		return of(
 				(real * other.real) - (imag * other.imag),
 				(real * other.imag) + (imag * other.real)
 		);
@@ -156,7 +161,7 @@ public class Complex implements Numeric<Complex> {
 		double baseArg = argument();
 		double theta = (c * baseArg) + (0.5 * d * Math.log(aSqPlusBSq));
 		
-		return new Complex(Math.cos(theta), Math.sin(theta))
+		return of(Math.cos(theta), Math.sin(theta))
 				.multiply(Math.pow(aSqPlusBSq, c / 2) * Math.exp(-d * baseArg));
 	}
 	

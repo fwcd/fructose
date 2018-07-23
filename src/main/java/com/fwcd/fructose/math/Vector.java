@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.BinaryOperator;
+import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 import com.fwcd.fructose.ListUtils;
@@ -12,6 +15,7 @@ import com.fwcd.fructose.operations.Addable;
 import com.fwcd.fructose.operations.Multipliable;
 import com.fwcd.fructose.operations.Subtractable;
 import com.fwcd.fructose.operations.ToleranceEquatable;
+import com.google.common.base.Function;
 
 /**
  * An immutable, numeric vector.
@@ -35,38 +39,17 @@ public class Vector<V extends Numeric<V>> implements
 	
 	@Override
 	public Vector<V> add(Vector<V> rhs) {
-		int size = size();
-		List<V> result = new ArrayList<>(size);
-		
-		for (int i=0; i<size; i++) {
-			result.add(data.get(i).add(rhs.data.get(i)));
-		}
-		
-		return new Vector<>(result);
+		return zip(rhs, V::add);
 	}
 	
 	@Override
 	public Vector<V> sub(Vector<V> rhs) {
-		int size = size();
-		List<V> result = new ArrayList<>(size);
-
-		for (int i=0; i<size; i++) {
-			result.add(data.get(i).sub(rhs.data.get(i)));
-		}
-		
-		return new Vector<>(result);
+		return zip(rhs, V::sub);
 	}
 	
 	@Override
 	public Vector<V> multiply(V scalar) {
-		int size = size();
-		List<V> result = new ArrayList<>(size);
-		
-		for (int i=0; i<size; i++) {
-			result.add(data.get(i).multiply(scalar));
-		}
-		
-		return new Vector<>(result);
+		return map(v -> v.multiply(scalar));
 	}
 	
 	/** The dot product (inner product) with another vector. */
@@ -103,6 +86,10 @@ public class Vector<V extends Numeric<V>> implements
 		}
 		
 		return true;
+	}
+	
+	public Vector<V> negate() {
+		return map(V::negate);
 	}
 	
 	/** The outer product with another vector. */
@@ -171,6 +158,41 @@ public class Vector<V extends Numeric<V>> implements
 			result.add(value);
 		}
 		return new Vector<>(result);
+	}
+	
+	public <R extends Numeric<R>> Vector<R> zip(Vector<V> rhs, BiFunction<V, V, R> zipper) {
+		int size = size();
+		if (rhs.size() != size) {
+			throw new IllegalArgumentException(
+				"Tried to zip a vector of size "
+				+ size
+				+ " with a vector of size "
+				+ rhs.size()
+			);
+		}
+		List<R> result = new ArrayList<>();
+		for (int i=0; i<size; i++) {
+			result.add(zipper.apply(get(i), rhs.get(i)));
+		}
+		return new Vector<>(result);
+	}
+	
+	public <R extends Numeric<R>> Vector<R> map(Function<V, R> mapper) {
+		int size = size();
+		List<R> result = new ArrayList<>();
+		for (int i=0; i<size; i++) {
+			result.add(mapper.apply(get(i)));
+		}
+		return new Vector<>(result);
+	}
+	
+	public V reduce(BinaryOperator<V> accumulator) {
+		int size = size();
+		V result = get(0);
+		for (int i=1; i<size; i++) {
+			result = accumulator.apply(result, get(i));
+		}
+		return result;
 	}
 	
 	public Stream<V> stream() {
