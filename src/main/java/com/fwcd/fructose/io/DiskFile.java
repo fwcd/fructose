@@ -15,7 +15,7 @@ import java.nio.file.Paths;
  * @author Fredrik
  * 
  */
-public class DiskFile extends AbstractReadable {
+public class DiskFile extends AbstractInputStreamable {
 	private final Path path;
 	
 	public DiskFile(URI uri) {

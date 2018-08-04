@@ -6,7 +6,7 @@ import java.io.UncheckedIOException;
 
 import com.fwcd.fructose.function.IOFunction;
 
-public abstract class AbstractReadable implements Readable {
+public abstract class AbstractInputStreamable implements InputStreamable {
 	protected abstract InputStream openStream();
 	
 	@Override

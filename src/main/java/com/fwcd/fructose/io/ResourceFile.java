@@ -2,7 +2,7 @@ package com.fwcd.fructose.io;
 
 import java.io.InputStream;
 
-public class ResourceFile extends AbstractReadable {
+public class ResourceFile extends AbstractInputStreamable {
 	private final String path;
 	
 	public ResourceFile(String resourcePath) {
