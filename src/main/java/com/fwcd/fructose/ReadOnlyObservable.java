@@ -19,6 +19,16 @@ public class ReadOnlyObservable<T> {
 		return value;
 	}
 	
+	public void listen(Consumer<T> listener) {
+		listeners.add(listener);
+	}
+	
+	public void unlisten(Consumer<T> listener) {
+		listeners.remove(listener);
+	}
+	
+	// Protected, mutating methods
+	
 	protected void set(T value) {
 		this.value = value;
 		fire();
@@ -31,13 +41,5 @@ public class ReadOnlyObservable<T> {
 	
 	protected void fire() {
 		listeners.fire(value);
-	}
-	
-	public void listen(Consumer<T> listener) {
-		listeners.add(listener);
-	}
-	
-	public void unlisten(Consumer<T> listener) {
-		listeners.remove(listener);
 	}
 }

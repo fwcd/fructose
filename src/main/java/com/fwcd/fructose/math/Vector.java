@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
-import java.util.function.UnaryOperator;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import com.fwcd.fructose.ListUtils;
@@ -16,7 +16,6 @@ import com.fwcd.fructose.operations.Divisible;
 import com.fwcd.fructose.operations.Multipliable;
 import com.fwcd.fructose.operations.Subtractable;
 import com.fwcd.fructose.operations.ToleranceEquatable;
-import com.google.common.base.Function;
 
 /**
  * An immutable, numeric vector.

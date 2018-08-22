@@ -3,7 +3,6 @@ package com.fwcd.fructose.test.utils;
 import static org.junit.Assert.fail;
 
 import com.fwcd.fructose.function.ThrowingRunnable;
-import com.fwcd.fructose.math.Matrix;
 import com.fwcd.fructose.math.Numeric;
 import com.fwcd.fructose.math.Vector;
 import com.fwcd.fructose.operations.ToleranceEquatable;
