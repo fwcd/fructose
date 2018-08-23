@@ -23,7 +23,11 @@ public class ObservableListTest {
 		list.unlisten(listener);
 		list.add(1, "two");
 		
+		
 		assertEquals(2, listenerCalls);
+		list.listenAndFire(str -> listenerCalls++);
+		assertEquals(3, listenerCalls);
+		
 		assertArrayEquals(new String[] {"one", "two", "three"}, list.toArray());
 		assertEquals("two", list.get(1));
 		

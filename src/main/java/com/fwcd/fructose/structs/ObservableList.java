@@ -4,6 +4,10 @@ import java.util.Collection;
 import java.util.List;
 
 public class ObservableList<T> extends ReadOnlyObservableList<T> implements List<T> {
+	public ObservableList() {}
+	
+	public ObservableList(List<T> values) { super(values); }
+	
 	// Publicly exposes mutating methods
 	
 	@Override

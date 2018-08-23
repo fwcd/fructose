@@ -23,6 +23,11 @@ public class ReadOnlyObservable<T> {
 		listeners.add(listener);
 	}
 	
+	public void listenAndFire(Consumer<T> listener) {
+		listen(listener);
+		listener.accept(value);
+	}
+	
 	public void unlisten(Consumer<T> listener) {
 		listeners.remove(listener);
 	}

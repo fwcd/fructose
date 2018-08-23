@@ -23,6 +23,11 @@ public class ReadOnlyObservableList<T> implements Iterable<T> {
 	
 	public void listen(Consumer<List<T>> listener) { listeners.add(listener); }
 	
+	public void listenAndFire(Consumer<List<T>> listener) {
+		listen(listener);
+		listener.accept(values);
+	}
+	
 	public void unlisten(Consumer<List<T>> listener) { listeners.remove(listener); }
 	
 	public List<T> get() { return Collections.unmodifiableList(values); }
