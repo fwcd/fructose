@@ -9,17 +9,16 @@ import java.util.function.Consumer;
 
 import com.fwcd.fructose.EventListenerList;
 
+/**
+ * An unordered, read-only set that can be listened to.
+ */
 public class ReadOnlyObservableSet<T> implements Iterable<T> {
 	private final EventListenerList<Set<T>> listeners = new EventListenerList<>();
 	private Set<T> values;
 	
-	public ReadOnlyObservableSet() {
-		values = new HashSet<>();
-	}
+	public ReadOnlyObservableSet() { values = new HashSet<>(); }
 	
-	public ReadOnlyObservableSet(Set<T> values) {
-		this.values = values;
-	}
+	public ReadOnlyObservableSet(Set<T> values) { this.values = values; }
 	
 	public void listen(Consumer<Set<T>> listener) { listeners.add(listener); }
 	
