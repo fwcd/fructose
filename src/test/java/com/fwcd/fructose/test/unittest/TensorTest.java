@@ -2,11 +2,9 @@ package com.fwcd.fructose.test.unittest;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Arrays;
+import com.fwcd.fructose.math.DoubleTensor;
 
 import org.junit.Test;
-
-import com.fwcd.fructose.math.DoubleTensor;
 
 public class TensorTest {
 	@Test

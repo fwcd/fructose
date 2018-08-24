@@ -1,7 +1,6 @@
 package com.fwcd.fructose.test.unittest;
 
 import static com.fwcd.fructose.test.utils.TestUtils.approxEquals;
-import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThat;

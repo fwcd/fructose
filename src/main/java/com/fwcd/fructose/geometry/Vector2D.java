@@ -2,9 +2,6 @@ package com.fwcd.fructose.geometry;
 
 import java.io.Serializable;
 
-import com.fwcd.fructose.operations.Addable;
-import com.fwcd.fructose.operations.Subtractable;
-
 /**
  * A simple, immutable 2D vector implementation.
  * 
