@@ -3,7 +3,9 @@ package com.fwcd.fructose.structs;
 import java.util.Collection;
 import java.util.Set;
 
-public class ObservableSet<T> extends ReadOnlyObservableSet<T> implements Set<T> {
+import com.fwcd.fructose.Listenable;
+
+public class ObservableSet<T> extends ReadOnlyObservableSet<T> implements Set<T>, Listenable<Set<T>> {
 	public ObservableSet() {}
 	
 	public ObservableSet(Set<T> values) { super(values); }
