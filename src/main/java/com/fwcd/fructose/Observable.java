@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 /**
  * A mutable value that can be listened to.
  */
-public class Observable<T> extends ReadOnlyObservable<T> {
+public class Observable<T> extends ReadOnlyObservable<T> implements Listenable<T> {
 	// Publicly exposes mutating methods
 	
 	public Observable(T value) { super(value); }

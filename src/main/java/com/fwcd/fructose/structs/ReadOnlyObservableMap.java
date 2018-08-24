@@ -8,9 +8,9 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import com.fwcd.fructose.EventListenerList;
-import com.fwcd.fructose.Listenable;
+import com.fwcd.fructose.ReadOnlyListenable;
 
-public class ReadOnlyObservableMap<K, V> implements Listenable<Map<K, V>> {
+public class ReadOnlyObservableMap<K, V> implements ReadOnlyListenable<Map<K, V>> {
 	private final EventListenerList<Map<K, V>> listeners = new EventListenerList<>();
 	private Map<K, V> values;
 	
@@ -30,6 +30,7 @@ public class ReadOnlyObservableMap<K, V> implements Listenable<Map<K, V>> {
 	@Override
 	public void unlisten(Consumer<Map<K, V>> listener) { listeners.remove(listener); }
 	
+	@Override
 	public Map<K, V> get() { return Collections.unmodifiableMap(values); }
 	
 	public int size() { return values.size(); }

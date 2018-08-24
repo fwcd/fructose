@@ -9,12 +9,12 @@ import java.util.ListIterator;
 import java.util.function.Consumer;
 
 import com.fwcd.fructose.EventListenerList;
-import com.fwcd.fructose.Listenable;
+import com.fwcd.fructose.ReadOnlyListenable;
 
 /**
  * A read-only list that can be listened to.
  */
-public class ReadOnlyObservableList<T> implements Iterable<T>, Listenable<List<T>> {
+public class ReadOnlyObservableList<T> implements Iterable<T>, ReadOnlyListenable<List<T>> {
 	private final EventListenerList<List<T>> listeners = new EventListenerList<>();
 	private List<T> values;
 	
@@ -34,6 +34,7 @@ public class ReadOnlyObservableList<T> implements Iterable<T>, Listenable<List<T
 	@Override
 	public void unlisten(Consumer<List<T>> listener) { listeners.remove(listener); }
 	
+	@Override
 	public List<T> get() { return Collections.unmodifiableList(values); }
 	
 	public T get(int index) { return values.get(index); }
@@ -44,6 +45,7 @@ public class ReadOnlyObservableList<T> implements Iterable<T>, Listenable<List<T
 	
 	public boolean contains(Object o) { return values.contains(o); }
 	
+	@Override
 	public Iterator<T> iterator() { return values.iterator(); }
 	
 	public Object[] toArray() { return values.toArray(); }

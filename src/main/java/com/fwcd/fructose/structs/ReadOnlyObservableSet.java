@@ -8,11 +8,12 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import com.fwcd.fructose.EventListenerList;
+import com.fwcd.fructose.ReadOnlyListenable;
 
 /**
  * An unordered, read-only set that can be listened to.
  */
-public class ReadOnlyObservableSet<T> implements Iterable<T> {
+public class ReadOnlyObservableSet<T> implements Iterable<T>, ReadOnlyListenable<Set<T>> {
 	private final EventListenerList<Set<T>> listeners = new EventListenerList<>();
 	private Set<T> values;
 	
@@ -20,15 +21,19 @@ public class ReadOnlyObservableSet<T> implements Iterable<T> {
 	
 	public ReadOnlyObservableSet(Set<T> values) { this.values = values; }
 	
+	@Override
 	public void listen(Consumer<Set<T>> listener) { listeners.add(listener); }
 	
+	@Override
 	public void listenAndFire(Consumer<Set<T>> listener) {
 		listen(listener);
 		listener.accept(values);
 	}
 	
+	@Override
 	public void unlisten(Consumer<Set<T>> listener) { listeners.remove(listener); }
 	
+	@Override
 	public Iterator<T> iterator() { return values.iterator(); }
 
 	public Object[] toArray() { return values.toArray(); }
@@ -43,6 +48,7 @@ public class ReadOnlyObservableSet<T> implements Iterable<T> {
 
 	public boolean containsAll(Collection<?> c) { return values.containsAll(c); }
 	
+	@Override
 	public Set<T> get() { return Collections.unmodifiableSet(values); }
 	
 	// Publicly exposes mutating methods

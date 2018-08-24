@@ -7,7 +7,7 @@ import java.util.function.Consumer;
  * immutable as the mutable subclass {@link Observable}
  * conforms to this class.
  */
-public class ReadOnlyObservable<T> implements Listenable<T> {
+public class ReadOnlyObservable<T> implements ReadOnlyListenable<T> {
 	private final EventListenerList<T> listeners = new EventListenerList<>();
 	private T value;
 	
@@ -15,6 +15,7 @@ public class ReadOnlyObservable<T> implements Listenable<T> {
 		this.value = value;
 	}
 	
+	@Override
 	public T get() {
 		return value;
 	}
