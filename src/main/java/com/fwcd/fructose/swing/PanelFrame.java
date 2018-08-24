@@ -14,8 +14,13 @@ import javax.swing.JFrame;
 public class PanelFrame extends JFrame {
 	private static final long serialVersionUID = 874934857L;
 	
+	@Deprecated
 	public PanelFrame(String title, int width, int height, Viewable viewable) {
 		this(title, width, height, viewable.getView());
+	}
+	
+	public PanelFrame(String title, int width, int height, View view) {
+		this(title, width, height, view.getComponent());
 	}
 	
 	public PanelFrame(String title, int width, int height, Component component) {

@@ -12,7 +12,7 @@ import com.fwcd.fructose.structs.TreeNode;
 /**
  * A graphical tree plotter using Swing.
  */
-public class TreePlotter implements Viewable, Rendereable {
+public class TreePlotter implements View, Rendereable {
 	private JComponent view;
 	private TreeNode treeRoot;
 	private int depth = Integer.MAX_VALUE; // The plotting depth of the tree
@@ -99,7 +99,7 @@ public class TreePlotter implements Viewable, Rendereable {
 	}
 
 	@Override
-	public JComponent getView() {
+	public JComponent getComponent() {
 		return view;
 	}
 }

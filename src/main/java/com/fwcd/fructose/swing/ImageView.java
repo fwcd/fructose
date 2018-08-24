@@ -17,7 +17,7 @@ import javax.swing.JPanel;
  * @author Fredrik
  *
  */
-public class ImageView implements Viewable, Rendereable {
+public class ImageView implements View, Rendereable {
 	private JPanel view;
 	private Image image;
 	private List<Runnable> listeners = new ArrayList<>();
@@ -69,7 +69,7 @@ public class ImageView implements Viewable, Rendereable {
 	}
 	
 	@Override
-	public JPanel getView() {
+	public JPanel getComponent() {
 		return view;
 	}
 

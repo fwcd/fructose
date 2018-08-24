@@ -20,7 +20,7 @@ import com.fwcd.fructose.Lazy;
 import com.fwcd.fructose.exception.Rethrow;
 import com.fwcd.fructose.io.DelegatePrintStream;
 
-public class ConsolePane implements Viewable {
+public class ConsolePane implements View {
 	private final JScrollPane view;
 	private final JTextPane textArea;
 	
@@ -136,7 +136,7 @@ public class ConsolePane implements Viewable {
 	}
 
 	@Override
-	public JComponent getView() {
+	public JComponent getComponent() {
 		return view;
 	}
 }

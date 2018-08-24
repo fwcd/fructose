@@ -2,7 +2,7 @@ package com.fwcd.fructose.swing;
 
 import javax.swing.JPanel;
 
-public class EmptyView implements Viewable {
+public class EmptyView implements View {
 	private JPanel view;
 	
 	public EmptyView() {
@@ -10,7 +10,7 @@ public class EmptyView implements Viewable {
 	}
 	
 	@Override
-	public JPanel getView() {
+	public JPanel getComponent() {
 		return view;
 	}
 }

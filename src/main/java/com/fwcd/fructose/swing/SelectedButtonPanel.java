@@ -12,7 +12,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
-public class SelectedButtonPanel implements Viewable {
+public class SelectedButtonPanel implements View {
 	private JComponent view;
 	
 	private final Color highlightColor;
@@ -115,7 +115,7 @@ public class SelectedButtonPanel implements Viewable {
 	}
 	
 	@Override
-	public JComponent getView() {
+	public JComponent getComponent() {
 		return view;
 	}
 

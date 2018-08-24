@@ -28,7 +28,7 @@ public class ShellWindow {
 		shellWindow.setLayout(new BorderLayout());
 		
 		console = new ConsolePane();
-		shellWindow.add(console.getView(), BorderLayout.CENTER);
+		shellWindow.add(console.getComponent(), BorderLayout.CENTER);
 		
 		ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
 		exec.scheduleAtFixedRate(() -> {

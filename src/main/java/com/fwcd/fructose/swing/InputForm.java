@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-public class InputForm implements Viewable {
+public class InputForm implements View {
 	private final JPanel view;
 	private HintTextField textField;
 	private JButton button;
@@ -42,7 +42,7 @@ public class InputForm implements Viewable {
 	public void requestFocus() { textField.requestFocus(); }
 	
 	@Override
-	public JPanel getView() { return view; }
+	public JPanel getComponent() { return view; }
 
 	public JButton getButton() { return button; }
 	

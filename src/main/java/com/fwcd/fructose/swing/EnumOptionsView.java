@@ -8,7 +8,7 @@ import javax.swing.JRadioButton;
 
 import com.fwcd.fructose.swing.properties.EnumOptionsProperty;
 
-public class EnumOptionsView implements Viewable {
+public class EnumOptionsView implements View {
 	private JPanel view = new JPanel();
 	
 	public EnumOptionsView(boolean horizontal) {
@@ -41,7 +41,7 @@ public class EnumOptionsView implements Viewable {
 	}
 	
 	@Override
-	public JComponent getView() {
+	public JComponent getComponent() {
 		return view;
 	}
 }
