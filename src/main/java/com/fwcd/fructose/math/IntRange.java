@@ -5,23 +5,24 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * An immutable, iterable range of integers including BOTH ends.
+ * An immutable, iterable range of integers
+ * including the start and excluding the end.
  */
-public class InclusiveIntRange implements Iterable<Integer> {
+public class IntRange implements Iterable<Integer> {
 	private final int start;
 	private final int end;
 	private final int step;
 	private final int value;
 	
-	public InclusiveIntRange(int start, int end) {
+	public IntRange(int start, int end) {
 		this(start, end, 1);
 	}
 	
-	public InclusiveIntRange(int start, int end, int step) {
+	public IntRange(int start, int end, int step) {
 		this(start, end, step, start);
 	}
 	
-	public InclusiveIntRange(int start, int end, int step, int value) {
+	public IntRange(int start, int end, int step, int value) {
 		this.start = start;
 		this.end = end;
 		this.step = step;
@@ -29,11 +30,7 @@ public class InclusiveIntRange implements Iterable<Integer> {
 	}
 	
 	public int length() {
-		return (end - start) + 1;
-	}
-	
-	public int startToValueLength() {
-		return value - start;
+		return end - start;
 	}
 	
 	public int getStart() {
@@ -69,7 +66,7 @@ public class InclusiveIntRange implements Iterable<Integer> {
 			
 			@Override
 			public boolean hasNext() {
-				return i <= (end - step);
+				return i < (end - step);
 			}
 
 			@Override
