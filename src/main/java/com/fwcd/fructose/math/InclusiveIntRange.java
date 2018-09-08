@@ -1,5 +1,6 @@
 package com.fwcd.fructose.math;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -7,7 +8,8 @@ import java.util.List;
 /**
  * An immutable, iterable range of integers including BOTH ends.
  */
-public class InclusiveIntRange implements Iterable<Integer> {
+public class InclusiveIntRange implements Iterable<Integer>, Serializable {
+	private static final long serialVersionUID = -1314277647900901292L;
 	private final int start;
 	private final int end;
 	private final int step;

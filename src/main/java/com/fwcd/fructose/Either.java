@@ -1,5 +1,6 @@
 package com.fwcd.fructose;
 
+import java.io.Serializable;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -8,7 +9,8 @@ import java.util.function.Consumer;
  * A non-null value that could either be
  * of the left or the right type.
  */
-public class Either<L, R> {
+public class Either<L, R> implements Serializable {
+	private static final long serialVersionUID = 6733622348610306228L;
 	private final L left;
 	private final R right;
 
