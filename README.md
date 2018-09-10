@@ -1,5 +1,5 @@
 # Fructose
-A general-purpose Java library that extends far beyond the scope of a simple set with utility classes.
+A general-purpose Java library providing an extensive set of utilities.
 
 [![Build Status](https://travis-ci.org/fwcd/Fructose.svg?branch=master)](https://travis-ci.org/fwcd/Fructose)
 
@@ -9,11 +9,22 @@ A general-purpose Java library that extends far beyond the scope of a simple set
     * Tensors, matrices, vectors
     * Prime sieves
     * Geometry
-* New data structures
+* Data structures
     * Stacks
     * Tables
     * Trees
     * Graphs
+* Listenables
+    * Observables
+    * Observable lists
+    * Observable sets
+    * Observable maps
+* Functional monads
+    * Either
+    * Pair
+    * NonNull
+    * Lazy
+    * Result
 * Machine learning
     * Perceptrons
     * Q-learning
@@ -28,23 +39,13 @@ A general-purpose Java library that extends far beyond the scope of a simple set
 * Time
     * Stopwatches
     * Timers
-* Functional monads
-    * Either
-    * Pair
-    * NonNull
-    * Lazy
-    * Result
 * Small, noteworthy classes
     * Probability distributions
     * Permutators
     * Annotations
-* Observables
-* Properties
-* Parsers
+    * Properties
+    * Parsers
 
-## Dependencies
-* Java 8
-
-## Build
-* Use the Gradle wrapper:
->`./gradlew build` or `gradlew build`
+## Building
+* macOS/Linux: `./gradlew build`
+* Windows: `gradlew build`
