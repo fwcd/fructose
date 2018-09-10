@@ -32,4 +32,7 @@ public class ObservableSet<T> extends ReadOnlyObservableSet<T> implements Set<T>
 
 	@Override
 	public void clear() { super.clear(); }
+	
+	@Override
+	public Set<T> getSilentlyMutable() { return super.getSilentlyMutable(); }
 }

@@ -9,12 +9,14 @@ import java.util.function.Consumer;
 
 import com.fwcd.fructose.EventListenerList;
 import com.fwcd.fructose.ReadOnlyListenable;
+import com.fwcd.fructose.structs.events.SetModifyEvent;
 
 /**
  * An unordered, read-only set that can be listened to.
  */
 public class ReadOnlyObservableSet<T> implements Iterable<T>, ReadOnlyListenable<Set<T>> {
-	private final EventListenerList<Set<T>> listeners = new EventListenerList<>();
+	private final EventListenerList<Set<T>> changeListeners = new EventListenerList<>();
+	private final EventListenerList<SetModifyEvent<T>> modifyListeners = new EventListenerList<>();
 	private Set<T> values;
 	
 	public ReadOnlyObservableSet() { values = new HashSet<>(); }
@@ -22,7 +24,7 @@ public class ReadOnlyObservableSet<T> implements Iterable<T>, ReadOnlyListenable
 	public ReadOnlyObservableSet(Set<T> values) { this.values = values; }
 	
 	@Override
-	public void listen(Consumer<Set<T>> listener) { listeners.add(listener); }
+	public void listen(Consumer<Set<T>> listener) { changeListeners.add(listener); }
 	
 	@Override
 	public void listenAndFire(Consumer<Set<T>> listener) {
@@ -31,7 +33,16 @@ public class ReadOnlyObservableSet<T> implements Iterable<T>, ReadOnlyListenable
 	}
 	
 	@Override
-	public void unlisten(Consumer<Set<T>> listener) { listeners.remove(listener); }
+	public void unlisten(Consumer<Set<T>> listener) { changeListeners.remove(listener); }
+	
+	public void listenForModifications(Consumer<SetModifyEvent<T>> listener) { modifyListeners.add(listener); }
+	
+	public void listenForModificationsAndFire(Consumer<SetModifyEvent<T>> listener) {
+		listenForModifications(listener);
+		listener.accept(new SetModifyEvent<>(values, Collections.emptySet()));
+	}
+	
+	public void unlistenForModifications(Consumer<SetModifyEvent<T>> listener) { modifyListeners.remove(listener); }
 	
 	@Override
 	public Iterator<T> iterator() { return values.iterator(); }
@@ -51,47 +62,69 @@ public class ReadOnlyObservableSet<T> implements Iterable<T>, ReadOnlyListenable
 	@Override
 	public Set<T> get() { return Collections.unmodifiableSet(values); }
 	
+	protected void fireChange() {
+		changeListeners.fire(values);
+	}
+	
+	protected void fireModification(Set<? extends T> added, Set<? extends T> removed) {
+		modifyListeners.fire(new SetModifyEvent<>(added, removed));
+	}
+	
 	// Publicly exposes mutating methods
 	
-	protected void set(Set<T> values) {
-		this.values = values;
-		fire();
+	protected Set<T> getSilentlyMutable() { return values; }
+	
+	protected void set(Set<T> newValues) {
+		Set<T> prevValues = values;
+		values = newValues;
+		fireChange();
+		fireModification(newValues, prevValues);
 	}
 	
 	protected boolean add(T e) {
 		boolean success = values.add(e);
-		fire();
+		fireChange();
+		fireModification(Collections.singleton(e), Collections.emptySet());
 		return success;
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected boolean remove(Object o) {
 		boolean success = values.remove(o);
-		fire();
+		fireChange();
+		fireModification(Collections.emptySet(), Collections.singleton((T) o));
 		return success;
 	}
 	
 	protected boolean addAll(Collection<? extends T> c) {
-		boolean success = values.addAll(c);
-		fire();
+		Set<? extends T> added = new HashSet<>(c);
+		boolean success = values.addAll(added);
+		fireChange();
+		fireModification(added, Collections.emptySet());
 		return success;
 	}
 	
 	protected boolean retainAll(Collection<?> c) {
+		Set<T> prevValues = new HashSet<>(values);
 		boolean success = values.retainAll(c);
-		fire();
+		fireChange();
+		fireModification(values, prevValues);
 		return success;
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected boolean removeAll(Collection<?> c) {
-		boolean success = values.removeAll(c);
-		fire();
+		Set<? extends T> removed = new HashSet<>((Collection<? extends T>) c);
+		boolean success = values.removeAll(removed);
+		fireChange();
+		fireModification(Collections.emptySet(), removed);
 		return success;
 	}
 	
 	protected void clear() {
+		Set<T> prevValues = new HashSet<>(values);
 		values.clear();
-		fire();
+		fireChange();
+		fireModification(Collections.emptySet(), prevValues);
 	}
-	
-	protected void fire() { listeners.fire(values); }
 }
