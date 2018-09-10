@@ -44,4 +44,7 @@ public class ObservableList<T> extends ReadOnlyObservableList<T> implements List
 
 	@Override
 	public T remove(int index) { return super.remove(index); }
+	
+	@Override
+	public List<T> getSilentlyMutable() { return super.getSilentlyMutable(); }
 }
