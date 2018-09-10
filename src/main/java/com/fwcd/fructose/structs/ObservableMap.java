@@ -25,4 +25,7 @@ public class ObservableMap<K, V> extends ReadOnlyObservableMap<K, V> implements 
 
 	@Override
 	public void clear() { super.clear(); }
+	
+	@Override
+	public Map<K, V> getSilentlyMutable() { return super.getSilentlyMutable(); }
 }

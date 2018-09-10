@@ -70,7 +70,7 @@ public class ReadOnlyObservableSet<T> implements Iterable<T>, ReadOnlyListenable
 		modifyListeners.fire(new SetModifyEvent<>(added, removed));
 	}
 	
-	// Publicly exposes mutating methods
+	// Protected, mutating methods
 	
 	protected Set<T> getSilentlyMutable() { return values; }
 	
