@@ -141,8 +141,6 @@ public final class ListUtils {
 			s += item.toString();
 		}
 
-
-		
 		return s;
 	}
 	

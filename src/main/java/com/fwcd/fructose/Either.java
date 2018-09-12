@@ -2,8 +2,10 @@ package com.fwcd.fructose;
 
 import java.io.Serializable;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * A non-null value that could either be
@@ -28,11 +30,13 @@ public class Either<L, R> implements Serializable {
 		return Optional.ofNullable(right);
 	}
 
-	public static <L, R> Either<L, R> ofLeft(L left) {
+	public static <X, Y> Either<X, Y> ofLeft(X left) {
+		Objects.requireNonNull(left, "Either.ofLeft can not be null");
 		return new Either<>(left, null);
 	}
 
-	public static <L, R> Either<L, R> ofRight(R right) {
+	public static <X, Y> Either<X, Y> ofRight(Y right) {
+		Objects.requireNonNull(right, "Either.ofRight can not be null");
 		return new Either<>(null, right);
 	}
 
@@ -42,24 +46,56 @@ public class Either<L, R> implements Serializable {
 		}
 	}
 
-	public L expectLeft() {
+	public L unwrapLeft() {
 		if (left == null) {
 			throw new NoSuchElementException("Either is not of the left type!");
 		}
 		return left;
 	}
 
-	public R expectRight() {
+	public R unwrapRight() {
 		if (right == null) {
 			throw new NoSuchElementException("Either is not of the right type!");
 		}
 		return right;
 	}
+	
+	/**
+	 * @deprecated Use {@link unwrapLeft}.
+	 */
+	@Deprecated
+	public L expectLeft() { return unwrapLeft(); }
+	
+	/**
+	 * @deprecated Use {@link unwrapRight}.
+	 */
+	@Deprecated
+	public R expectRight() { return unwrapRight(); }
 
 	public boolean isLeft() { return left != null; }
 
 	public boolean isRight() { return right != null; }
-
+	
+	public <X> X reduce(Function<? super L, ? extends X> leftMapper, Function<? super R, ? extends X> rightMapper) {
+		if (isLeft()) {
+			return leftMapper.apply(left);
+		} else if (isRight()) {
+			return rightMapper.apply(right);
+		} else {
+			throw new IllegalStateException("Either can't hold two null values!");
+		}
+	}
+	
+	public <X, Y> Either<X, Y> map(Function<? super L, ? extends X> leftMapper, Function<? super R, ? extends Y> rightMapper) {
+		if (isLeft()) {
+			return ofLeft(leftMapper.apply(left));
+		} else if (isRight()) {
+			return ofRight(rightMapper.apply(right));
+		} else {
+			throw new IllegalStateException("Either can't hold two null values!");
+		}
+	}
+	
 	public void match(Consumer<? super L> whenLeft, Consumer<? super R> whenRight) {
 		if (isLeft()) {
 			whenLeft.accept(left);
@@ -93,6 +129,6 @@ public class Either<L, R> implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Either (" + get().toString() + ")";
+		return "Either(" + get().toString() + ")";
 	}
 }

@@ -13,11 +13,6 @@ import java.util.stream.Stream;
 
 /**
  * An immutable tuple consisting of two objects.
- *
- * @author Fredrik
- *
- * @param <L>
- * @param <R>
  */
 public class Pair<L, R> implements Serializable, Iterable<Either<L, R>> {
 	private static final long serialVersionUID = 6344477728413315385L;
@@ -42,19 +37,19 @@ public class Pair<L, R> implements Serializable, Iterable<Either<L, R>> {
 
 	public R getRight() { return right; }
 
-	public <T> T reduce(BiFunction<? super L, ? super R, T> reducer) {
+	public <T> T reduce(BiFunction<? super L, ? super R, ? extends T> reducer) {
 		return reducer.apply(left, right);
 	}
 
-	public <X, Y> Pair<X, Y> map(Function<? super L, X> aMapper, Function<? super R, Y> bMapper) {
-		return new Pair<>(aMapper.apply(left), bMapper.apply(right));
+	public <X, Y> Pair<X, Y> map(Function<? super L, ? extends X> leftMapper, Function<? super R, ? extends Y> rightMapper) {
+		return new Pair<>(leftMapper.apply(left), rightMapper.apply(right));
 	}
 
-	public <X> Pair<X, R> mapLeft(Function<? super L, X> mapper) {
+	public <X> Pair<X, R> mapLeft(Function<? super L, ? extends X> mapper) {
 		return new Pair<>(mapper.apply(left), right);
 	}
 
-	public <Y> Pair<L, Y> mapRight(Function<? super R, Y> mapper) {
+	public <Y> Pair<L, Y> mapRight(Function<? super R, ? extends Y> mapper) {
 		return new Pair<>(left, mapper.apply(right));
 	}
 
@@ -73,7 +68,7 @@ public class Pair<L, R> implements Serializable, Iterable<Either<L, R>> {
 
 	@Override
 	public String toString() {
-		return "<" + left.toString() + ", " + right.toString() + ">";
+		return "Pair(" + left.toString() + ", " + right.toString() + ")";
 	}
 
 	public Stream<Either<L, R>> stream() {

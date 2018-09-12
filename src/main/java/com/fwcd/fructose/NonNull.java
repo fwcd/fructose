@@ -5,10 +5,13 @@ import java.util.NoSuchElementException;
 
 /**
  * A not-null asserted value. Throws an exception
- * IMMEDIATLY upon assignment of null (or access if empty)
+ * immediately after construction (or access if empty)
  * to prevent nulls from being passed arbitrarily
  * around the program.
+ * 
+ * @deprecated Use {@link Option} instead.
  */
+@Deprecated
 public class NonNull<T> implements Serializable {
 	private static final long serialVersionUID = -3491679088491580794L;
 	private static final NonNull<Void> EMPTY = new NonNull<>(null, "Empty");
@@ -60,7 +63,7 @@ public class NonNull<T> implements Serializable {
 
 	@Override
 	public String toString() {
-		return "NonNull (" + description + ")";
+		return "NonNull(" + description + ")";
 	}
 
 	@Override
