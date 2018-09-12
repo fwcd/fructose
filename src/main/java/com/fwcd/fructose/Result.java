@@ -17,19 +17,27 @@ public class Result<T, E extends Throwable> {
 		return new Result<>(Either.ofLeft(value));
 	}
 
+	public static <T, E extends Throwable> Result<T, E> ofEither(Either<T, E> value) {
+		return new Result<>(value);
+	}
+	
 	public static <T, E extends Throwable> Result<T, E> ofFailure(E error) {
 		return new Result<>(Either.ofRight(error));
 	}
-
-	public Optional<T> get() {
-		return value.getLeft();
-	}
-
-	public T expect() {
+	
+	public T unwrap() {
 		if (value.isLeft()) {
-			return value.expectLeft();
+			return value.unwrapLeft();
 		} else {
-			throw new IllegalStateException("Invalidly expected a successful result", value.expectRight());
+			throw new IllegalStateException("Invalidly expected a successful result", value.unwrapRight());
+		}
+	}
+	
+	public E unwrapError() {
+		if (value.isRight()) {
+			return value.unwrapRight();
+		} else {
+			throw new IllegalStateException("Invalidly expected a failed result: " + value.unwrapLeft());
 		}
 	}
 
@@ -41,15 +49,23 @@ public class Result<T, E extends Throwable> {
 		return value.isRight();
 	}
 
+	public Optional<T> get() {
+		return value.getLeft();
+	}
+
 	public Optional<E> getError() {
 		return value.getRight();
 	}
-
-	public E expectError() {
-		if (value.isRight()) {
-			return value.expectRight();
-		} else {
-			throw new IllegalStateException("Invalidly expected a failed result: " + value.expectLeft());
-		}
-	}
+	
+	/**
+	 * @deprecated Use {@code unwrap}
+	 */
+	@Deprecated
+	public T expect() { return unwrap(); }
+	
+	/**
+	 * @deprecated Use {@code unwrapError}
+	 */
+	@Deprecated
+	public E expectError() { return unwrapError(); }
 }

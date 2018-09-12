@@ -14,11 +14,11 @@ import java.util.List;
  * @author Fredrik
  *
  */
-public abstract class DrawApp implements Rendereable {
+public abstract class DrawApp implements Renderable {
 	private final PanelFrame view;
 	private final RenderPanel panel;
 	private final Thread drawThread;
-	private final List<Rendereable> items = new ArrayList<>();
+	private final List<Renderable> items = new ArrayList<>();
 	
 	private int fps = 0;
 	private DrawMode mode = DrawMode.OUTLINE;
@@ -91,7 +91,7 @@ public abstract class DrawApp implements Rendereable {
 	@Override
 	public void render(Graphics2D g2d, Dimension canvasSize) {
 		draw();
-		for (Rendereable item : items) {
+		for (Renderable item : items) {
 			item.render(g2d, canvasSize);
 		}
 	}
@@ -100,7 +100,7 @@ public abstract class DrawApp implements Rendereable {
 		FILL, OUTLINE;
 	}
 	
-	protected class Text implements Rendereable {
+	protected class Text implements Renderable {
 		private String value;
 		private int x;
 		private int y;
@@ -141,7 +141,7 @@ public abstract class DrawApp implements Rendereable {
 		}
 	}
 	
-	protected class Rectangle implements Rendereable {
+	protected class Rectangle implements Renderable {
 		private int x;
 		private int y;
 		private int width;
@@ -203,7 +203,7 @@ public abstract class DrawApp implements Rendereable {
 		}
 	}
 	
-	protected class Line implements Rendereable {
+	protected class Line implements Renderable {
 		private int startX;
 		private int startY;
 		private int endX;
@@ -254,7 +254,7 @@ public abstract class DrawApp implements Rendereable {
 		}
 	}
 	
-	protected class Ellipse implements Rendereable {
+	protected class Ellipse implements Renderable {
 		private int x;
 		private int y;
 		private int width;

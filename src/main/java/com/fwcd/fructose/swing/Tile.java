@@ -11,7 +11,7 @@ import java.awt.Image;
  * @author Fredrik
  *
  */
-public class Tile implements Rendereable {
+public class Tile implements Renderable {
 	private Image image;
 	
 	public Tile(String resourcePath) {

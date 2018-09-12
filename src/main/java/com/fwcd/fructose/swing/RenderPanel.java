@@ -7,17 +7,17 @@ import javax.swing.JPanel;
 
 public class RenderPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
-	private final Rendereable[] onRender;
+	private final Renderable[] onRender;
 	
-	public RenderPanel(Rendereable... onRender) {
+	public RenderPanel(Renderable... onRender) {
 		this.onRender = onRender;
 	}
 	
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		for (Rendereable rendereable : onRender) {
-			rendereable.render((Graphics2D) g, getSize());
+		for (Renderable Renderable : onRender) {
+			Renderable.render((Graphics2D) g, getSize());
 		}
 	}
 }

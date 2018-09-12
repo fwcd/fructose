@@ -11,7 +11,7 @@ import java.awt.Image;
  * @author Fredrik
  *
  */
-public class FillingImage implements Rendereable {
+public class FillingImage implements Renderable {
 	private Image image;
 	
 	public FillingImage(Image image) {

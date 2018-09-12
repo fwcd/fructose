@@ -2,16 +2,12 @@ package com.fwcd.fructose.test.unittest;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.fwcd.fructose.structs.ObservableMap;
 import com.fwcd.fructose.structs.events.MapModifyEvent;
-import com.fwcd.fructose.structs.events.SetModifyEvent;
 
 import org.junit.Test;
 

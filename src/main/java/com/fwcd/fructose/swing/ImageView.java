@@ -17,7 +17,7 @@ import javax.swing.JPanel;
  * @author Fredrik
  *
  */
-public class ImageView implements View, Rendereable {
+public class ImageView implements View, Renderable {
 	private JPanel view;
 	private Image image;
 	private List<Runnable> listeners = new ArrayList<>();
