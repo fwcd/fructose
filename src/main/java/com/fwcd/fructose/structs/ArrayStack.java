@@ -7,7 +7,8 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
+
+import com.fwcd.fructose.Option;
 
 public class ArrayStack<T> implements Stack<T> {
 	private Deque<T> contents = new ArrayDeque<>();
@@ -103,8 +104,8 @@ public class ArrayStack<T> implements Stack<T> {
 	}
 
 	@Override
-	public Optional<T> optionalPeek() {
-		return Optional.ofNullable(peek());
+	public Option<T> optionalPeek() {
+		return Option.ofNullable(peek());
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package com.fwcd.fructose.parsers.ebnf;
 
-import java.util.Optional;
-import java.util.OptionalInt;
+import com.fwcd.fructose.Option;
+import com.fwcd.fructose.OptionInt;
 
 /**
  * A token as in formal language theory. Every token
@@ -17,7 +17,7 @@ public interface Token {
 	 * terminal in reached. If this returns empty,
 	 * it could not be matched at all.
 	 */
-	OptionalInt matchCount(Terminal... sequence);
+	OptionInt matchCount(Terminal... sequence);
 	
 	boolean matches(Terminal... sequence);
 	
@@ -33,7 +33,7 @@ public interface Token {
 		return matches(TokenUtils.asTerminals(sequence));
 	}
 	
-	default Optional<Terminal> asTerminal() {
-		return Optional.empty();
+	default Option<Terminal> asTerminal() {
+		return Option.empty();
 	}
 }

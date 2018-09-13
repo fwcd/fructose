@@ -1,6 +1,6 @@
 package com.fwcd.fructose.parsers.ebnf;
 
-import java.util.OptionalInt;
+import com.fwcd.fructose.OptionInt;
 
 /**
  * A labelled token. Mainly useful for parsing.
@@ -23,7 +23,7 @@ public class LabelledToken implements Token {
 	}
 	
 	@Override
-	public OptionalInt matchCount(Terminal... sequence) {
+	public OptionInt matchCount(Terminal... sequence) {
 		return token.matchCount(sequence);
 	}
 	

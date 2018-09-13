@@ -1,6 +1,6 @@
 package com.fwcd.fructose.parsers.ebnf;
 
-import java.util.OptionalInt;
+import com.fwcd.fructose.OptionInt;
 
 /**
  * A token that may be matched zero or
@@ -17,7 +17,7 @@ public class LoopToken implements Token {
 	}
 
 	@Override
-	public OptionalInt matchCount(Terminal... sequence) {
+	public OptionInt matchCount(Terminal... sequence) {
 		int matches = 0;
 		
 		for (Terminal terminal : sequence) {
@@ -28,7 +28,7 @@ public class LoopToken implements Token {
 			}
 		}
 		
-		return OptionalInt.of(matches);
+		return OptionInt.of(matches);
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package com.fwcd.fructose.parsers.ebnf;
 
-import java.util.OptionalInt;
+import com.fwcd.fructose.OptionInt;
 
 /**
  * A token that may be matched exactly zero or
@@ -17,11 +17,11 @@ public class OptionalToken implements Token {
 	}
 
 	@Override
-	public OptionalInt matchCount(Terminal... sequence) {
+	public OptionInt matchCount(Terminal... sequence) {
 		if (sequence.length > 0 && token.matches(sequence[0])) {
-			return OptionalInt.of(1);
+			return OptionInt.of(1);
 		} else {
-			return OptionalInt.of(0);
+			return OptionInt.of(0);
 		}
 	}
 

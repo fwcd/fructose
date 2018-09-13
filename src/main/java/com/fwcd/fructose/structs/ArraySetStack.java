@@ -1,17 +1,18 @@
 package com.fwcd.fructose.structs;
 
-import java.util.Optional;
 import java.util.function.BiPredicate;
 
+import com.fwcd.fructose.Option;
+
 public class ArraySetStack<T> extends ArrayStack<T> implements SetStack<T> {
-	private Optional<BiPredicate<? super T, ? super T>> equalityChecker;
+	private Option<BiPredicate<? super T, ? super T>> equalityChecker;
 	
 	public ArraySetStack() {
-		equalityChecker = Optional.empty();
+		equalityChecker = Option.empty();
 	}
 	
 	public ArraySetStack(BiPredicate<? super T, ? super T> equalityChecker) {
-		this.equalityChecker = Optional.of(equalityChecker);
+		this.equalityChecker = Option.of(equalityChecker);
 	}
 	
 	@Override

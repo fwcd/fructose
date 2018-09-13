@@ -3,7 +3,8 @@ package com.fwcd.fructose.structs;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.List;
-import java.util.Optional;
+
+import com.fwcd.fructose.Option;
 
 /**
  * An actual LIFO-stack that only permits stack-related operations
@@ -30,7 +31,7 @@ public interface Stack<T> extends Iterable<T> {
 	
 	void rebase(T newItem);
 	
-	Optional<T> optionalPeek();
+	Option<T> optionalPeek();
 	
 	boolean isEmpty();
 	

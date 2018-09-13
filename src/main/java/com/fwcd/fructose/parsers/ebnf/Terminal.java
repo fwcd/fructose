@@ -1,7 +1,7 @@
 package com.fwcd.fructose.parsers.ebnf;
 
-import java.util.Optional;
-import java.util.OptionalInt;
+import com.fwcd.fructose.Option;
+import com.fwcd.fructose.OptionInt;
 
 /**
  * A constant token that does not consist
@@ -31,13 +31,13 @@ public class Terminal implements Token {
 	}
 
 	@Override
-	public Optional<Terminal> asTerminal() {
-		return Optional.of(this);
+	public Option<Terminal> asTerminal() {
+		return Option.of(this);
 	}
 
 	@Override
-	public OptionalInt matchCount(Terminal... sequence) {
-		return sequence.length > 0 && equals(sequence[0]) ? OptionalInt.of(1) : OptionalInt.empty();
+	public OptionInt matchCount(Terminal... sequence) {
+		return sequence.length > 0 && equals(sequence[0]) ? OptionInt.of(1) : OptionInt.empty();
 	}
 	
 	@Override

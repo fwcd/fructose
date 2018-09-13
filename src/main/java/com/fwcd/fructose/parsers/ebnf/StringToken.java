@@ -1,6 +1,6 @@
 package com.fwcd.fructose.parsers.ebnf;
 
-import java.util.OptionalInt;
+import com.fwcd.fructose.OptionInt;
 
 /**
  * Represents a string token that consists
@@ -17,7 +17,7 @@ public class StringToken implements Token {
 	}
 	
 	@Override
-	public OptionalInt matchCount(Terminal... sequence) {
+	public OptionInt matchCount(Terminal... sequence) {
 		return token.matchCount(sequence);
 	}
 

@@ -1,8 +1,9 @@
 package com.fwcd.fructose.parsers.ebnf;
 
 import java.util.Arrays;
-import java.util.OptionalInt;
 import java.util.stream.Stream;
+
+import com.fwcd.fructose.OptionInt;
 
 /**
  * A set of tokens of which only one has to match.
@@ -29,16 +30,16 @@ public class OrCombo implements Token {
 	}
 
 	@Override
-	public OptionalInt matchCount(Terminal... sequence) {
+	public OptionInt matchCount(Terminal... sequence) {
 		for (Token token : tokens) {
-			OptionalInt count = token.matchCount(sequence);
+			OptionInt count = token.matchCount(sequence);
 			
 			if (count.isPresent()) {
 				return count;
 			}
 		}
 		
-		return OptionalInt.empty();
+		return OptionInt.empty();
 	}
 	
 	@Override

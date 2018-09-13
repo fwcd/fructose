@@ -2,8 +2,9 @@ package com.fwcd.fructose.parsers.ebnf;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;
-import java.util.OptionalInt;
 import java.util.stream.Stream;
+
+import com.fwcd.fructose.OptionInt;
 
 /**
  * An array of "concatenated" tokens that need to be
@@ -20,12 +21,12 @@ public class ConcatCombo implements Token {
 	}
 
 	@Override
-	public OptionalInt matchCount(Terminal... sequence) {
+	public OptionInt matchCount(Terminal... sequence) {
 		Terminal[] seq = sequence;
 		int matchCount = 0;
 		
 		for (Token token : tokens) {
-			OptionalInt count = token.matchCount(seq);
+			OptionInt count = token.matchCount(seq);
 			
 			if (count.isPresent()) {
 				int unwrappedCount = count.orElseThrow(NoSuchElementException::new);
@@ -36,11 +37,11 @@ public class ConcatCombo implements Token {
 				
 				matchCount += unwrappedCount;
 			} else {
-				return OptionalInt.empty();
+				return OptionInt.empty();
 			}
 		}
 		
-		return OptionalInt.of(matchCount);
+		return OptionInt.of(matchCount);
 	}
 
 	@Override
