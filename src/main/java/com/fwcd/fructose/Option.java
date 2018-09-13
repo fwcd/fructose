@@ -9,6 +9,9 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.function.ToDoubleFunction;
+import java.util.function.ToIntFunction;
+import java.util.function.ToLongFunction;
 import java.util.stream.Stream;
 
 /**
@@ -179,6 +182,45 @@ public class Option<T> implements Serializable, Iterable<T> {
 	}
 	
 	/**
+	 * Returns an {@link OptionInt} containing the result of the
+	 * function if present, otherwise returns an empty {@link OptionInt}.
+	 */
+	public OptionInt mapToInt(ToIntFunction<? super T> mapper) {
+		Objects.requireNonNull(mapper, "Mapper function can not be null");
+		if (value == null) {
+			return OptionInt.empty();
+		} else {
+			return OptionInt.of(mapper.applyAsInt(value));
+		}
+	}
+	
+	/**
+	 * Returns an {@link OptionDouble} containing the result of the
+	 * function if present, otherwise returns an empty {@link OptionDouble}.
+	 */
+	public OptionDouble mapToDouble(ToDoubleFunction<? super T> mapper) {
+		Objects.requireNonNull(mapper, "Mapper function can not be null");
+		if (value == null) {
+			return OptionDouble.empty();
+		} else {
+			return OptionDouble.of(mapper.applyAsDouble(value));
+		}
+	}
+	
+	/**
+	 * Returns an {@link OptionLong} containing the result of the
+	 * function if present, otherwise returns an empty {@link OptionLong}.
+	 */
+	public OptionLong mapToLong(ToLongFunction<? super T> mapper) {
+		Objects.requireNonNull(mapper, "Mapper function can not be null");
+		if (value == null) {
+			return OptionLong.empty();
+		} else {
+			return OptionLong.of(mapper.applyAsLong(value));
+		}
+	}
+	
+	/**
 	 * Returns the result of the function if present,
 	 * otherwise returns an empty {@link Option}.
 	 */
@@ -186,6 +228,45 @@ public class Option<T> implements Serializable, Iterable<T> {
 		Objects.requireNonNull(mapper, "Mapper function can not be null");
 		if (value == null) {
 			return empty();
+		} else {
+			return mapper.apply(value);
+		}
+	}
+	
+	/**
+	 * Returns the result of the function if present,
+	 * otherwise returns an empty {@link OptionInt}.
+	 */
+	public OptionInt flatMapToInt(Function<? super T, ? extends OptionInt> mapper) {
+		Objects.requireNonNull(mapper, "Mapper function can not be null");
+		if (value == null) {
+			return OptionInt.empty();
+		} else {
+			return mapper.apply(value);
+		}
+	}
+	
+	/**
+	 * Returns the result of the function if present,
+	 * otherwise returns an empty {@link OptionDouble}.
+	 */
+	public OptionDouble flatMapToDouble(Function<? super T, ? extends OptionDouble> mapper) {
+		Objects.requireNonNull(mapper, "Mapper function can not be null");
+		if (value == null) {
+			return OptionDouble.empty();
+		} else {
+			return mapper.apply(value);
+		}
+	}
+	
+	/**
+	 * Returns the result of the function if present,
+	 * otherwise returns an empty {@link OptionLong}.
+	 */
+	public OptionLong flatMapToLong(Function<? super T, ? extends OptionLong> mapper) {
+		Objects.requireNonNull(mapper, "Mapper function can not be null");
+		if (value == null) {
+			return OptionLong.empty();
 		} else {
 			return mapper.apply(value);
 		}
@@ -214,14 +295,14 @@ public class Option<T> implements Serializable, Iterable<T> {
 	}
 	
 	/**
-	 * Converts this {@link Option} to a {@link java.util.Optional}.
-	 */
-	public Optional<T> toOptional() { return Optional.ofNullable(value); }
-	
-	/**
 	 * Converts this {@link Option} to a nullable value.
 	 */
 	public T orElseNull() { return value; }
+	
+	/**
+	 * Converts this {@link Option} to a {@link java.util.Optional}.
+	 */
+	public Optional<T> toOptional() { return Optional.ofNullable(value); }
 	
 	@Override
 	public Iterator<T> iterator() {

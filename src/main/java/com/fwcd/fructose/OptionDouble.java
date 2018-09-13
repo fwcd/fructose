@@ -3,11 +3,14 @@ package com.fwcd.fructose;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.OptionalDouble;
 import java.util.function.DoubleConsumer;
 import java.util.function.DoubleFunction;
 import java.util.function.DoublePredicate;
 import java.util.function.DoubleSupplier;
+import java.util.function.DoubleToIntFunction;
+import java.util.function.DoubleToLongFunction;
 import java.util.function.DoubleUnaryOperator;
 import java.util.function.Supplier;
 import java.util.stream.DoubleStream;
@@ -136,6 +139,7 @@ public class OptionDouble implements Serializable, Iterable<Double>, ToleranceEq
 	 * {@link OptionDouble}.
 	 */
 	public OptionDouble filter(DoublePredicate predicate) {
+		Objects.requireNonNull(predicate, "Predicate can not be null");
 		if (present) {
 			return predicate.test(value) ? this : empty();
 		} else {
@@ -148,6 +152,7 @@ public class OptionDouble implements Serializable, Iterable<Double>, ToleranceEq
 	 * function if present, otherwise returns an empty {@link OptionDouble}.
 	 */
 	public OptionDouble map(DoubleUnaryOperator mapper) {
+		Objects.requireNonNull(mapper, "Mapper function can not be null");
 		if (present) {
 			return of(mapper.applyAsDouble(value));
 		} else {
@@ -156,10 +161,37 @@ public class OptionDouble implements Serializable, Iterable<Double>, ToleranceEq
 	}
 	
 	/**
+	 * Returns an {@link OptionInt} containing the result of the
+	 * function if present, otherwise returns an empty {@link OptionInt}.
+	 */
+	public OptionInt mapToInt(DoubleToIntFunction mapper) {
+		Objects.requireNonNull(mapper, "Mapper function can not be null");
+		if (present) {
+			return OptionInt.of(mapper.applyAsInt(value));
+		} else {
+			return OptionInt.empty();
+		}
+	}
+	
+	/**
+	 * Returns an {@link OptionLong} containing the result of the
+	 * function if present, otherwise returns an empty {@link OptionLong}.
+	 */
+	public OptionLong mapToLong(DoubleToLongFunction mapper) {
+		Objects.requireNonNull(mapper, "Mapper function can not be null");
+		if (present) {
+			return OptionLong.of(mapper.applyAsLong(value));
+		} else {
+			return OptionLong.empty();
+		}
+	}
+	
+	/**
 	 * Returns an {@link OptionDouble} containing the result of the
 	 * function if present, otherwise returns an empty {@link OptionDouble}.
 	 */
 	public <R> Option<R> mapToObj(DoubleFunction<? extends R> mapper) {
+		Objects.requireNonNull(mapper, "Mapper function can not be null");
 		if (present) {
 			return Option.of(mapper.apply(value));
 		} else {
@@ -172,10 +204,50 @@ public class OptionDouble implements Serializable, Iterable<Double>, ToleranceEq
 	 * otherwise returns an empty {@link OptionDouble}.
 	 */
 	public OptionDouble flatMap(DoubleFunction<? extends OptionDouble> mapper) {
+		Objects.requireNonNull(mapper, "Mapper function can not be null");
 		if (present) {
 			return mapper.apply(value);
 		} else {
 			return empty();
+		}
+	}
+	
+	/**
+	 * Returns the result of the function if present,
+	 * otherwise returns an empty {@link OptionInt}.
+	 */
+	public OptionInt flatMapToInt(DoubleFunction<? extends OptionInt> mapper) {
+		Objects.requireNonNull(mapper, "Mapper function can not be null");
+		if (present) {
+			return mapper.apply(value);
+		} else {
+			return OptionInt.empty();
+		}
+	}
+	
+	/**
+	 * Returns the result of the function if present,
+	 * otherwise returns an empty {@link OptionLong}.
+	 */
+	public OptionLong flatMapToLong(DoubleFunction<? extends OptionLong> mapper) {
+		Objects.requireNonNull(mapper, "Mapper function can not be null");
+		if (present) {
+			return mapper.apply(value);
+		} else {
+			return OptionLong.empty();
+		}
+	}
+	
+	/**
+	 * Returns the result of the function if present,
+	 * otherwise returns an empty {@link Option}.
+	 */
+	public <R> Option<R> flatMapToObj(DoubleFunction<? extends Option<R>> mapper) {
+		Objects.requireNonNull(mapper, "Mapper function can not be null");
+		if (present) {
+			return mapper.apply(value);
+		} else {
+			return Option.empty();
 		}
 	}
 	
@@ -202,9 +274,20 @@ public class OptionDouble implements Serializable, Iterable<Double>, ToleranceEq
 	}
 	
 	/**
+	 * Converts this {@link OptionDouble} to a boxed nullable value.
+	 */
+	public Double orElseNull() { return present ? value : null; }
+	
+	/**
 	 * Converts this {@link OptionDouble} to a {@link java.util.OptionalDouble}.
 	 */
 	public OptionalDouble toOptionalDouble() { return present ? OptionalDouble.of(value) : OptionalDouble.empty(); }
+	
+	public Option<Double> boxed() { return present ? Option.of(value) : Option.empty(); }
+	
+	public OptionInt toOptionInt() { return present ? OptionInt.of((int) value) : OptionInt.empty(); }
+	
+	public OptionLong toOptionLong() { return present ? OptionLong.of((long) value) : OptionLong.empty(); }
 	
 	@Override
 	public Iterator<Double> iterator() {
