@@ -19,10 +19,10 @@ A general-purpose Java library providing an extensive set of utilities.
     * Observable lists
     * Observable sets
     * Observable maps
-* Functional monads
+* Functors and monads
+    * Option
     * Either
     * Pair
-    * NonNull
     * Lazy
     * Result
 * Machine learning

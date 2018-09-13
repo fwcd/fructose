@@ -30,12 +30,20 @@ public class Lazy<T> {
 	public boolean hasBeenInitialized() {
 		return value != null;
 	}
-
+	
 	public <R> Lazy<R> map(Function<? super T, ? extends R> mapper) {
 		if (value == null) {
 			return of(() -> mapper.apply(value));
 		} else {
 			return ofConstant(mapper.apply(value));
+		}
+	}
+	
+	public <R> Lazy<R> flatMap(Function<? super T, ? extends Lazy<R>> mapper) {
+		if (value == null) {
+			return of(() -> mapper.apply(value).get());
+		} else {
+			return mapper.apply(value);
 		}
 	}
 
