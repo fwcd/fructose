@@ -33,7 +33,7 @@ public class Lazy<T> {
 	
 	public <R> Lazy<R> map(Function<? super T, ? extends R> mapper) {
 		if (value == null) {
-			return of(() -> mapper.apply(value));
+			return of(() -> mapper.apply(get()));
 		} else {
 			return ofConstant(mapper.apply(value));
 		}
@@ -41,7 +41,7 @@ public class Lazy<T> {
 	
 	public <R> Lazy<R> flatMap(Function<? super T, ? extends Lazy<R>> mapper) {
 		if (value == null) {
-			return of(() -> mapper.apply(value).get());
+			return of(() -> mapper.apply(get()).get());
 		} else {
 			return mapper.apply(value);
 		}

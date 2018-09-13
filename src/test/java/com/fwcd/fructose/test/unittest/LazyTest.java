@@ -24,5 +24,22 @@ public class LazyTest {
 		assertEquals(10, c.get().intValue());
 		assertTrue(b.hasBeenInitialized());
 		assertTrue(c.hasBeenInitialized());
+		
+		Flag evaluated = new Flag();
+		Lazy<Integer> d = Lazy.of(() -> {
+			evaluated.value = true;
+			return 3 * 3;
+		});
+		assertEquals(evaluated.value, d.hasBeenInitialized());
+		
+		Lazy<String> e = d.map(it -> it.toString());
+		assertFalse(e.hasBeenInitialized());
+		assertEquals("9", e.get());
+		assertTrue(d.hasBeenInitialized());
+		assertTrue(evaluated.value);
+	}
+	
+	private static class Flag {
+		boolean value = false;
 	}
 }
