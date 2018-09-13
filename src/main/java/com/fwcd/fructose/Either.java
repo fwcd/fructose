@@ -3,7 +3,6 @@ package com.fwcd.fructose;
 import java.io.Serializable;
 import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -22,12 +21,12 @@ public class Either<L, R> implements Serializable {
 		assertNotCompletelyNull();
 	}
 
-	public Optional<L> getLeft() {
-		return Optional.ofNullable(left);
+	public Option<L> getLeft() {
+		return Option.ofNullable(left);
 	}
 
-	public Optional<R> getRight() {
-		return Optional.ofNullable(right);
+	public Option<R> getRight() {
+		return Option.ofNullable(right);
 	}
 
 	public static <X, Y> Either<X, Y> ofLeft(X left) {

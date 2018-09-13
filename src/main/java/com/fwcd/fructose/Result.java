@@ -1,7 +1,5 @@
 package com.fwcd.fructose;
 
-import java.util.Optional;
-
 /**
  * Safely wraps a result that could either be a value
  * of an exception.
@@ -49,11 +47,11 @@ public class Result<T, E extends Throwable> {
 		return value.isRight();
 	}
 
-	public Optional<T> get() {
+	public Option<T> get() {
 		return value.getLeft();
 	}
 
-	public Optional<E> getError() {
+	public Option<E> getError() {
 		return value.getRight();
 	}
 	

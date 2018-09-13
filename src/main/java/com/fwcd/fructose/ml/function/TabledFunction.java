@@ -2,7 +2,8 @@ package com.fwcd.fructose.ml.function;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
+
+import com.fwcd.fructose.Option;
 
 /**
  * A very simple {@link LearningFunction} that learns through
@@ -15,14 +16,14 @@ import java.util.Optional;
  */
 public class TabledFunction<I, O> implements LearningFunction<I, O> {
 	private final Map<I, O> results = new HashMap<>();
-	private Optional<O> defaultOutput;
+	private Option<O> defaultOutput;
 	
 	public TabledFunction() {
-		defaultOutput = Optional.empty();
+		defaultOutput = Option.empty();
 	}
 	
 	public TabledFunction(O defaultOutput) {
-		this.defaultOutput = Optional.of(defaultOutput);
+		this.defaultOutput = Option.of(defaultOutput);
 	}
 	
 	@Override

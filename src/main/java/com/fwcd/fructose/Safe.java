@@ -1,7 +1,5 @@
 package com.fwcd.fructose;
 
-import java.util.Optional;
-
 import com.fwcd.fructose.function.ThrowingSupplier;
 
 /**
@@ -12,11 +10,11 @@ import com.fwcd.fructose.function.ThrowingSupplier;
 public final class Safe {
 	private Safe() {}
 
-	public static <T> Optional<T> arrayGet(T[] array, int index) {
+	public static <T> Option<T> arrayGet(T[] array, int index) {
 		if (index >= 0 && index < array.length) {
-			return Optional.ofNullable(array[index]);
+			return Option.ofNullable(array[index]);
 		} else {
-			return Optional.empty();
+			return Option.empty();
 		}
 	}
 
@@ -28,11 +26,11 @@ public final class Safe {
 		}
 	}
 
-	public static <T> Optional<T> cast(Object value, Class<T> resultingType) {
+	public static <T> Option<T> cast(Object value, Class<T> resultingType) {
 		try {
-			return Optional.ofNullable(resultingType.cast(value));
+			return Option.ofNullable(resultingType.cast(value));
 		} catch (ClassCastException e) {
-			return Optional.empty();
+			return Option.empty();
 		}
 	}
 }

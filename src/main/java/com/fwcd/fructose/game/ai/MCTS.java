@@ -1,7 +1,6 @@
 package com.fwcd.fructose.game.ai;
 
-import java.util.Optional;
-
+import com.fwcd.fructose.Option;
 import com.fwcd.fructose.game.GameMove;
 import com.fwcd.fructose.game.GameRole;
 import com.fwcd.fructose.game.GameState;
@@ -16,10 +15,10 @@ import com.fwcd.fructose.time.Timer;
  *
  */
 public class MCTS<M extends GameMove, R extends GameRole> extends TemplateGameAI<M, R> {
-	private Optional<TreePlotter> plotter = Optional.empty();
+	private Option<TreePlotter> plotter = Option.empty();
 
 	public void setPlotter(TreePlotter plotter) {
-		this.plotter = Optional.of(plotter);
+		this.plotter = Option.of(plotter);
 	}
 	
 	/**
