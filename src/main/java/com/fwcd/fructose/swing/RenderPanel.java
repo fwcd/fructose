@@ -16,8 +16,8 @@ public class RenderPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		for (Renderable Renderable : onRender) {
-			Renderable.render((Graphics2D) g, getSize());
+		for (Renderable renderable : onRender) {
+			renderable.render((Graphics2D) g, getSize());
 		}
 	}
 }

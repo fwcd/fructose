@@ -12,15 +12,15 @@ import javax.swing.JButton;
 public class DrawGraphicsButton extends JButton {
 	private static final long serialVersionUID = 1L;
 	
-	public DrawGraphicsButton(Dimension size, Renderable... Renderables) {
+	public DrawGraphicsButton(Dimension size, Renderable... renderables) {
 		setPreferredSize(size);
 		
 		Image image = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2d = (Graphics2D) image.getGraphics();
 		g2d.setColor(Color.BLACK);
 		
-		for (Renderable Renderable : Renderables) {
-			Renderable.render(g2d, size);
+		for (Renderable renderable : renderables) {
+			renderable.render(g2d, size);
 		}
 		
 		setIcon(new ImageIcon(image));
