@@ -1,13 +1,13 @@
 package com.fwcd.fructose.swing;
 
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 public class ResourceImage {
-	private Image image;
+	private BufferedImage image;
 	
 	public ResourceImage(String resourceURL) {
 		try {
@@ -17,7 +17,7 @@ public class ResourceImage {
 		}
 	}
 	
-	public Image get() {
+	public BufferedImage get() {
 		return image;
 	}
 	
