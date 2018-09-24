@@ -2,7 +2,7 @@ package com.fwcd.fructose;
 
 /**
  * Safely wraps a result that could either be a value
- * of an exception.
+ * or an exception.
  */
 public class Result<T, E extends Throwable> {
 	private final Either<T, E> value;
@@ -31,7 +31,7 @@ public class Result<T, E extends Throwable> {
 		}
 	}
 	
-	public E unwrapError() {
+	public E unwrapFailure() {
 		if (value.isRight()) {
 			return value.unwrapRight();
 		} else {
@@ -51,19 +51,19 @@ public class Result<T, E extends Throwable> {
 		return value.getLeft();
 	}
 
-	public Option<E> getError() {
+	public Option<E> getFailure() {
 		return value.getRight();
 	}
 	
 	/**
-	 * @deprecated Use {@code unwrap}
+	 * @deprecated Use {@code unwrapFailure}
 	 */
 	@Deprecated
-	public T expect() { return unwrap(); }
+	public E unwrapError() { return unwrapFailure(); }
 	
 	/**
-	 * @deprecated Use {@code unwrapError}
+	 * @deprecated Use {@code getFailure}
 	 */
 	@Deprecated
-	public E expectError() { return unwrapError(); }
+	public Option<E> getError() { return getFailure(); }
 }
