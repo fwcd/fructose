@@ -6,8 +6,7 @@ import java.time.temporal.ChronoUnit;
 /**
  * A span of time.
  * 
- * @author Fredrik
- *
+ * @deprecated Use {@link DateInterval}
  */
 public class DateSpan {
 	private final LocalDate start; // Inclusive

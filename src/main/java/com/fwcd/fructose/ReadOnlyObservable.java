@@ -1,6 +1,7 @@
 package com.fwcd.fructose;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * A read-only value that can be listened to. It is not
@@ -34,6 +35,12 @@ public class ReadOnlyObservable<T> implements ReadOnlyListenable<T> {
 	@Override
 	public void unlisten(Consumer<T> listener) {
 		listeners.remove(listener);
+	}
+	
+	public <R> ReadOnlyObservable<R> map(Function<? super T, ? extends R> mapper) {
+		Observable<R> result = new Observable<>(mapper.apply(value));
+		listen(newValue -> result.set(mapper.apply(newValue)));
+		return result;
 	}
 	
 	// Protected, mutating methods
