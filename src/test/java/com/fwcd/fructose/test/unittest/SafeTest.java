@@ -23,14 +23,14 @@ public class SafeTest {
 	public void safeAttemptTest() {
 		Result<Integer, Throwable> result = Safe.attempt(() -> 2 + ((Integer) ((Object) "A string")));
 		assertThrows(result::unwrap, IllegalStateException.class);
-		assertTrue(result.unwrapError() instanceof ClassCastException);
+		assertTrue(result.unwrapFailure() instanceof ClassCastException);
 		assertFalse(result.get().isPresent());
-		assertTrue(result.getError().isPresent());
+		assertTrue(result.getFailure().isPresent());
 
 		Result<String, Throwable> anotherResult = Safe.attempt(() -> "Another string");
-		assertThrows(anotherResult::unwrapError, IllegalStateException.class);
+		assertThrows(anotherResult::unwrapFailure, IllegalStateException.class);
 		assertEquals("Another string", anotherResult.unwrap());
-		assertFalse(anotherResult.getError().isPresent());
+		assertFalse(anotherResult.getFailure().isPresent());
 		assertTrue(anotherResult.get().isPresent());
 	}
 

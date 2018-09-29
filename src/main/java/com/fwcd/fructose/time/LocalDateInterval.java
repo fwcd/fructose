@@ -3,6 +3,9 @@ package com.fwcd.fructose.time;
 import java.time.LocalDate;
 import java.time.Period;
 
+/**
+ * A fixed interval between two {@link LocalDate}s.
+ */
 public class LocalDateInterval {
 	private final LocalDate startInclusive;
 	private final LocalDate endExclusive;
