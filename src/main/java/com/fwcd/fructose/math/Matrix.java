@@ -50,15 +50,21 @@ public class Matrix<V extends Numeric<V>> implements
 
 	@Override
 	public Matrix<V> add(Matrix<V> rhs) {
-		return combineElementwise(rhs, (a, b) -> a.add(b));
+		return zipElementwise(rhs, (a, b) -> a.add(b));
 	}
 
 	@Override
 	public Matrix<V> sub(Matrix<V> rhs) {
-		return combineElementwise(rhs, (a, b) -> a.sub(b));
+		return zipElementwise(rhs, (a, b) -> a.sub(b));
 	}
 	
-	public Matrix<V> combineElementwise(Matrix<V> rhs, BinaryOperator<V> combiner) {
+	/**
+	 * @deprecated Use {@code zipElementwise} instead
+	 */
+	@Deprecated
+	public Matrix<V> combineElementwise(Matrix<V> rhs, BinaryOperator<V> combiner) { return zipElementwise(rhs, combiner); }
+	
+	public Matrix<V> zipElementwise(Matrix<V> rhs, BinaryOperator<V> zipper) {
 		int width = width();
 		int height = height();
 		List<List<V>> result = new ArrayList<>();

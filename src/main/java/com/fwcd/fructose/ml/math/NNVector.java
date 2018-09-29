@@ -48,7 +48,7 @@ public class NNVector implements Iterable<Float>, Serializable {
 		this.data = data;
 	}
 	
-	public void increment(NNVector delta) {
+	public void addInPlace(NNVector delta) {
 		if (delta.size() != size()) {
 			throw new SizeMismatchException("first summand's size", size(), "second summand's size", delta.size());
 		}
@@ -96,7 +96,7 @@ public class NNVector implements Iterable<Float>, Serializable {
 		return result;
 	}
 	
-	public NNVector with(NNVector other, FloatBinaryOperator combiner) {
+	public NNVector zip(NNVector other, FloatBinaryOperator zipper) {
 		if (size() != other.size()) {
 			throw new SizeMismatchException("vector size", size(), "other vector size", other.size());
 		}
@@ -104,7 +104,7 @@ public class NNVector implements Iterable<Float>, Serializable {
 		float[] result = new float[size()];
 		
 		for (int i=0; i<result.length; i++) {
-			result[i] = combiner.applyAsFloat(data[i], other.data[i]);
+			result[i] = zipper.applyAsFloat(data[i], other.data[i]);
 		}
 		
 		return new NNVector(result);
@@ -177,7 +177,7 @@ public class NNVector implements Iterable<Float>, Serializable {
 		return new NNVector(result);
 	}
 	
-	public void mapDirectly(FloatUnaryOperator func) {
+	public void mapInPlace(FloatUnaryOperator func) {
 		for (int i=0; i<size(); i++) {
 			data[i] = func.applyAsFloat(data[i]);
 		}
@@ -185,7 +185,7 @@ public class NNVector implements Iterable<Float>, Serializable {
 	
 	public NNVector map(FloatUnaryOperator func) {
 		NNVector result = copy();
-		result.mapDirectly(func);
+		result.mapInPlace(func);
 		return result;
 	}
 	
@@ -241,7 +241,7 @@ public class NNVector implements Iterable<Float>, Serializable {
 		data[i] = value;
 	}
 	
-	public void increment(int i, float value) {
+	public void addInPlace(int i, float value) {
 		data[i] += value;
 	}
 
@@ -311,9 +311,9 @@ public class NNVector implements Iterable<Float>, Serializable {
 		return "[NNVector] " + Arrays.toString(data);
 	}
 
-	public void incrementByAll(Iterable<NNVector> deltas) {
+	public void addAllInPlace(Iterable<NNVector> deltas) {
 		for (NNVector delta : deltas) {
-			increment(delta);
+			addInPlace(delta);
 		}
 	}
 

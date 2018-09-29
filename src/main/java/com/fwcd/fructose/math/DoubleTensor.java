@@ -126,7 +126,13 @@ public class DoubleTensor implements Serializable {
 		return new DoubleTensor(result, dimensions);
 	}
 	
-	public DoubleTensor combineElementwise(DoubleTensor other, DoubleBinaryOperator mapper) {
+	/**
+	 * @deprecated Use {@code zipElementwise} instead
+	 */
+	@Deprecated
+	public DoubleTensor combineElementwise(DoubleTensor other, DoubleBinaryOperator mapper) { return zipElementwise(other, mapper); }
+	
+	public DoubleTensor zipElementwise(DoubleTensor other, DoubleBinaryOperator mapper) {
 		if (!Arrays.equals(dimensions, other.dimensions)) {
 			throw new SizeMismatchException(
 					"tensor size",

@@ -236,13 +236,19 @@ public abstract class TemplateVector<V extends TemplateVector<V>> implements
 		return newInstance(res);
 	}
 	
-	public V combine(V other, DoubleBinaryOperator combiner) {
+	/**
+	 * @deprecated Use {@code zip} instead
+	 */
+	@Deprecated
+	public V combine(V other, DoubleBinaryOperator combiner) { return zip(other, combiner); }
+	
+	public V zip(V other, DoubleBinaryOperator zipper) {
 		final int size = size();
 		assertEqualSize(size, other.size());
 		double[] res = new double[size];
 		
 		for (int i=0; i<size; i++) {
-			res[i] = combiner.applyAsDouble(get(i), other.get(i));
+			res[i] = zipper.applyAsDouble(get(i), other.get(i));
 		}
 		
 		return newInstance(res);

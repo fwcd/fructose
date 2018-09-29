@@ -189,19 +189,19 @@ public class Perceptron implements SupervisedNN<NNVector, NNVector> {
 											nonActivatedLayers[lastLayerIndex]
 									)
 							)
-							.multiply(2F) // Because the derivative of x^2 is requires the factor 2
+							.multiply(2F) // Because the derivative of x^2 requires the factor 2
 			);
 			
 			for (int i=0; i<layerCount; i++) {
 				if (sumWeightNudges[i] == null) {
 					sumWeightNudges[i] = currentWeightNudges[i];
 				} else {
-					sumWeightNudges[i].increment(currentWeightNudges[i]);
+					sumWeightNudges[i].addInPlace(currentWeightNudges[i]);
 				}
 				if (sumBiasNudges[i] == null) {
 					sumBiasNudges[i] = currentBiasNudges[i];
 				} else {
-					sumBiasNudges[i].increment(currentBiasNudges[i]);
+					sumBiasNudges[i].addInPlace(currentBiasNudges[i]);
 				}
 			}
 			
@@ -214,7 +214,7 @@ public class Perceptron implements SupervisedNN<NNVector, NNVector> {
 		for (NNMatrix sumWeightsDelta : sumWeightNudges) {
 			if (sumWeightsDelta != null) {
 				NNMatrix weights = allWeights[wLayerIndex];
-				weights.increment(sumWeightsDelta.multiply(1F / samples));
+				weights.addInPlace(sumWeightsDelta.multiply(1F / samples));
 			}
 			wLayerIndex++;
 		}
@@ -223,7 +223,7 @@ public class Perceptron implements SupervisedNN<NNVector, NNVector> {
 		for (NNVector sumBiasDelta : sumBiasNudges) {
 			if (sumBiasDelta != null) {
 				NNVector biases = allBiases[bLayerIndex];
-				biases.increment(sumBiasDelta.multiply(1F / samples));
+				biases.addInPlace(sumBiasDelta.multiply(1F / samples));
 			}
 			bLayerIndex++;
 		}

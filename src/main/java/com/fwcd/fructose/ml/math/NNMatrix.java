@@ -103,13 +103,13 @@ public class NNMatrix implements Iterable<float[]>, Serializable {
 		return data.length;
 	}
 	
-	public void incrementByAll(Iterable<NNMatrix> deltas) {
+	public void addAllInPlace(Iterable<NNMatrix> deltas) {
 		for (NNMatrix delta : deltas) {
-			increment(delta);
+			addInPlace(delta);
 		}
 	}
 	
-	public void increment(NNMatrix delta) {
+	public void addInPlace(NNMatrix delta) {
 		if (delta.width() != width() || delta.height() != height()) {
 			throw new SizeMismatchException("delta matrix size", delta.getSize(), "matrix size", getSize());
 		}
@@ -121,7 +121,7 @@ public class NNMatrix implements Iterable<float[]>, Serializable {
 		}
 	}
 	
-	public void mapDirectly(FloatUnaryOperator func) {
+	public void mapInPlace(FloatUnaryOperator func) {
 		for (int y=0; y<height(); y++) {
 			for (int x=0; x<width(); x++) {
 				data[y][x] = func.applyAsFloat(data[y][x]);
@@ -152,7 +152,7 @@ public class NNMatrix implements Iterable<float[]>, Serializable {
 		
 		for (int y=0; y<height(); y++) {
 			for (int x=0; x<width(); x++) {
-				result.increment(y, data[y][x] * vec.get(x));
+				result.addInPlace(y, data[y][x] * vec.get(x));
 			}
 		}
 		
@@ -183,7 +183,7 @@ public class NNMatrix implements Iterable<float[]>, Serializable {
 		return result;
 	}
 	
-	public void increment(int x, int y, float value) {
+	public void addInPlace(int x, int y, float value) {
 		data[y][x] += value;
 	}
 	
