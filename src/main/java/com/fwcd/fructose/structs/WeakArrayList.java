@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 /**
@@ -73,15 +74,42 @@ public class WeakArrayList<T> implements List<T> {
 
 	@Override
 	public Iterator<T> iterator() {
-		removeObsoleteEntries();
 		return new Iterator<T>() {
-			private final Iterator<WeakReference<T>> refIterator = entries.iterator();
+			private final Iterator<WeakReference<T>> delegate = entries.iterator();
+			private T peeked = null;
 			
 			@Override
-			public boolean hasNext() { return refIterator.hasNext(); }
+			public boolean hasNext() {
+				// Advance the delegate iterator until a valid reference
+				// was found or the iteration ended
+				while (delegate.hasNext()) {
+					peeked = delegate.next().get();
+					if (peeked != null) {
+						return true;
+					}
+				}
+				return false;
+			}
 			
 			@Override
-			public T next() { return refIterator.next().get(); }
+			public T next() {
+				if (peeked != null) {
+					T result = peeked;
+					peeked = null;
+					return result;
+				}
+				
+				// Advance the delegate iterator until a valid reference
+				// was found or the iteration ended
+				while (delegate.hasNext()) {
+					T value = delegate.next().get();
+					if (value != null) {
+						return value;
+					}
+				}
+				
+				throw new NoSuchElementException("WeakArrayList.Iterator could not find a next element");
+			}
 		};
 	}
 
@@ -277,5 +305,39 @@ public class WeakArrayList<T> implements List<T> {
 
 		@Override
 		public void add(T e) { delegate.add(new WeakReference<>(e)); }
+	}
+	
+	@Override
+	public int hashCode() {
+		return 9 * entries.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (!getClass().equals(obj.getClass())) return false;
+		WeakArrayList<?> other = (WeakArrayList<?>) obj;
+		removeObsoleteEntries();
+		other.removeObsoleteEntries();
+		return entries.equals(other.entries);
+	}
+	
+	@Override
+	public String toString() {
+		Iterator<WeakReference<T>> iterator = entries.iterator();
+		StringBuilder str = new StringBuilder().append('[');
+		while (iterator.hasNext()) {
+			T value = iterator.next().get();
+			if (value == null) {
+				iterator.remove();
+			} else {
+				str.append(value).append(", ");
+			}
+		}
+		return str
+			.delete(str.length() - 2, str.length())
+			.append(']')
+			.toString();
 	}
 }
