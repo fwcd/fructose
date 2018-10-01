@@ -3,6 +3,8 @@ package com.fwcd.fructose.time;
 import java.time.LocalDate;
 import java.time.Period;
 
+import com.fwcd.fructose.CompareUtils;
+
 /**
  * A fixed, half-open interval between two {@link LocalDate}s.
  */
@@ -28,6 +30,13 @@ public class LocalDateInterval {
 	
 	public boolean contains(LocalDate date) {
 		return (date.compareTo(startInclusive) >= 0) && (date.compareTo(endExclusive) < 0);
+	}
+	
+	public LocalDateInterval merge(LocalDateInterval other) {
+		return new LocalDateInterval(
+			CompareUtils.min(getStart(), getEnd(), other.getStart(), other.getEnd()),
+			CompareUtils.max(getStart(), getEnd(), other.getStart(), other.getEnd())
+		);
 	}
 	
 	public boolean overlaps(LocalDateInterval other) {
