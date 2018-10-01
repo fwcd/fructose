@@ -59,22 +59,27 @@ public class ObservableTest {
 		
 		byte[] value = new byte[64];
 		Observable<byte[]> obs = new Observable<>(value);
-		
-		{
-			ReadOnlyObservable<Integer> derived = obs.map(it -> it.length);
-			assertThat(obs.get(), equalTo(value));
-			assertThat(derived.get(), equalTo(64));
-			assertThat(obs.weakListenerCount(), equalTo(1));
-			
-			derived.listen(v -> listenerCalls++);
-			obs.set(new byte[32]);
-			assertThat(listenerCalls, equalTo(1));
-		}
+		testScopedDerivedObservable(value, obs);
 		
 		System.gc();
 		assumeThat(obs.weakListenerCount(), equalTo(0));
 		
 		obs.set(new byte[16]);
+		assertThat(listenerCalls, equalTo(1));
+	}
+
+	private void testScopedDerivedObservable(byte[] value, Observable<byte[]> obs) {
+		ReadOnlyObservable<Integer> derived = obs.map(it -> it.length);
+		assertThat(obs.get(), equalTo(value));
+		assertThat(derived.get(), equalTo(64));
+		assertThat(obs.weakListenerCount(), equalTo(1));
+		
+		// Ensure that the weak observer is not collected too early
+		System.gc();
+		assumeThat(obs.weakListenerCount(), equalTo(1));
+		
+		derived.listen(v -> listenerCalls++);
+		obs.set(new byte[32]);
 		assertThat(listenerCalls, equalTo(1));
 	}
 }

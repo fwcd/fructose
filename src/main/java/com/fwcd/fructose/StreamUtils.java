@@ -75,6 +75,6 @@ public final class StreamUtils {
 	 */
 	@SafeVarargs
 	public static <T> Stream<T> merge(Stream<T>... streams) {
-		return Stream.of(streams).flatMap(FunctionUtils::identity);
+		return Stream.of(streams).flatMap(FunctionUtils::<Stream<T>>identity);
 	}
 }

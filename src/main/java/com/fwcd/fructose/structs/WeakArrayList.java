@@ -7,10 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.stream.Collectors;
-
-import com.fwcd.fructose.StreamUtils;
 
 /**
  * An {@link ArrayList}-based {@link List} implementation
