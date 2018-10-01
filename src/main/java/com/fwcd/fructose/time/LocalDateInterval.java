@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.Period;
 
 /**
- * A fixed interval between two {@link LocalDate}s.
+ * A fixed, half-open interval between two {@link LocalDate}s.
  */
 public class LocalDateInterval {
 	private final LocalDate startInclusive;
@@ -15,14 +15,23 @@ public class LocalDateInterval {
 		this.endExclusive = endExclusive;
 	}
 	
+	/** Returns the inclusive start */
 	public LocalDate getStart() { return startInclusive; }
 	
+	/** Returns the inclusive end */
+	public LocalDate getLastDate() { return endExclusive.minusDays(1); }
+	
+	/** Returns the exclusive end */
 	public LocalDate getEnd() { return endExclusive; }
 	
 	public Period getPeriod() { return Period.between(startInclusive, endExclusive); }
 	
 	public boolean contains(LocalDate date) {
 		return (date.compareTo(startInclusive) >= 0) && (date.compareTo(endExclusive) < 0);
+	}
+	
+	public boolean overlaps(LocalDateInterval other) {
+		return getStart().isBefore(other.getEnd()) && other.getStart().isBefore(getEnd());
 	}
 	
 	@Override
