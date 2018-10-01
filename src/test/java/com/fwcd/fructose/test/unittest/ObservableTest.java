@@ -69,7 +69,7 @@ public class ObservableTest {
 	}
 
 	private void testScopedDerivedObservable(byte[] value, Observable<byte[]> obs) {
-		ReadOnlyObservable<Integer> derived = obs.map(it -> it.length);
+		ReadOnlyObservable<Integer> derived = obs.mapWeakly(it -> it.length);
 		assertThat(obs.get(), equalTo(value));
 		assertThat(derived.get(), equalTo(64));
 		assertThat(obs.weakListenerCount(), equalTo(1));

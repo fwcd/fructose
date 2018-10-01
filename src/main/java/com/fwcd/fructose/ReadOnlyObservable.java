@@ -56,7 +56,21 @@ public class ReadOnlyObservable<T> implements ReadOnlyListenable<T> {
 	
 	public int listenerCount() { return listeners.size(); }
 	
+	/**
+	 * @deprecated Use {@code mapStrongly} or {@code mapWeakly}
+	 */
+	@Deprecated
 	public <R> ReadOnlyObservable<R> map(Function<? super T, ? extends R> mapper) {
+		return mapStrongly(mapper);
+	}
+	
+	public <R> ReadOnlyObservable<R> mapStrongly(Function<? super T, ? extends R> mapper) {
+		DerivedObservable<R, T> result = new DerivedObservable<>(mapper.apply(value), mapper);
+		listen(result);
+		return result;
+	}
+	
+	public <R> ReadOnlyObservable<R> mapWeakly(Function<? super T, ? extends R> mapper) {
 		DerivedObservable<R, T> result = new DerivedObservable<>(mapper.apply(value), mapper);
 		listenWeakly(result);
 		return result;
