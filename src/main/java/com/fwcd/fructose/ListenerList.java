@@ -33,6 +33,24 @@ public class ListenerList {
 		getWeakListeners().remove(listener);
 	}
 	
+	public boolean containsListener(Runnable listener) {
+		if (listeners.contains(listener)) {
+			return true;
+		}
+		if (lazyWeakListeners != null) {
+			if (lazyWeakListeners.contains(listener)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public int listenerCount() { return listeners.size(); }
+	
+	public int weakListenerCount() { return (lazyWeakListeners == null) ? 0 : lazyWeakListeners.size(); } 
+	
+	public int size() { return listenerCount() + weakListenerCount(); }
+	
 	public void fire() {
 		synchronized (listeners) {
 			for (Runnable listener : listeners) {
