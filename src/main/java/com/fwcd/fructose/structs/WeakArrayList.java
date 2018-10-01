@@ -7,7 +7,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.stream.Collectors;
+
+import com.fwcd.fructose.StreamUtils;
 
 /**
  * An {@link ArrayList}-based {@link List} implementation
@@ -317,10 +320,28 @@ public class WeakArrayList<T> implements List<T> {
 		if (this == obj) return true;
 		if (obj == null) return false;
 		if (!getClass().equals(obj.getClass())) return false;
+		
 		WeakArrayList<?> other = (WeakArrayList<?>) obj;
-		removeObsoleteEntries();
-		other.removeObsoleteEntries();
-		return entries.equals(other.entries);
+		Iterator<T> thisIterator = iterator();
+		Iterator<?> otherIterator = other.iterator();
+		boolean thisHasNext;
+		boolean otherHasNext;
+		
+		while (true) {
+			thisHasNext = thisIterator.hasNext();
+			otherHasNext = otherIterator.hasNext();
+			
+			if (thisHasNext && otherHasNext) {
+				if (!thisIterator.next().equals(otherIterator.next())) {
+					return false;
+				}
+			} else {
+				// Only return true when both iterators have no more elements
+				// left, otherwise one of the iterators has to be longer than
+				// the other.
+				return !thisHasNext && !otherHasNext;
+			}
+		}
 	}
 	
 	@Override
