@@ -5,10 +5,9 @@ import java.util.Objects;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
-import com.fwcd.fructose.function.FunctionUtils;
 
 public final class StreamUtils {
 	private StreamUtils() {}
@@ -75,6 +74,6 @@ public final class StreamUtils {
 	 */
 	@SafeVarargs
 	public static <T> Stream<T> merge(Stream<T>... streams) {
-		return Stream.of(streams).flatMap(FunctionUtils::<Stream<T>>identity);
+		return Stream.of(streams).flatMap(Function.identity());
 	}
 }
