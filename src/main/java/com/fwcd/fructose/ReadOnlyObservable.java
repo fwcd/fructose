@@ -37,9 +37,28 @@ public class ReadOnlyObservable<T> implements ReadOnlyListenable<T> {
 		listeners.remove(listener);
 	}
 	
+	public void listenWeakly(Consumer<T> listener) {
+		listeners.addWeakListener(listener);
+	}
+	
+	public void listenWeaklyAndFire(Consumer<T> listener) {
+		listenWeakly(listener);
+		listener.accept(value);
+	}
+	
+	public void unlistenWeakly(Consumer<T> listener) {
+		listeners.removeWeakListener(listener);
+	}
+	
+	public int strongListenerCount() { return listeners.strongListenerCount(); }
+	
+	public int weakListenerCount() { return listeners.weakListenerCount(); }
+	
+	public int listenerCount() { return listeners.size(); }
+	
 	public <R> ReadOnlyObservable<R> map(Function<? super T, ? extends R> mapper) {
 		Observable<R> result = new Observable<>(mapper.apply(value));
-		listen(newValue -> result.set(mapper.apply(newValue)));
+		listenWeakly(newValue -> result.set(mapper.apply(newValue)));
 		return result;
 	}
 	

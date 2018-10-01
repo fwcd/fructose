@@ -45,11 +45,11 @@ public class ListenerList {
 		return false;
 	}
 	
-	public int listenerCount() { return listeners.size(); }
+	public int strongListenerCount() { return listeners.size(); }
 	
 	public int weakListenerCount() { return (lazyWeakListeners == null) ? 0 : lazyWeakListeners.size(); } 
 	
-	public int size() { return listenerCount() + weakListenerCount(); }
+	public int size() { return strongListenerCount() + weakListenerCount(); }
 	
 	public void fire() {
 		synchronized (listeners) {
