@@ -134,4 +134,14 @@ public class ArrayBiList<A, B> implements BiList<A, B> {
 		aItems.clear();
 		bItems.clear();
 	}
+	
+	@Override
+	public void setA(int i, A value) {
+		aItems.set(i, value);
+	}
+	
+	@Override
+	public void setB(int i, B value) {
+		bItems.set(i, value);
+	}
 }

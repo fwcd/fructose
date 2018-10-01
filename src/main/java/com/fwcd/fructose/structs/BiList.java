@@ -42,6 +42,10 @@ public interface BiList<A, B> extends BiIterable<A, B> {
 	
 	B getB(int i);
 	
+	void setA(int i, A value);
+	
+	void setB(int i, B value);
+	
 	Pair<A, B> get(int i);
 	
 	default void addAll(BiList<? extends A, ? extends B> list) {
