@@ -251,6 +251,11 @@ public class OptionInt implements Serializable, Iterable<Integer>, ToleranceEqua
 		}
 	}
 	
+	public OptionInt or(Supplier<OptionInt> other) {
+		Objects.requireNonNull(other);
+		return present ? this : Objects.requireNonNull(other.get());
+	}
+	
 	/**
 	 * Returns this value if present, otherwise the parameter.
 	 */

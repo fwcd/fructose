@@ -251,6 +251,11 @@ public class OptionLong implements Serializable, Iterable<Long>, ToleranceEquata
 		}
 	}
 	
+	public OptionLong or(Supplier<OptionLong> other) {
+		Objects.requireNonNull(other);
+		return present ? this : Objects.requireNonNull(other.get());
+	}
+	
 	/**
 	 * Returns this value if present, otherwise the parameter.
 	 */

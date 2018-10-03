@@ -251,6 +251,11 @@ public class OptionDouble implements Serializable, Iterable<Double>, ToleranceEq
 		}
 	}
 	
+	public OptionDouble or(Supplier<OptionDouble> other) {
+		Objects.requireNonNull(other);
+		return present ? this : Objects.requireNonNull(other.get());
+	}
+	
 	/**
 	 * Returns this value if present, otherwise the parameter.
 	 */

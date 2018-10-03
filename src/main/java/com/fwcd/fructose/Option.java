@@ -272,6 +272,11 @@ public class Option<T> implements Serializable, Iterable<T> {
 		}
 	}
 	
+	public Option<T> or(Supplier<Option<T>> other) {
+		Objects.requireNonNull(other);
+		return (value == null) ? Objects.requireNonNull(other.get()) : this;
+	}
+	
 	/**
 	 * Returns this value if present, otherwise the parameter.
 	 */
@@ -283,7 +288,7 @@ public class Option<T> implements Serializable, Iterable<T> {
 	 * Returns this value if present, otherwise the evaluated parameter.
 	 */
 	public T orElseGet(Supplier<? extends T> other) {
-		return (value == null) ? other.get() : value;
+		return (value == null) ? Objects.requireNonNull(other.get()) : value;
 	}
 	
 	public <E extends Throwable> T orElseThrow(Supplier<? extends E> exception) throws E {
