@@ -6,9 +6,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import com.fwcd.fructose.EventListenerList;
 import com.fwcd.fructose.ReadOnlyListenable;
+import com.fwcd.fructose.StreamUtils;
 import com.fwcd.fructose.structs.events.SetModifyEvent;
 
 /**
@@ -43,6 +45,8 @@ public class ReadOnlyObservableSet<T> implements Iterable<T>, ReadOnlyListenable
 	}
 	
 	public void unlistenForModifications(Consumer<SetModifyEvent<T>> listener) { modifyListeners.remove(listener); }
+	
+	public Stream<T> stream() { return StreamUtils.stream(this); }
 	
 	@Override
 	public Iterator<T> iterator() { return values.iterator(); }

@@ -7,9 +7,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import com.fwcd.fructose.EventListenerList;
 import com.fwcd.fructose.ReadOnlyListenable;
+import com.fwcd.fructose.StreamUtils;
 import com.fwcd.fructose.math.IntRange;
 import com.fwcd.fructose.structs.events.ListModifyEvent;
 
@@ -56,6 +58,8 @@ public class ReadOnlyObservableList<T> implements Iterable<T>, ReadOnlyListenabl
 	public boolean isEmpty() { return values.isEmpty(); }
 	
 	public boolean contains(Object o) { return values.contains(o); }
+	
+	public Stream<T> stream() { return StreamUtils.stream(this); }
 	
 	@Override
 	public Iterator<T> iterator() { return values.iterator(); }

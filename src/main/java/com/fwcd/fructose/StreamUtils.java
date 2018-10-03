@@ -12,6 +12,14 @@ import java.util.stream.StreamSupport;
 public final class StreamUtils {
 	private StreamUtils() {}
 	
+	public static <T> Stream<T> stream(Iterable<T> iterable) {
+		return StreamSupport.stream(iterable.spliterator(), false);
+	}
+	
+	public static <T> Stream<T> toStream(Iterator<T> iterator) {
+		return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED), false);
+	}
+	
 	/**
 	 * Zips two streams together using a function.
 	 * 
@@ -60,7 +68,7 @@ public final class StreamUtils {
 	 * might provide better performance for finite streams.</p>
 	 */
 	@SafeVarargs
-	public static <T> Stream<T> concat(Stream<T>... streams) {
+	public static <T> Stream<? extends T> concat(Stream<? extends T>... streams) {
 		return Stream.of(streams)
 			.reduce(Stream::concat)
 			.orElseGet(Stream::empty);
@@ -73,7 +81,7 @@ public final class StreamUtils {
 	 * for which {@code StreamUtils.concat} should be preferred.</p>
 	 */
 	@SafeVarargs
-	public static <T> Stream<T> merge(Stream<T>... streams) {
+	public static <T> Stream<T> merge(Stream<? extends T>... streams) {
 		return Stream.of(streams).flatMap(Function.identity());
 	}
 }
