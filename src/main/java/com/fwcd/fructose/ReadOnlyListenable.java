@@ -18,4 +18,9 @@ public interface ReadOnlyListenable<T> {
 		listen(listener);
 		return () -> unlisten(listener);
 	}
+	
+	default Subscription subscribeAndFire(Consumer<T> listener) {
+		listenAndFire(listener);
+		return () -> unlisten(listener);
+	}
 }
