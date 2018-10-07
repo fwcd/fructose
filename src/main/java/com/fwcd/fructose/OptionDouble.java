@@ -315,7 +315,7 @@ public class OptionDouble implements Serializable, Iterable<Double>, ToleranceEq
 	}
 	
 	public DoubleStream stream() {
-		return DoubleStream.of(value);
+		return present ? DoubleStream.of(value) : DoubleStream.empty();
 	}
 	
 	@Override

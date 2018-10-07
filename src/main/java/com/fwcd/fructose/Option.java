@@ -330,7 +330,7 @@ public class Option<T> implements Serializable, Iterable<T> {
 	}
 	
 	public Stream<T> stream() {
-		return Stream.of(value);
+		return (value == null) ? Stream.empty() : Stream.of(value);
 	}
 	
 	@Override

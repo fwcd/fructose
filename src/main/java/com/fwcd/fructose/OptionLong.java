@@ -315,7 +315,7 @@ public class OptionLong implements Serializable, Iterable<Long>, ToleranceEquata
 	}
 	
 	public LongStream stream() {
-		return LongStream.of(value);
+		return present ? LongStream.of(value) : LongStream.empty();
 	}
 	
 	@Override

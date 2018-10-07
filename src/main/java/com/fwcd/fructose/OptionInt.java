@@ -315,7 +315,7 @@ public class OptionInt implements Serializable, Iterable<Integer>, ToleranceEqua
 	}
 	
 	public IntStream stream() {
-		return IntStream.of(value);
+		return present ? IntStream.of(value) : IntStream.empty();
 	}
 	
 	@Override
