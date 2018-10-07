@@ -81,6 +81,21 @@ public class OptionDouble implements Serializable, Iterable<Double>, ToleranceEq
 	}
 	
 	/**
+	 * Invokes the consumer if the value is present
+	 * and returns this {@link OptionDouble}.
+	 * 
+	 * <p>This method is analogous to {@code DoubleStream.peek}
+	 * and is mainly intended for debugging of call chains.
+	 * (Normally, {@code ifPresent} should be used)</p>
+	 */
+	public OptionDouble peek(DoubleConsumer action) {
+		if (present) {
+			action.accept(value);
+		}
+		return this;
+	}
+	
+	/**
 	 * Invokes the consumer if the value is present.
 	 */
 	public void ifPresent(DoubleConsumer then) {

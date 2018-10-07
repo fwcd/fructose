@@ -81,6 +81,21 @@ public class OptionLong implements Serializable, Iterable<Long>, ToleranceEquata
 	}
 	
 	/**
+	 * Invokes the consumer if the value is present
+	 * and returns this {@link OptionLong}.
+	 * 
+	 * <p>This method is analogous to {@code LongStream.peek}
+	 * and is mainly intended for debugging of call chains.
+	 * (Normally, {@code ifPresent} should be used)</p>
+	 */
+	public OptionLong peek(LongConsumer action) {
+		if (present) {
+			action.accept(value);
+		}
+		return this;
+	}
+	
+	/**
 	 * Invokes the consumer if the value is present.
 	 */
 	public void ifPresent(LongConsumer then) {

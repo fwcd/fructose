@@ -102,6 +102,21 @@ public class Option<T> implements Serializable, Iterable<T> {
 	}
 	
 	/**
+	 * Invokes the consumer if the value is present
+	 * and returns this {@link Option}.
+	 * 
+	 * <p>This method is analogous to {@code Stream.peek}
+	 * and is mainly intended for debugging of call chains.
+	 * (Normally, {@code ifPresent} should be used)</p>
+	 */
+	public Option<T> peek(Consumer<? super T> action) {
+		if (value != null) {
+			action.accept(value);
+		}
+		return this;
+	}
+	
+	/**
 	 * Invokes the consumer if the value is present.
 	 */
 	public void ifPresent(Consumer<? super T> then) {

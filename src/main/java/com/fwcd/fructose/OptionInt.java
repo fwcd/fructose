@@ -81,6 +81,21 @@ public class OptionInt implements Serializable, Iterable<Integer>, ToleranceEqua
 	}
 	
 	/**
+	 * Invokes the consumer if the value is present
+	 * and returns this {@link OptionInt}.
+	 * 
+	 * <p>This method is analogous to {@code IntStream.peek}
+	 * and is mainly intended for debugging of call chains.
+	 * (Normally, {@code ifPresent} should be used)</p>
+	 */
+	public OptionInt peek(IntConsumer action) {
+		if (present) {
+			action.accept(value);
+		}
+		return this;
+	}
+	
+	/**
 	 * Invokes the consumer if the value is present.
 	 */
 	public void ifPresent(IntConsumer then) {
