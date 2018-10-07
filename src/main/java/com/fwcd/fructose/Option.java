@@ -182,6 +182,20 @@ public class Option<T> implements Serializable, Iterable<T> {
 	}
 	
 	/**
+	 * Returns an {@link Option} containing the result of the
+	 * function if this {@link Option} is present and the result
+	 * is not null, otherwise returns an empty {@link Option}.
+	 */
+	public <R> Option<R> mapToNullable(Function<? super T, ? extends R> mapper) {
+		Objects.requireNonNull(mapper, "Mapper function can not be null");
+		if (value == null) {
+			return empty();
+		} else {
+			return ofNullable(mapper.apply(value));
+		}
+	}
+	
+	/**
 	 * Returns an {@link OptionInt} containing the result of the
 	 * function if present, otherwise returns an empty {@link OptionInt}.
 	 */
