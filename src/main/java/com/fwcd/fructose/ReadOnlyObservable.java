@@ -22,31 +22,31 @@ public class ReadOnlyObservable<T> implements ReadOnlyListenable<T> {
 	}
 	
 	@Override
-	public void listen(Consumer<T> listener) {
+	public void listen(Consumer<? super T> listener) {
 		listeners.add(listener);
 	}
 	
 	@Override
-	public void listenAndFire(Consumer<T> listener) {
+	public void listenAndFire(Consumer<? super T> listener) {
 		listen(listener);
 		listener.accept(value);
 	}
 	
 	@Override
-	public void unlisten(Consumer<T> listener) {
+	public void unlisten(Consumer<? super T> listener) {
 		listeners.remove(listener);
 	}
 	
-	public void listenWeakly(Consumer<T> listener) {
+	public void listenWeakly(Consumer<? super T> listener) {
 		listeners.addWeakListener(listener);
 	}
 	
-	public void listenWeaklyAndFire(Consumer<T> listener) {
+	public void listenWeaklyAndFire(Consumer<? super T> listener) {
 		listenWeakly(listener);
 		listener.accept(value);
 	}
 	
-	public void unlistenWeakly(Consumer<T> listener) {
+	public void unlistenWeakly(Consumer<? super T> listener) {
 		listeners.removeWeakListener(listener);
 	}
 	

@@ -6,20 +6,20 @@ import com.fwcd.fructose.function.Subscription;
 
 /** Anything that stores a value and can be listened to. */
 public interface ReadOnlyListenable<T> {
-	void listen(Consumer<T> listener);
+	void listen(Consumer<? super T> listener);
 	
-	void listenAndFire(Consumer<T> listener);
+	void listenAndFire(Consumer<? super T> listener);
 	
-	void unlisten(Consumer<T> listener);
+	void unlisten(Consumer<? super T> listener);
 	
 	T get();
 	
-	default Subscription subscribe(Consumer<T> listener) {
+	default Subscription subscribe(Consumer<? super T> listener) {
 		listen(listener);
 		return () -> unlisten(listener);
 	}
 	
-	default Subscription subscribeAndFire(Consumer<T> listener) {
+	default Subscription subscribeAndFire(Consumer<? super T> listener) {
 		listenAndFire(listener);
 		return () -> unlisten(listener);
 	}

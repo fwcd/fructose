@@ -26,25 +26,25 @@ public class ReadOnlyObservableSet<T> implements Iterable<T>, ReadOnlyListenable
 	public ReadOnlyObservableSet(Set<T> values) { this.values = values; }
 	
 	@Override
-	public void listen(Consumer<Set<T>> listener) { changeListeners.add(listener); }
+	public void listen(Consumer<? super Set<T>> listener) { changeListeners.add(listener); }
 	
 	@Override
-	public void listenAndFire(Consumer<Set<T>> listener) {
+	public void listenAndFire(Consumer<? super Set<T>> listener) {
 		listen(listener);
 		listener.accept(values);
 	}
 	
 	@Override
-	public void unlisten(Consumer<Set<T>> listener) { changeListeners.remove(listener); }
+	public void unlisten(Consumer<? super Set<T>> listener) { changeListeners.remove(listener); }
 	
-	public void listenForModifications(Consumer<SetModifyEvent<T>> listener) { modifyListeners.add(listener); }
+	public void listenForModifications(Consumer<? super SetModifyEvent<T>> listener) { modifyListeners.add(listener); }
 	
-	public void listenForModificationsAndFire(Consumer<SetModifyEvent<T>> listener) {
+	public void listenForModificationsAndFire(Consumer<? super SetModifyEvent<T>> listener) {
 		listenForModifications(listener);
 		listener.accept(new SetModifyEvent<>(values, Collections.emptySet()));
 	}
 	
-	public void unlistenForModifications(Consumer<SetModifyEvent<T>> listener) { modifyListeners.remove(listener); }
+	public void unlistenForModifications(Consumer<? super SetModifyEvent<T>> listener) { modifyListeners.remove(listener); }
 	
 	public Stream<T> stream() { return StreamUtils.stream(this); }
 	

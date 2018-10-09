@@ -25,25 +25,25 @@ public class ReadOnlyObservableMap<K, V> implements ReadOnlyListenable<Map<K, V>
 	public ReadOnlyObservableMap(Map<K, V> values) { this.values = values; }
 	
 	@Override
-	public void listen(Consumer<Map<K, V>> listener) { changeListeners.add(listener); }
+	public void listen(Consumer<? super Map<K, V>> listener) { changeListeners.add(listener); }
 	
 	@Override
-	public void listenAndFire(Consumer<Map<K, V>> listener) {
+	public void listenAndFire(Consumer<? super Map<K, V>> listener) {
 		listen(listener);
 		listener.accept(values);
 	}
 	
 	@Override
-	public void unlisten(Consumer<Map<K, V>> listener) { changeListeners.remove(listener); }
+	public void unlisten(Consumer<? super Map<K, V>> listener) { changeListeners.remove(listener); }
 	
-	public void listenForModifications(Consumer<MapModifyEvent<K, V>> listener) { modifyListeners.add(listener); }
+	public void listenForModifications(Consumer<? super MapModifyEvent<K, V>> listener) { modifyListeners.add(listener); }
 	
-	public void listenForModificationsAndFire(Consumer<MapModifyEvent<K, V>> listener) {
+	public void listenForModificationsAndFire(Consumer<? super MapModifyEvent<K, V>> listener) {
 		listenForModifications(listener);
 		listener.accept(new MapModifyEvent<>(values, Collections.emptySet()));
 	}
 	
-	public void unlistenForModifications(Consumer<MapModifyEvent<K, V>> listener) { modifyListeners.remove(listener); }
+	public void unlistenForModifications(Consumer<? super MapModifyEvent<K, V>> listener) { modifyListeners.remove(listener); }
 	
 	@Override
 	public Map<K, V> get() { return Collections.unmodifiableMap(values); }

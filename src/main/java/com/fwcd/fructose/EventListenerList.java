@@ -8,33 +8,33 @@ import java.util.function.Consumer;
 import com.fwcd.fructose.structs.WeakArrayList;
 
 public class EventListenerList<T> {
-	private final List<Consumer<T>> listeners = Collections.synchronizedList(new ArrayList<>());
-	private List<Consumer<T>> lazyWeakListeners;
+	private final List<Consumer<? super T>> listeners = Collections.synchronizedList(new ArrayList<>());
+	private List<Consumer<? super T>> lazyWeakListeners;
 	
-	public void add(Consumer<T> listener) {
+	public void add(Consumer<? super T> listener) {
 		listeners.add(listener);
 	}
 	
-	public void remove(Consumer<T> listener) {
+	public void remove(Consumer<? super T> listener) {
 		listeners.remove(listener);
 	}
 	
-	private List<Consumer<T>> getWeakListeners() {
+	private List<Consumer<? super T>> getWeakListeners() {
 		if (lazyWeakListeners == null) {
 			lazyWeakListeners = Collections.synchronizedList(new WeakArrayList<>());
 		}
 		return lazyWeakListeners;
 	}
 	
-	public void addWeakListener(Consumer<T> listener) {
+	public void addWeakListener(Consumer<? super T> listener) {
 		getWeakListeners().add(listener);
 	}
 	
-	public void removeWeakListener(Consumer<T> listener) {
+	public void removeWeakListener(Consumer<? super T> listener) {
 		getWeakListeners().remove(listener);
 	}
 	
-	public boolean containsListener(Consumer<T> listener) {
+	public boolean containsListener(Consumer<? super T> listener) {
 		if (listeners.contains(listener)) {
 			return true;
 		}
@@ -54,11 +54,11 @@ public class EventListenerList<T> {
 	
 	public void fire(T event) {
 		synchronized (listeners) {
-			for (Consumer<T> listener : listeners) {
+			for (Consumer<? super T> listener : listeners) {
 				listener.accept(event);
 			}
 			if (lazyWeakListeners != null) {
-				for (Consumer<T> weakListener : lazyWeakListeners) {
+				for (Consumer<? super T> weakListener : lazyWeakListeners) {
 					weakListener.accept(event);
 				}
 			}

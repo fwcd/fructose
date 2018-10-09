@@ -28,25 +28,25 @@ public class ReadOnlyObservableList<T> implements Iterable<T>, ReadOnlyListenabl
 	public ReadOnlyObservableList(List<T> values) { this.values = values; }
 	
 	@Override
-	public void listen(Consumer<List<T>> listener) { changeListeners.add(listener); }
+	public void listen(Consumer<? super List<T>> listener) { changeListeners.add(listener); }
 	
 	@Override
-	public void listenAndFire(Consumer<List<T>> listener) {
+	public void listenAndFire(Consumer<? super List<T>> listener) {
 		listen(listener);
 		listener.accept(values);
 	}
 	
 	@Override
-	public void unlisten(Consumer<List<T>> listener) { changeListeners.remove(listener); }
+	public void unlisten(Consumer<? super List<T>> listener) { changeListeners.remove(listener); }
 	
-	public void listenForModifications(Consumer<ListModifyEvent<T>> listener) { modifyListeners.add(listener); }
+	public void listenForModifications(Consumer<? super ListModifyEvent<T>> listener) { modifyListeners.add(listener); }
 	
-	public void listenForModificationsAndFire(Consumer<ListModifyEvent<T>> listener) {
+	public void listenForModificationsAndFire(Consumer<? super ListModifyEvent<T>> listener) {
 		listenForModifications(listener);
 		listener.accept(new ListModifyEvent<>(values, new IntRange(0, values.size())));
 	}
 	
-	public void unlistenForModifications(Consumer<ListModifyEvent<T>> listener) { modifyListeners.remove(listener); }
+	public void unlistenForModifications(Consumer<? super ListModifyEvent<T>> listener) { modifyListeners.remove(listener); }
 	
 	@Override
 	public List<T> get() { return Collections.unmodifiableList(values); }
