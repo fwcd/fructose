@@ -3,9 +3,9 @@ package com.fwcd.fructose.structs;
 import java.util.Collection;
 import java.util.List;
 
-import com.fwcd.fructose.Listenable;
+import com.fwcd.fructose.ListenableValue;
 
-public class ObservableList<T> extends ReadOnlyObservableList<T> implements List<T>, Listenable<List<T>> {
+public class ObservableList<T> extends ReadOnlyObservableList<T> implements List<T>, ListenableValue<List<T>> {
 	public ObservableList() {}
 	
 	public ObservableList(List<T> values) { super(values); }

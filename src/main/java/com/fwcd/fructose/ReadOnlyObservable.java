@@ -8,7 +8,7 @@ import java.util.function.Function;
  * immutable as the mutable subclass {@link Observable}
  * conforms to this class.
  */
-public class ReadOnlyObservable<T> implements ReadOnlyListenable<T> {
+public class ReadOnlyObservable<T> implements ReadOnlyListenableValue<T> {
 	private final EventListenerList<T> listeners = new EventListenerList<>();
 	private T value;
 	

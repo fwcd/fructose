@@ -9,13 +9,13 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import com.fwcd.fructose.EventListenerList;
-import com.fwcd.fructose.ReadOnlyListenable;
+import com.fwcd.fructose.ReadOnlyListenableValue;
 import com.fwcd.fructose.structs.events.MapModifyEvent;
 
 /**
  * An unordered, read-only key-value map that can be listened to.
  */
-public class ReadOnlyObservableMap<K, V> implements ReadOnlyListenable<Map<K, V>> {
+public class ReadOnlyObservableMap<K, V> implements ReadOnlyListenableValue<Map<K, V>> {
 	private final EventListenerList<Map<K, V>> changeListeners = new EventListenerList<>();
 	private final EventListenerList<MapModifyEvent<K, V>> modifyListeners = new EventListenerList<>();
 	private Map<K, V> values;

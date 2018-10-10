@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 
 import com.fwcd.fructose.structs.WeakArrayList;
 
-public class EventListenerList<T> {
+public class EventListenerList<T> implements Listenable<T> {
 	private final List<Consumer<? super T>> listeners = Collections.synchronizedList(new ArrayList<>());
 	private List<Consumer<? super T>> lazyWeakListeners;
 	
@@ -64,4 +64,10 @@ public class EventListenerList<T> {
 			}
 		}
 	}
+	
+	@Override
+	public void listen(Consumer<? super T> listener) { add(listener); }
+	
+	@Override
+	public void unlisten(Consumer<? super T> listener) { remove(listener); }
 }

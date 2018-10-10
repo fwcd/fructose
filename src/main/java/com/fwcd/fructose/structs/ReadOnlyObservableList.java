@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import com.fwcd.fructose.EventListenerList;
-import com.fwcd.fructose.ReadOnlyListenable;
+import com.fwcd.fructose.ReadOnlyListenableValue;
 import com.fwcd.fructose.StreamUtils;
 import com.fwcd.fructose.math.IntRange;
 import com.fwcd.fructose.structs.events.ListModifyEvent;
@@ -18,7 +18,7 @@ import com.fwcd.fructose.structs.events.ListModifyEvent;
 /**
  * A read-only list that can be listened to.
  */
-public class ReadOnlyObservableList<T> implements Iterable<T>, ReadOnlyListenable<List<T>> {
+public class ReadOnlyObservableList<T> implements Iterable<T>, ReadOnlyListenableValue<List<T>> {
 	private final EventListenerList<List<T>> changeListeners = new EventListenerList<>();
 	private final EventListenerList<ListModifyEvent<T>> modifyListeners = new EventListenerList<>();
 	private List<T> values;

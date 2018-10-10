@@ -5,19 +5,10 @@ import java.util.function.Consumer;
 import com.fwcd.fructose.function.Subscription;
 
 /** Anything that stores a value and can be listened to. */
-public interface ReadOnlyListenable<T> {
-	void listen(Consumer<? super T> listener);
-	
+public interface ReadOnlyListenableValue<T> extends Listenable<T> {
 	void listenAndFire(Consumer<? super T> listener);
 	
-	void unlisten(Consumer<? super T> listener);
-	
 	T get();
-	
-	default Subscription subscribe(Consumer<? super T> listener) {
-		listen(listener);
-		return () -> unlisten(listener);
-	}
 	
 	default Subscription subscribeAndFire(Consumer<? super T> listener) {
 		listenAndFire(listener);

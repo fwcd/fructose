@@ -1,6 +1,17 @@
 package com.fwcd.fructose;
 
-/** Anything that stores a value and can be listened to. */
-public interface Listenable<T> extends ReadOnlyListenable<T> {
-	void set(T value);
+import java.util.function.Consumer;
+
+import com.fwcd.fructose.function.Subscription;
+
+/** Anything that can be listened to. */
+public interface Listenable<T> {
+	void listen(Consumer<? super T> listener);
+	
+	void unlisten(Consumer<? super T> listener);
+	
+	default Subscription subscribe(Consumer<? super T> listener) {
+		listen(listener);
+		return () -> unlisten(listener);
+	}
 }

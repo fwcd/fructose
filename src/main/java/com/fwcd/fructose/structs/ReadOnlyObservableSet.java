@@ -9,14 +9,14 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import com.fwcd.fructose.EventListenerList;
-import com.fwcd.fructose.ReadOnlyListenable;
+import com.fwcd.fructose.ReadOnlyListenableValue;
 import com.fwcd.fructose.StreamUtils;
 import com.fwcd.fructose.structs.events.SetModifyEvent;
 
 /**
  * An unordered, read-only set that can be listened to.
  */
-public class ReadOnlyObservableSet<T> implements Iterable<T>, ReadOnlyListenable<Set<T>> {
+public class ReadOnlyObservableSet<T> implements Iterable<T>, ReadOnlyListenableValue<Set<T>> {
 	private final EventListenerList<Set<T>> changeListeners = new EventListenerList<>();
 	private final EventListenerList<SetModifyEvent<T>> modifyListeners = new EventListenerList<>();
 	private Set<T> values;

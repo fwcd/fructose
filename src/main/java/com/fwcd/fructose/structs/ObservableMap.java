@@ -2,9 +2,9 @@ package com.fwcd.fructose.structs;
 
 import java.util.Map;
 
-import com.fwcd.fructose.Listenable;
+import com.fwcd.fructose.ListenableValue;
 
-public class ObservableMap<K, V> extends ReadOnlyObservableMap<K, V> implements Map<K, V>, Listenable<Map<K, V>> {
+public class ObservableMap<K, V> extends ReadOnlyObservableMap<K, V> implements Map<K, V>, ListenableValue<Map<K, V>> {
 	public ObservableMap() {}
 	
 	public ObservableMap(Map<K, V> values) { super(values); }
