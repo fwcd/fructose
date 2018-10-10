@@ -57,7 +57,9 @@ public class EventListenerList<T> implements Listenable<T> {
 			for (Consumer<? super T> listener : listeners) {
 				listener.accept(event);
 			}
-			if (lazyWeakListeners != null) {
+		}
+		if (lazyWeakListeners != null) {
+			synchronized (lazyWeakListeners) {
 				for (Consumer<? super T> weakListener : lazyWeakListeners) {
 					weakListener.accept(event);
 				}

@@ -58,12 +58,16 @@ public class ListenerList implements Listenable<Void> {
 			for (Runnable listener : listeners) {
 				listener.run();
 			}
-			if (lazyWeakListeners != null) {
+		}
+		if (lazyWeakListeners != null) {
+			synchronized (lazyWeakListeners) {
 				for (Runnable weakListener : lazyWeakListeners) {
 					weakListener.run();
 				}
 			}
-			if (lazyVoidListeners != null) {
+		}
+		if (lazyVoidListeners != null) {
+			synchronized (lazyVoidListeners) {
 				for (Consumer<? super Void> voidListener : lazyVoidListeners) {
 					voidListener.accept(null);
 				}
