@@ -12,12 +12,24 @@ public class ListenerList implements Listenable<Void> {
 	private List<Runnable> lazyWeakListeners;
 	private List<Consumer<? super Void>> lazyVoidListeners;
 	
+	private volatile int iteratorCount = 0;
+	private List<Runnable> deferredTasks = Collections.synchronizedList(new ArrayList<>());
+	
+	private void mutateLater(Runnable task) {
+		if (iteratorCount <= 0) {
+			task.run();
+			iteratorCount = 0;
+		} else {
+			deferredTasks.add(task);
+		}
+	}
+	
 	public void add(Runnable listener) {
-		listeners.add(listener);
+		mutateLater(() -> listeners.add(listener));
 	}
 	
 	public void remove(Runnable listener) {
-		listeners.remove(listener);
+		mutateLater(() -> listeners.remove(listener));
 	}
 	
 	private List<Runnable> getWeakListeners() {
@@ -28,11 +40,11 @@ public class ListenerList implements Listenable<Void> {
 	}
 	
 	public void addWeakListener(Runnable listener) {
-		getWeakListeners().add(listener);
+		mutateLater(() -> getWeakListeners().add(listener));
 	}
 	
 	public void removeWeakListener(Runnable listener) {
-		getWeakListeners().remove(listener);
+		mutateLater(() -> getWeakListeners().remove(listener));
 	}
 	
 	public boolean containsListener(Runnable listener) {
@@ -54,6 +66,7 @@ public class ListenerList implements Listenable<Void> {
 	public int size() { return strongListenerCount() + weakListenerCount(); }
 	
 	public void fire() {
+		iteratorCount++;
 		synchronized (listeners) {
 			for (Runnable listener : listeners) {
 				listener.run();
@@ -73,6 +86,16 @@ public class ListenerList implements Listenable<Void> {
 				}
 			}
 		}
+		iteratorCount--;
+		if (iteratorCount <= 0) {
+			synchronized (deferredTasks) {
+				for (Runnable task : deferredTasks) {
+					task.run();
+				}
+				deferredTasks.clear();
+			}
+			iteratorCount = 0;
+		}
 	}
 	
 	private List<Consumer<? super Void>> getVoidListeners() {
@@ -83,8 +106,12 @@ public class ListenerList implements Listenable<Void> {
 	}
 	
 	@Override
-	public void listen(Consumer<? super Void> listener) { getVoidListeners().add(listener); }
+	public void listen(Consumer<? super Void> listener) {
+		mutateLater(() -> getVoidListeners().add(listener));
+	}
 	
 	@Override
-	public void unlisten(Consumer<? super Void> listener) { getVoidListeners().remove(listener); }
+	public void unlisten(Consumer<? super Void> listener) {
+		mutateLater(() -> getVoidListeners().remove(listener));
+	}
 }

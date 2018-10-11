@@ -11,12 +11,24 @@ public class EventListenerList<T> implements Listenable<T> {
 	private final List<Consumer<? super T>> listeners = Collections.synchronizedList(new ArrayList<>());
 	private List<Consumer<? super T>> lazyWeakListeners;
 	
+	private volatile int iteratorCount = 0;
+	private List<Runnable> deferredTasks = Collections.synchronizedList(new ArrayList<>());
+	
+	private void mutateLater(Runnable task) {
+		if (iteratorCount <= 0) {
+			task.run();
+			iteratorCount = 0;
+		} else {
+			deferredTasks.add(task);
+		}
+	}
+	
 	public void add(Consumer<? super T> listener) {
-		listeners.add(listener);
+		mutateLater(() -> listeners.add(listener));
 	}
 	
 	public void remove(Consumer<? super T> listener) {
-		listeners.remove(listener);
+		mutateLater(() -> listeners.remove(listener));
 	}
 	
 	private List<Consumer<? super T>> getWeakListeners() {
@@ -27,11 +39,11 @@ public class EventListenerList<T> implements Listenable<T> {
 	}
 	
 	public void addWeakListener(Consumer<? super T> listener) {
-		getWeakListeners().add(listener);
+		mutateLater(() -> getWeakListeners().add(listener));
 	}
 	
 	public void removeWeakListener(Consumer<? super T> listener) {
-		getWeakListeners().remove(listener);
+		mutateLater(() -> getWeakListeners().remove(listener));
 	}
 	
 	public boolean containsListener(Consumer<? super T> listener) {
@@ -53,6 +65,7 @@ public class EventListenerList<T> implements Listenable<T> {
 	public int size() { return strongListenerCount() + weakListenerCount(); }
 	
 	public void fire(T event) {
+		iteratorCount++;
 		synchronized (listeners) {
 			for (Consumer<? super T> listener : listeners) {
 				listener.accept(event);
@@ -65,11 +78,25 @@ public class EventListenerList<T> implements Listenable<T> {
 				}
 			}
 		}
+		iteratorCount--;
+		if (iteratorCount <= 0) {
+			synchronized (deferredTasks) {
+				for (Runnable task : deferredTasks) {
+					task.run();
+				}
+				deferredTasks.clear();
+			}
+			iteratorCount = 0;
+		}
 	}
 	
 	@Override
-	public void listen(Consumer<? super T> listener) { add(listener); }
+	public void listen(Consumer<? super T> listener) {
+		mutateLater(() -> add(listener));
+	}
 	
 	@Override
-	public void unlisten(Consumer<? super T> listener) { remove(listener); }
+	public void unlisten(Consumer<? super T> listener) {
+		mutateLater(() -> remove(listener));
+	}
 }
