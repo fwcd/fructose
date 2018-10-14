@@ -1,12 +1,15 @@
 package com.fwcd.fructose.draw;
 
+import java.io.Serializable;
+
 /**
  * Represents a 32-bit color with alpha.
  * 
  * @author Fredrik
  *
  */
-public class DrawColor {
+public class DrawColor implements Serializable {
+	private static final long serialVersionUID = -471952756873991915L;
 	public static final DrawColor WHITE = new DrawColor(255, 255, 255);
 	public static final DrawColor BLACK = new DrawColor(0, 0, 0);
 	public static final DrawColor RED = new DrawColor(255, 0, 0);
