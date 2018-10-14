@@ -11,6 +11,7 @@ import java.util.function.Function;
  * is no longer in use.
  */
 class DerivedObservable<T, I> extends ReadOnlyObservable<T> implements Consumer<I> {
+	private static final long serialVersionUID = 9027235775886726923L;
 	private final Function<? super I, ? extends T> mapper;
 	
 	public DerivedObservable(T value, Function<? super I, ? extends T> mapper) {

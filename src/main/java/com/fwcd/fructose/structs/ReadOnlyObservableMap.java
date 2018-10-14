@@ -1,5 +1,6 @@
 package com.fwcd.fructose.structs;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,17 +16,32 @@ import com.fwcd.fructose.structs.events.MapModifyEvent;
 /**
  * An unordered, read-only key-value map that can be listened to.
  */
-public class ReadOnlyObservableMap<K, V> implements ReadOnlyListenableValue<Map<K, V>> {
-	private final EventListenerList<Map<K, V>> changeListeners = new EventListenerList<>();
-	private final EventListenerList<MapModifyEvent<K, V>> modifyListeners = new EventListenerList<>();
+public class ReadOnlyObservableMap<K, V> implements Serializable, ReadOnlyListenableValue<Map<K, V>> {
+	private static final long serialVersionUID = 7329096016524609221L;
+	private transient EventListenerList<Map<K, V>> nullableChangeListeners;
+	private transient EventListenerList<MapModifyEvent<K, V>> nullableModifyListeners;
 	private Map<K, V> values;
 	
 	public ReadOnlyObservableMap() { values = new HashMap<>(); }
 	
 	public ReadOnlyObservableMap(Map<K, V> values) { this.values = values; }
 	
+	private EventListenerList<Map<K, V>> getChangeListeners() {
+		if (nullableChangeListeners == null) {
+			nullableChangeListeners = new EventListenerList<>();
+		}
+		return nullableChangeListeners;
+	}
+	
+	private EventListenerList<MapModifyEvent<K, V>> getModifyListeners() {
+		if (nullableModifyListeners == null) {
+			nullableModifyListeners = new EventListenerList<>();
+		}
+		return nullableModifyListeners;
+	}
+	
 	@Override
-	public void listen(Consumer<? super Map<K, V>> listener) { changeListeners.add(listener); }
+	public void listen(Consumer<? super Map<K, V>> listener) { getChangeListeners().add(listener); }
 	
 	@Override
 	public void listenAndFire(Consumer<? super Map<K, V>> listener) {
@@ -34,16 +50,16 @@ public class ReadOnlyObservableMap<K, V> implements ReadOnlyListenableValue<Map<
 	}
 	
 	@Override
-	public void unlisten(Consumer<? super Map<K, V>> listener) { changeListeners.remove(listener); }
+	public void unlisten(Consumer<? super Map<K, V>> listener) { getChangeListeners().remove(listener); }
 	
-	public void listenForModifications(Consumer<? super MapModifyEvent<K, V>> listener) { modifyListeners.add(listener); }
+	public void listenForModifications(Consumer<? super MapModifyEvent<K, V>> listener) { getModifyListeners().add(listener); }
 	
 	public void listenForModificationsAndFire(Consumer<? super MapModifyEvent<K, V>> listener) {
 		listenForModifications(listener);
 		listener.accept(new MapModifyEvent<>(values, Collections.emptySet()));
 	}
 	
-	public void unlistenForModifications(Consumer<? super MapModifyEvent<K, V>> listener) { modifyListeners.remove(listener); }
+	public void unlistenForModifications(Consumer<? super MapModifyEvent<K, V>> listener) { getModifyListeners().remove(listener); }
 	
 	@Override
 	public Map<K, V> get() { return Collections.unmodifiableMap(values); }
@@ -65,11 +81,11 @@ public class ReadOnlyObservableMap<K, V> implements ReadOnlyListenableValue<Map<
 	public V get(Object key) { return values.get(key); }
 	
 	protected void fireChange() {
-		changeListeners.fire(values);
+		getChangeListeners().fire(values);
 	}
 	
 	protected void fireModification(Map<? extends K, ? extends V> added, Set<? extends K> removed) {
-		modifyListeners.fire(new MapModifyEvent<>(added, removed));
+		getModifyListeners().fire(new MapModifyEvent<>(added, removed));
 	}
 	
 	// Protected, mutating methods

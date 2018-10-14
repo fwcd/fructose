@@ -6,6 +6,8 @@ import java.util.List;
 import com.fwcd.fructose.ListenableValue;
 
 public class ObservableList<T> extends ReadOnlyObservableList<T> implements List<T>, ListenableValue<List<T>> {
+	private static final long serialVersionUID = -3704312724462936191L;
+
 	public ObservableList() {}
 	
 	public ObservableList(List<T> values) { super(values); }

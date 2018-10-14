@@ -1,5 +1,6 @@
 package com.fwcd.fructose.structs;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -18,17 +19,32 @@ import com.fwcd.fructose.structs.events.ListModifyEvent;
 /**
  * A read-only list that can be listened to.
  */
-public class ReadOnlyObservableList<T> implements Iterable<T>, ReadOnlyListenableValue<List<T>> {
-	private final EventListenerList<List<T>> changeListeners = new EventListenerList<>();
-	private final EventListenerList<ListModifyEvent<T>> modifyListeners = new EventListenerList<>();
+public class ReadOnlyObservableList<T> implements Serializable, Iterable<T>, ReadOnlyListenableValue<List<T>> {
+	private static final long serialVersionUID = 5345305630308018532L;
+	private transient EventListenerList<List<T>> nullableChangeListeners;
+	private transient EventListenerList<ListModifyEvent<T>> nullableModifyListeners;
 	private List<T> values;
 	
 	public ReadOnlyObservableList() { values = new ArrayList<>(); }
 	
 	public ReadOnlyObservableList(List<T> values) { this.values = values; }
 	
+	private EventListenerList<List<T>> getChangeListeners() {
+		if (nullableChangeListeners == null) {
+			nullableChangeListeners = new EventListenerList<>();
+		}
+		return nullableChangeListeners;
+	}
+	
+	private EventListenerList<ListModifyEvent<T>> getModifyListeners() {
+		if (nullableModifyListeners == null) {
+			nullableModifyListeners = new EventListenerList<>();
+		}
+		return nullableModifyListeners;
+	}
+	
 	@Override
-	public void listen(Consumer<? super List<T>> listener) { changeListeners.add(listener); }
+	public void listen(Consumer<? super List<T>> listener) { getChangeListeners().add(listener); }
 	
 	@Override
 	public void listenAndFire(Consumer<? super List<T>> listener) {
@@ -37,16 +53,16 @@ public class ReadOnlyObservableList<T> implements Iterable<T>, ReadOnlyListenabl
 	}
 	
 	@Override
-	public void unlisten(Consumer<? super List<T>> listener) { changeListeners.remove(listener); }
+	public void unlisten(Consumer<? super List<T>> listener) { getChangeListeners().remove(listener); }
 	
-	public void listenForModifications(Consumer<? super ListModifyEvent<T>> listener) { modifyListeners.add(listener); }
+	public void listenForModifications(Consumer<? super ListModifyEvent<T>> listener) { getModifyListeners().add(listener); }
 	
 	public void listenForModificationsAndFire(Consumer<? super ListModifyEvent<T>> listener) {
 		listenForModifications(listener);
 		listener.accept(new ListModifyEvent<>(values, new IntRange(0, values.size())));
 	}
 	
-	public void unlistenForModifications(Consumer<? super ListModifyEvent<T>> listener) { modifyListeners.remove(listener); }
+	public void unlistenForModifications(Consumer<? super ListModifyEvent<T>> listener) { getModifyListeners().remove(listener); }
 	
 	@Override
 	public List<T> get() { return Collections.unmodifiableList(values); }
@@ -81,11 +97,11 @@ public class ReadOnlyObservableList<T> implements Iterable<T>, ReadOnlyListenabl
 	public List<T> subList(int fromIndex, int toIndex) { return values.subList(fromIndex, toIndex); }
 	
 	protected void fireChange() {
-		changeListeners.fire(values);
+		getChangeListeners().fire(values);
 	}
 	
 	protected void fireModification(List<? extends T> deltaValues, int inclusiveStart, int exclusiveEnd) {
-		modifyListeners.fire(new ListModifyEvent<>(deltaValues, new IntRange(inclusiveStart, exclusiveEnd)));
+		getModifyListeners().fire(new ListModifyEvent<>(deltaValues, new IntRange(inclusiveStart, exclusiveEnd)));
 	}
 	
 	// Protected, mutating methods

@@ -1,5 +1,6 @@
 package com.fwcd.fructose;
 
+import java.io.Serializable;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -8,8 +9,9 @@ import java.util.function.Function;
  * immutable as the mutable subclass {@link Observable}
  * conforms to this class.
  */
-public class ReadOnlyObservable<T> implements ReadOnlyListenableValue<T> {
-	private final EventListenerList<T> listeners = new EventListenerList<>();
+public class ReadOnlyObservable<T> implements Serializable, ReadOnlyListenableValue<T> {
+	private static final long serialVersionUID = 2342657524406442805L;
+	private transient EventListenerList<T> nullableListeners;
 	private T value;
 	
 	public ReadOnlyObservable(T value) {
@@ -21,9 +23,16 @@ public class ReadOnlyObservable<T> implements ReadOnlyListenableValue<T> {
 		return value;
 	}
 	
+	private EventListenerList<T> getListeners() {
+		if (nullableListeners == null) {
+			nullableListeners = new EventListenerList<>();
+		}
+		return nullableListeners;
+	}
+	
 	@Override
 	public void listen(Consumer<? super T> listener) {
-		listeners.add(listener);
+		getListeners().add(listener);
 	}
 	
 	@Override
@@ -34,11 +43,11 @@ public class ReadOnlyObservable<T> implements ReadOnlyListenableValue<T> {
 	
 	@Override
 	public void unlisten(Consumer<? super T> listener) {
-		listeners.remove(listener);
+		getListeners().remove(listener);
 	}
 	
 	public void listenWeakly(Consumer<? super T> listener) {
-		listeners.addWeakListener(listener);
+		getListeners().addWeakListener(listener);
 	}
 	
 	public void listenWeaklyAndFire(Consumer<? super T> listener) {
@@ -47,14 +56,14 @@ public class ReadOnlyObservable<T> implements ReadOnlyListenableValue<T> {
 	}
 	
 	public void unlistenWeakly(Consumer<? super T> listener) {
-		listeners.removeWeakListener(listener);
+		getListeners().removeWeakListener(listener);
 	}
 	
-	public int strongListenerCount() { return listeners.strongListenerCount(); }
+	public int strongListenerCount() { return getListeners().strongListenerCount(); }
 	
-	public int weakListenerCount() { return listeners.weakListenerCount(); }
+	public int weakListenerCount() { return getListeners().weakListenerCount(); }
 	
-	public int listenerCount() { return listeners.size(); }
+	public int listenerCount() { return getListeners().size(); }
 	
 	/**
 	 * @deprecated Use {@code mapStrongly} or {@code mapWeakly}
@@ -89,6 +98,6 @@ public class ReadOnlyObservable<T> implements ReadOnlyListenableValue<T> {
 	}
 	
 	protected void fire() {
-		listeners.fire(value);
+		getListeners().fire(value);
 	}
 }

@@ -1,5 +1,6 @@
 package com.fwcd.fructose.structs;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -16,17 +17,32 @@ import com.fwcd.fructose.structs.events.SetModifyEvent;
 /**
  * An unordered, read-only set that can be listened to.
  */
-public class ReadOnlyObservableSet<T> implements Iterable<T>, ReadOnlyListenableValue<Set<T>> {
-	private final EventListenerList<Set<T>> changeListeners = new EventListenerList<>();
-	private final EventListenerList<SetModifyEvent<T>> modifyListeners = new EventListenerList<>();
+public class ReadOnlyObservableSet<T> implements Serializable, Iterable<T>, ReadOnlyListenableValue<Set<T>> {
+	private static final long serialVersionUID = -1863477769994694922L;
+	private transient EventListenerList<Set<T>> nullableChangeListeners;
+	private transient EventListenerList<SetModifyEvent<T>> nullableModifyListeners;
 	private Set<T> values;
 	
 	public ReadOnlyObservableSet() { values = new HashSet<>(); }
 	
 	public ReadOnlyObservableSet(Set<T> values) { this.values = values; }
 	
+	private EventListenerList<Set<T>> getChangeListeners() {
+		if (nullableChangeListeners == null) {
+			nullableChangeListeners = new EventListenerList<>();
+		}
+		return nullableChangeListeners;
+	}
+	
+	private EventListenerList<SetModifyEvent<T>> getModifyListeners() {
+		if (nullableModifyListeners == null) {
+			nullableModifyListeners = new EventListenerList<>();
+		}
+		return nullableModifyListeners;
+	}
+	
 	@Override
-	public void listen(Consumer<? super Set<T>> listener) { changeListeners.add(listener); }
+	public void listen(Consumer<? super Set<T>> listener) { getChangeListeners().add(listener); }
 	
 	@Override
 	public void listenAndFire(Consumer<? super Set<T>> listener) {
@@ -35,16 +51,16 @@ public class ReadOnlyObservableSet<T> implements Iterable<T>, ReadOnlyListenable
 	}
 	
 	@Override
-	public void unlisten(Consumer<? super Set<T>> listener) { changeListeners.remove(listener); }
+	public void unlisten(Consumer<? super Set<T>> listener) { getChangeListeners().remove(listener); }
 	
-	public void listenForModifications(Consumer<? super SetModifyEvent<T>> listener) { modifyListeners.add(listener); }
+	public void listenForModifications(Consumer<? super SetModifyEvent<T>> listener) { getModifyListeners().add(listener); }
 	
 	public void listenForModificationsAndFire(Consumer<? super SetModifyEvent<T>> listener) {
 		listenForModifications(listener);
 		listener.accept(new SetModifyEvent<>(values, Collections.emptySet()));
 	}
 	
-	public void unlistenForModifications(Consumer<? super SetModifyEvent<T>> listener) { modifyListeners.remove(listener); }
+	public void unlistenForModifications(Consumer<? super SetModifyEvent<T>> listener) { getModifyListeners().remove(listener); }
 	
 	public Stream<T> stream() { return StreamUtils.stream(this); }
 	
@@ -67,11 +83,11 @@ public class ReadOnlyObservableSet<T> implements Iterable<T>, ReadOnlyListenable
 	public Set<T> get() { return Collections.unmodifiableSet(values); }
 	
 	protected void fireChange() {
-		changeListeners.fire(values);
+		getChangeListeners().fire(values);
 	}
 	
 	protected void fireModification(Set<? extends T> added, Set<? extends T> removed) {
-		modifyListeners.fire(new SetModifyEvent<>(added, removed));
+		getModifyListeners().fire(new SetModifyEvent<>(added, removed));
 	}
 	
 	// Protected, mutating methods

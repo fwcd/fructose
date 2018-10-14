@@ -6,9 +6,11 @@ import java.util.function.Consumer;
  * A mutable value that can be listened to.
  */
 public class Observable<T> extends ReadOnlyObservable<T> implements ListenableValue<T> {
-	// Publicly exposes mutating methods
+	private static final long serialVersionUID = 3258304894487752650L;
 	
 	public Observable(T value) { super(value); }
+	
+	// Publicly exposes mutating methods
 	
 	@Override
 	public void set(T value) { super.set(value); }

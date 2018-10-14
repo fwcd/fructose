@@ -6,6 +6,8 @@ import java.util.Set;
 import com.fwcd.fructose.ListenableValue;
 
 public class ObservableSet<T> extends ReadOnlyObservableSet<T> implements Set<T>, ListenableValue<Set<T>> {
+	private static final long serialVersionUID = 7332303678759198441L;
+
 	public ObservableSet() {}
 	
 	public ObservableSet(Set<T> values) { super(values); }
