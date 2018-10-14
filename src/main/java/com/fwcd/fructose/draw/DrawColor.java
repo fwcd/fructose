@@ -27,6 +27,10 @@ public class DrawColor implements Serializable {
 	private final int b; // Holds an unsigned byte
 	private final int a; // Holds an unsigned byte
 	
+	public DrawColor() {
+		this(0, 0, 0, 0);
+	}
+	
 	public DrawColor(java.awt.Color awtColor) {
 		this(awtColor.getRed(), awtColor.getGreen(), awtColor.getBlue(), awtColor.getAlpha());
 	}
