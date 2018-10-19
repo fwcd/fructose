@@ -38,7 +38,7 @@ import java.util.stream.Stream;
  */
 public class Option<T> implements Serializable, Iterable<T> {
 	private static final long serialVersionUID = -7974381950871417577L;
-	private static final Option<Void> EMPTY = new Option<>(null);
+	private static final Option<?> EMPTY = new Option<>(null);
 	private final T value;
 	
 	/**

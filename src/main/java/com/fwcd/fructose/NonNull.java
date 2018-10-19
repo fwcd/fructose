@@ -14,7 +14,7 @@ import java.util.NoSuchElementException;
 @Deprecated
 public class NonNull<T> implements Serializable {
 	private static final long serialVersionUID = -3491679088491580794L;
-	private static final NonNull<Void> EMPTY = new NonNull<>(null, "Empty");
+	private static final NonNull<Unit> EMPTY = new NonNull<>(null, "Empty");
 	private final T item;
 	private final String description;
 

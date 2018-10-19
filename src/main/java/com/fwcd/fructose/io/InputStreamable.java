@@ -1,24 +1,24 @@
 package com.fwcd.fructose.io;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 
+import com.fwcd.fructose.Result;
+import com.fwcd.fructose.Unit;
 import com.fwcd.fructose.function.IOConsumer;
 import com.fwcd.fructose.function.IOFunction;
 
 /**
  * Represents content that can be
- * read out through an InputStream.
- * 
- * @author Fredrik
- *
+ * read through an InputStream.
  */
 public interface InputStreamable {
 	/**
-	 * <p>Performs an action using the
-	 * open input stream to produce a result.</p>
+	 * Performs an action using the
+	 * open input stream to produce a result.
 	 * 
-	 * <p>This method inherently prevents resource leaks by not
+	 * <p>This method prevents resource leaks by not
 	 * exposing the InputStream to other classes.</p>
 	 * 
 	 * @param action - The action that produces a result
@@ -26,6 +26,8 @@ public interface InputStreamable {
 	 * @throws UncheckedIOException if anything goes wrong
 	 */
 	<T> T mapStream(IOFunction<InputStream, T> action);
+	
+	<T> Result<T, IOException> mapStreamSafely(IOFunction<InputStream, T> action);
 	
 	/**
 	 * <p>Performs an action/a procedure using the
@@ -37,10 +39,10 @@ public interface InputStreamable {
 	 * @param action - The action/procedure
 	 * @throws UncheckedIOException if anything goes wrong
 	 */
-	default <T> void withStream(IOConsumer<InputStream> action) {
+	default void withStream(IOConsumer<InputStream> action) {
 		mapStream(in -> {
 			action.accept(in);
-			return (Void) null;
+			return Unit.UNIT;
 		});
 	}
 }

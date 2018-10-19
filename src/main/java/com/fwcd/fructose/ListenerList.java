@@ -7,10 +7,10 @@ import java.util.function.Consumer;
 
 import com.fwcd.fructose.structs.WeakArrayList;
 
-public class ListenerList implements Listenable<Void> {
+public class ListenerList implements Listenable<Unit> {
 	private List<Runnable> listeners = Collections.synchronizedList(new ArrayList<>());
 	private List<Runnable> lazyWeakListeners;
-	private List<Consumer<? super Void>> lazyVoidListeners;
+	private List<Consumer<? super Unit>> lazyUnitListeners;
 	
 	private volatile int iteratorCount = 0;
 	private List<Runnable> deferredTasks = Collections.synchronizedList(new ArrayList<>());
@@ -79,9 +79,9 @@ public class ListenerList implements Listenable<Void> {
 				}
 			}
 		}
-		if (lazyVoidListeners != null) {
-			synchronized (lazyVoidListeners) {
-				for (Consumer<? super Void> voidListener : lazyVoidListeners) {
+		if (lazyUnitListeners != null) {
+			synchronized (lazyUnitListeners) {
+				for (Consumer<? super Unit> voidListener : lazyUnitListeners) {
 					voidListener.accept(null);
 				}
 			}
@@ -98,20 +98,20 @@ public class ListenerList implements Listenable<Void> {
 		}
 	}
 	
-	private List<Consumer<? super Void>> getVoidListeners() {
-		if (lazyVoidListeners == null) {
-			lazyVoidListeners = Collections.synchronizedList(new WeakArrayList<>());
+	private List<Consumer<? super Unit>> getUnitListeners() {
+		if (lazyUnitListeners == null) {
+			lazyUnitListeners = Collections.synchronizedList(new WeakArrayList<>());
 		}
-		return lazyVoidListeners;
+		return lazyUnitListeners;
 	}
 	
 	@Override
-	public void listen(Consumer<? super Void> listener) {
-		mutateLater(() -> getVoidListeners().add(listener));
+	public void listen(Consumer<? super Unit> listener) {
+		mutateLater(() -> getUnitListeners().add(listener));
 	}
 	
 	@Override
-	public void unlisten(Consumer<? super Void> listener) {
-		mutateLater(() -> getVoidListeners().remove(listener));
+	public void unlisten(Consumer<? super Unit> listener) {
+		mutateLater(() -> getUnitListeners().remove(listener));
 	}
 }

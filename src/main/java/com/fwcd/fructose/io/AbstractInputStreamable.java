@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 
+import com.fwcd.fructose.Result;
 import com.fwcd.fructose.function.IOFunction;
 
 public abstract class AbstractInputStreamable implements InputStreamable {
@@ -15,6 +16,15 @@ public abstract class AbstractInputStreamable implements InputStreamable {
 			return mapper.apply(in);
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
+		}
+	}
+	
+	@Override
+	public <T> Result<T, IOException> mapStreamSafely(IOFunction<InputStream, T> mapper) {
+		try (InputStream in = openStream()) {
+			return Result.of(mapper.apply(in));
+		} catch (IOException e) {
+			return Result.ofFailure(e);
 		}
 	}
 }

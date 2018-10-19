@@ -2,6 +2,8 @@ package com.fwcd.fructose.geometry;
 
 import java.io.Serializable;
 
+import com.fwcd.fructose.Unit;
+
 /**
  * A simple, immutable 2D vector implementation.
  * 
@@ -22,10 +24,10 @@ public class Vector2D extends TemplateVector<Vector2D> implements Serializable {
 	}
 	
 	public Vector2D(double length, double angle, boolean inRadians) {
-		this(length, inRadians ? angle : Math.toRadians(angle), (Void) null);
+		this(length, inRadians ? angle : Math.toRadians(angle), Unit.UNIT);
 	}
 	
-	private Vector2D(double length, double angleRad, Void internalConstructorMarker) {
+	private Vector2D(double length, double angleRad, Unit internalConstructorMarker) {
 		super(Math.cos(angleRad) * length, Math.sin(angleRad) * length);
 	}
 	
