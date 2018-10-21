@@ -86,7 +86,10 @@ public class OptionInt implements Serializable, Iterable<Integer>, ToleranceEqua
 	 * 
 	 * <p>This method is analogous to {@code IntStream.peek}
 	 * and is mainly intended for debugging of call chains.
-	 * (Normally, {@code ifPresent} should be used)</p>
+	 * Unlike {@code IntStream.peek}, this method runs synchronously
+	 * and can thus be used safely for other purposes too.
+	 * If no return type is needed, {@code ifPresent} should be used
+	 * instead.</p>
 	 */
 	public OptionInt peek(IntConsumer action) {
 		if (present) {

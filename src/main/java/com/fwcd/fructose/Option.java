@@ -107,7 +107,10 @@ public class Option<T> implements Serializable, Iterable<T> {
 	 * 
 	 * <p>This method is analogous to {@code Stream.peek}
 	 * and is mainly intended for debugging of call chains.
-	 * (Normally, {@code ifPresent} should be used)</p>
+	 * Unlike {@code Stream.peek}, this method runs synchronously
+	 * and can thus be used safely for other purposes too.
+	 * If no return type is needed, {@code ifPresent} should be used
+	 * instead.</p>
 	 */
 	public Option<T> peek(Consumer<? super T> action) {
 		if (value != null) {

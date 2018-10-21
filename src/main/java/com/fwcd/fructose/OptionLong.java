@@ -86,7 +86,10 @@ public class OptionLong implements Serializable, Iterable<Long>, ToleranceEquata
 	 * 
 	 * <p>This method is analogous to {@code LongStream.peek}
 	 * and is mainly intended for debugging of call chains.
-	 * (Normally, {@code ifPresent} should be used)</p>
+	 * Unlike {@code LongStream.peek}, this method runs synchronously
+	 * and can thus be used safely for other purposes too.
+	 * If no return type is needed, {@code ifPresent} should be used
+	 * instead.</p>
 	 */
 	public OptionLong peek(LongConsumer action) {
 		if (present) {

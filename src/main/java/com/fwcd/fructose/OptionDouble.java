@@ -86,7 +86,10 @@ public class OptionDouble implements Serializable, Iterable<Double>, ToleranceEq
 	 * 
 	 * <p>This method is analogous to {@code DoubleStream.peek}
 	 * and is mainly intended for debugging of call chains.
-	 * (Normally, {@code ifPresent} should be used)</p>
+	 * Unlike {@code DoubleStream.peek}, this method runs synchronously
+	 * and can thus be used safely for other purposes too.
+	 * If no return type is needed, {@code ifPresent} should be used
+	 * instead.</p>
 	 */
 	public OptionDouble peek(DoubleConsumer action) {
 		if (present) {
