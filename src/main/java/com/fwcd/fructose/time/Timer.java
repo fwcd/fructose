@@ -4,11 +4,7 @@ import java.time.Duration;
 import java.time.temporal.TemporalUnit;
 
 /**
- * A decremental time-measurement device. Can also be
- * used to schedule tasks.
- * 
- * @author Fredrik
- *
+ * A decremental time-measurement device.
  */
 public class Timer {
 	private boolean resetted = true;
