@@ -51,18 +51,28 @@ public class StatusBar implements View {
 		thread.start();
 	}
 	
-	private void reset() {
+	public synchronized void display(String message) {
+		display(message, Color.WHITE);
+	}
+	
+	public synchronized void display(String message, Color color) {
+		view.setBackground(color);
+		status.setText(message);
+		show();
+	}
+	
+	public void reset() {
 		view.setBackground(Color.WHITE);
 		status.setText("");
 		
 		hide();
 	}
 	
-	private void show() {
+	public void show() {
 		view.setVisible(true);
 	}
 	
-	private void hide() {
+	public void hide() {
 		view.setVisible(false);
 	}
 	
