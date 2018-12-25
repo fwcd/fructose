@@ -7,16 +7,36 @@ import java.util.function.IntConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import fwcd.fructose.StreamUtils;
+
 public class IntList {
 	private int[] data;
-	private int size = 0;
+	private int size;
 	
 	public IntList() {
 		this(10);
 	}
 	
-	public IntList(int initialSize) {
-		data = new int[initialSize];
+	public IntList(int initialCapacity) {
+		data = new int[initialCapacity];
+		size = 0;
+	}
+	
+	public IntList(int[] data) {
+		data = Arrays.copyOf(data, data.length);
+		size = data.length;
+	}
+	
+	public IntList(IntStream stream) {
+		data = stream.toArray();
+		size = data.length;
+	}
+	
+	public IntList(Iterable<Integer> iterable) {
+		data = StreamUtils.stream(iterable)
+			.mapToInt(Integer::valueOf)
+			.toArray();
+		size = data.length;
 	}
 	
 	private void ensureCapacity() {
