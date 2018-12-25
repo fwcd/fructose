@@ -23,7 +23,7 @@ public class IntList {
 	}
 	
 	public IntList(int[] data) {
-		data = Arrays.copyOf(data, data.length);
+		this.data = Arrays.copyOf(data, data.length);
 		size = data.length;
 	}
 	
