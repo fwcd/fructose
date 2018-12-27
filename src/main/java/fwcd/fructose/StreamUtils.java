@@ -6,6 +6,8 @@ import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -83,5 +85,49 @@ public final class StreamUtils {
 	@SafeVarargs
 	public static <T> Stream<T> merge(Stream<? extends T>... streams) {
 		return Stream.of(streams).flatMap(Function.identity());
+	}
+	
+	/**
+	 * Creates a boxed stream from a character array.
+	 */
+	public static Stream<Character> streamBoxed(char[] chars) {
+		Stream.Builder<Character> stream = Stream.builder();
+		for (char c : chars) {
+			stream.accept(c);
+		}
+		return stream.build();
+	}
+	
+	/**
+	 * Creates a boxed stream from a float array.
+	 */
+	public static Stream<Float> streamBoxed(float[] floats) {
+		Stream.Builder<Float> stream = Stream.builder();
+		for (float f : floats) {
+			stream.accept(f);
+		}
+		return stream.build();
+	}
+	
+	/**
+	 * Creates a primitive stream of ints from a char array.
+	 */
+	public static IntStream streamAsInts(char[] chars) {
+		IntStream.Builder stream = IntStream.builder();
+		for (char c : chars) {
+			stream.accept(c);
+		}
+		return stream.build();
+	}
+	
+	/**
+	 * Creates a primitive stream of doubles from a float array.
+	 */
+	public static DoubleStream streamAsDoubles(float[] floats) {
+		DoubleStream.Builder stream = DoubleStream.builder();
+		for (float f : floats) {
+			stream.accept(f);
+		}
+		return stream.build();
 	}
 }
