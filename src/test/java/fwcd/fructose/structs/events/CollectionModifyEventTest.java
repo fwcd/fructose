@@ -1,4 +1,4 @@
-package fwcd.fructose.test.unittest;
+package fwcd.fructose.structs.events;
 
 import static org.junit.Assert.assertEquals;
 
@@ -11,13 +11,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.junit.Test;
+
 import fwcd.fructose.Pair;
 import fwcd.fructose.math.IntRange;
-import fwcd.fructose.structs.events.ListModifyEvent;
-import fwcd.fructose.structs.events.MapModifyEvent;
-import fwcd.fructose.structs.events.SetModifyEvent;
-
-import org.junit.Test;
 
 public class CollectionModifyEventTest {
 	@Test

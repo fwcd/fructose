@@ -1,8 +1,6 @@
-package fwcd.fructose.test.unittest;
+package fwcd.fructose.math;
 
 import static org.junit.Assert.assertEquals;
-
-import fwcd.fructose.math.DoubleTensor;
 
 import org.junit.Test;
 

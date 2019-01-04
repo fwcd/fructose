@@ -1,11 +1,9 @@
-package fwcd.fructose.test.unittest;
+package fwcd.fructose.structs;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-
-import fwcd.fructose.structs.DoubleList;
 
 public class PrimitiveListTest {
 	@Test

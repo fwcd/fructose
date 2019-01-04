@@ -1,4 +1,4 @@
-package fwcd.fructose.test.unittest;
+package fwcd.fructose.chiffre.rsa;
 
 import static org.junit.Assert.assertEquals;
 

@@ -1,4 +1,4 @@
-package fwcd.fructose.test.unittest;
+package fwcd.fructose.structs;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -8,10 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-import fwcd.fructose.structs.ObservableList;
-import fwcd.fructose.structs.events.ListModifyEvent;
-
 import org.junit.Test;
+
+import fwcd.fructose.structs.events.ListModifyEvent;
 
 public class ObservableListTest {
 	private int listenerCalls = 0;

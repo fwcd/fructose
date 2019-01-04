@@ -1,25 +1,18 @@
-package fwcd.fructose.test.unittest;
+package fwcd.fructose.math;
 
 import static fwcd.fructose.test.utils.TestUtils.approxEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertThat;
-
-import fwcd.fructose.geometry.DoubleMatrix;
-import fwcd.fructose.math.Complex;
-import fwcd.fructose.math.Matrix;
-import fwcd.fructose.math.Numbers;
-import fwcd.fructose.math.Real;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+
+import fwcd.fructose.geometry.DoubleMatrix;
 
 public class MatrixTest {
 	@Test
 	public void testDoubleMatrix() throws InterruptedException {
-		DoubleMatrix mat1 = mat(new double[][] {
-			{4, 2, 5},
-			{1, 1, 9}
-		});
+		DoubleMatrix mat1 = mat(new double[][] { { 4, 2, 5 }, { 1, 1, 9 } });
 		assertThat(mat1.transpose(), approxEquals(mat(new double[][] {
 			{4, 1},
 			{2, 1},

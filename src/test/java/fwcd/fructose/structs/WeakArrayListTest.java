@@ -1,4 +1,4 @@
-package fwcd.fructose.test.unittest;
+package fwcd.fructose.structs;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNot.not;
@@ -9,8 +9,6 @@ import static org.junit.Assume.assumeThat;
 
 import java.util.Arrays;
 import java.util.List;
-
-import fwcd.fructose.structs.WeakArrayList;
 
 import org.junit.Test;
 

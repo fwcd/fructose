@@ -1,11 +1,8 @@
-package fwcd.fructose.test.unittest;
+package fwcd.fructose.ml.math;
 
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-
-import fwcd.fructose.ml.math.NNMatrix;
-import fwcd.fructose.ml.math.NNVector;
 
 public class NNMatrixTest {
 	@Test

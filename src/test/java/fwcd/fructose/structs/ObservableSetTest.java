@@ -1,4 +1,4 @@
-package fwcd.fructose.test.unittest;
+package fwcd.fructose.structs;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -10,10 +10,9 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import fwcd.fructose.structs.ObservableSet;
-import fwcd.fructose.structs.events.SetModifyEvent;
-
 import org.junit.Test;
+
+import fwcd.fructose.structs.events.SetModifyEvent;
 
 public class ObservableSetTest {
 	private int listenerCalls = 0;

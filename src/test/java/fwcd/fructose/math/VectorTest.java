@@ -1,4 +1,4 @@
-package fwcd.fructose.test.unittest;
+package fwcd.fructose.math;
 
 import static fwcd.fructose.test.utils.TestUtils.approxEquals;
 import static org.junit.Assert.assertEquals;

@@ -1,4 +1,4 @@
-package fwcd.fructose.test.unittest;
+package fwcd.fructose.time;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNot.not;
@@ -11,10 +11,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Period;
-
-import fwcd.fructose.time.LocalDateInterval;
-import fwcd.fructose.time.LocalDateTimeInterval;
-import fwcd.fructose.time.LocalTimeInterval;
 
 import org.junit.Test;
 

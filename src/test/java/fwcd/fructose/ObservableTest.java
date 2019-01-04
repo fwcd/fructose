@@ -1,13 +1,10 @@
-package fwcd.fructose.test.unittest;
+package fwcd.fructose;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assume.assumeThat;
 
 import java.util.function.Consumer;
-
-import fwcd.fructose.Observable;
-import fwcd.fructose.ReadOnlyObservable;
 
 import org.junit.Test;
 

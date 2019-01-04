@@ -1,12 +1,9 @@
-package fwcd.fructose.test.unittest;
+package fwcd.fructose;
 
+import static fwcd.fructose.test.utils.TestUtils.assertThrows;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static fwcd.fructose.test.utils.TestUtils.assertThrows;
-
-import fwcd.fructose.Result;
-import fwcd.fructose.Safe;
 
 import org.junit.Test;
 

@@ -1,9 +1,7 @@
-package fwcd.fructose.test.unittest;
+package fwcd.fructose;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
-import fwcd.fructose.When;
 
 import org.junit.Test;
 

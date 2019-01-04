@@ -1,11 +1,8 @@
-package fwcd.fructose.test.unittest;
+package fwcd.fructose.structs;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-
-import fwcd.fructose.structs.MapTable;
-import fwcd.fructose.structs.Table;
 
 public class TableTest {
 	@Test

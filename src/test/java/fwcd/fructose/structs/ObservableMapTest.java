@@ -1,4 +1,4 @@
-package fwcd.fructose.test.unittest;
+package fwcd.fructose.structs;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,10 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import fwcd.fructose.structs.ObservableMap;
-import fwcd.fructose.structs.events.MapModifyEvent;
-
 import org.junit.Test;
+
+import fwcd.fructose.structs.events.MapModifyEvent;
 
 public class ObservableMapTest {
 	private int listenerCalls = 0;

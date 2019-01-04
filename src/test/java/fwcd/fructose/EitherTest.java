@@ -1,12 +1,10 @@
-package fwcd.fructose.test.unittest;
+package fwcd.fructose;
 
+import static fwcd.fructose.test.utils.TestUtils.assertThrows;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static fwcd.fructose.test.utils.TestUtils.assertThrows;
 
 import java.util.NoSuchElementException;
-
-import fwcd.fructose.Either;
 
 import org.junit.Test;
 

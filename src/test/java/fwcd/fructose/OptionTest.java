@@ -1,4 +1,4 @@
-package fwcd.fructose.test.unittest;
+package fwcd.fructose;
 
 import static fwcd.fructose.test.utils.TestUtils.assertThrows;
 import static org.junit.Assert.assertEquals;
@@ -8,11 +8,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.NoSuchElementException;
-
-import fwcd.fructose.Option;
-import fwcd.fructose.OptionDouble;
-import fwcd.fructose.OptionInt;
-import fwcd.fructose.OptionLong;
 
 import org.junit.Assert;
 import org.junit.Test;

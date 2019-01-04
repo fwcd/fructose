@@ -1,10 +1,8 @@
-package fwcd.fructose.test.unittest;
+package fwcd.fructose;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
-import fwcd.fructose.Lazy;
 
 import org.junit.Test;
 

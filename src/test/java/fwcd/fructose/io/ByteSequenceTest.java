@@ -1,10 +1,8 @@
-package fwcd.fructose.test.unittest;
+package fwcd.fructose.io;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-
-import fwcd.fructose.io.ByteSequence;
 
 public class ByteSequenceTest {
 	@Test

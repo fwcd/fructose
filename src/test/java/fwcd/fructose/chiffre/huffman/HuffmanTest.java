@@ -1,12 +1,9 @@
-package fwcd.fructose.test.unittest;
+package fwcd.fructose.chiffre.huffman;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-
-import fwcd.fructose.chiffre.huffman.Huffman;
-import fwcd.fructose.chiffre.huffman.HuffmanTree;
 
 public class HuffmanTest {
 	@Test

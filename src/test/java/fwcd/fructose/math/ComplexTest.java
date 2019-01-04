@@ -1,11 +1,9 @@
-package fwcd.fructose.test.unittest;
+package fwcd.fructose.math;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-
-import fwcd.fructose.math.Complex;
 
 public class ComplexTest {
 	@Test
