@@ -1,6 +1,6 @@
 package fwcd.fructose;
 
-import static fwcd.fructose.test.utils.TestUtils.assertThrows;
+import static fwcd.fructose.test.TestUtils.assertThrows;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -16,11 +16,11 @@ public class EitherTest {
 		assertEquals("This is a string", a.getLeft().orElseThrow(NoSuchElementException::new));
 		assertTrue(a.getLeft().isPresent());
 		assertTrue(!a.getRight().isPresent());
-		assertThrows(a::unwrapRight, NoSuchElementException.class);
+		assertThrows(NoSuchElementException.class, a::unwrapRight);
 
 		a = Either.ofRight(24);
 		assertEquals(24, a.get());
 		assertEquals(Integer.valueOf(24), a.unwrapRight());
-		assertThrows(a::unwrapLeft, NoSuchElementException.class);
+		assertThrows(NoSuchElementException.class, a::unwrapLeft);
 	}
 }

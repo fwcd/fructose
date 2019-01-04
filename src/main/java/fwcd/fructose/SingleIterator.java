@@ -23,7 +23,7 @@ public class SingleIterator<T> implements Iterator<T> {
 	
 	@Override
 	public boolean hasNext() {
-		return iterated;
+		return !iterated;
 	}
 	
 	@Override

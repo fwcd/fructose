@@ -1,4 +1,4 @@
-package fwcd.fructose.test.utils;
+package fwcd.fructose.test;
 
 import static org.junit.Assert.fail;
 
@@ -14,7 +14,7 @@ import org.hamcrest.Matcher;
 public final class TestUtils {
 	private TestUtils() {}
 
-	public static void assertThrows(ThrowingRunnable<Throwable> runnable, Class<? extends Throwable> exceptionClass) {
+	public static void assertThrows(Class<? extends Throwable> exceptionClass, ThrowingRunnable<Throwable> runnable) {
 		boolean ranWithoutException = false;
 		try {
 			runnable.run();

@@ -1,6 +1,6 @@
 package fwcd.fructose;
 
-import static fwcd.fructose.test.utils.TestUtils.assertThrows;
+import static fwcd.fructose.test.TestUtils.assertThrows;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -20,7 +20,7 @@ public class OptionTest {
 		
 		assertNotEquals(a, b);
 		assertEquals("test", b.unwrap());
-		assertThrows(a::unwrap, NoSuchElementException.class);
+		assertThrows(NoSuchElementException.class, a::unwrap);
 		assertEquals(Option.of(4), b.map(String::length));
 		assertFalse(a.map(String::length).isPresent());
 		assertEquals(Option.of('t'), b.flatMap(v -> Option.of(v.charAt(0))));
@@ -38,7 +38,7 @@ public class OptionTest {
 		assertEquals(OptionInt.of(44), b.map(it -> it + 2));
 		assertFalse(a.isPresent());
 		assertTrue(b.isPresent());
-		assertThrows(a::unwrap, NoSuchElementException.class);
+		assertThrows(NoSuchElementException.class, a::unwrap);
 		a.ifPresent(v -> fail());
 		b.ifPresentOrElse(v -> assertEquals(42, v), Assert::fail);
 		assertEquals(OptionInt.of(42), b.filter(v -> (v % 2) == 0));
@@ -57,7 +57,7 @@ public class OptionTest {
 		assertEquals(OptionDouble.of(44), b.map(it -> it + 2));
 		assertFalse(a.isPresent());
 		assertTrue(b.isPresent());
-		assertThrows(a::unwrap, NoSuchElementException.class);
+		assertThrows(NoSuchElementException.class, a::unwrap);
 		a.ifPresent(v -> fail());
 		b.ifPresentOrElse(v -> assertEquals(42, v, tolerance), Assert::fail);
 		assertTrue(b.filter(v -> (v % 2) == 0).equals(OptionDouble.of(42), tolerance));
@@ -75,7 +75,7 @@ public class OptionTest {
 		assertEquals(OptionLong.of(44), b.map(it -> it + 2));
 		assertFalse(a.isPresent());
 		assertTrue(b.isPresent());
-		assertThrows(a::unwrap, NoSuchElementException.class);
+		assertThrows(NoSuchElementException.class, a::unwrap);
 		a.ifPresent(v -> fail());
 		b.ifPresentOrElse(v -> assertEquals(42, v), Assert::fail);
 		assertEquals(OptionLong.of(42), b.filter(v -> (v % 2) == 0));

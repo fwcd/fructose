@@ -1,6 +1,6 @@
 package fwcd.fructose.math;
 
-import static fwcd.fructose.test.utils.TestUtils.approxEquals;
+import static fwcd.fructose.test.TestUtils.approxEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThat;
