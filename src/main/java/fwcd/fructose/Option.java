@@ -1,6 +1,7 @@
 package fwcd.fructose;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -343,22 +344,7 @@ public class Option<T> implements Serializable, Iterable<T> {
 	
 	@Override
 	public Iterator<T> iterator() {
-		return new Iterator<T>() {
-			private boolean done = false;
-			
-			@Override
-			public boolean hasNext() { return done; }
-			
-			@Override
-			public T next() {
-				if (done) {
-					throw new IllegalStateException("Tried to fetch more than one value from Option.Iterator");
-				} else {
-					done = true;
-					return value;
-				}
-			}
-		};
+		return (value == null) ? Collections.emptyIterator() : new SingleIterator<>(value);
 	}
 	
 	public Stream<T> stream() {

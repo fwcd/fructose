@@ -1,6 +1,7 @@
 package fwcd.fructose;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -314,22 +315,7 @@ public class OptionInt implements Serializable, Iterable<Integer>, ToleranceEqua
 	
 	@Override
 	public Iterator<Integer> iterator() {
-		return new Iterator<Integer>() {
-			private boolean done = false;
-			
-			@Override
-			public boolean hasNext() { return done; }
-			
-			@Override
-			public Integer next() {
-				if (done) {
-					throw new IllegalStateException("Tried to fetch more than one value from OptionInt.Iterator");
-				} else {
-					done = true;
-					return value;
-				}
-			}
-		};
+		return present ? new SingleIterator<>(value) : Collections.emptyIterator();
 	}
 	
 	public IntStream stream() {

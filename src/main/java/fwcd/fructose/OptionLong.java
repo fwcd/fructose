@@ -1,6 +1,7 @@
 package fwcd.fructose;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -314,22 +315,7 @@ public class OptionLong implements Serializable, Iterable<Long>, ToleranceEquata
 	
 	@Override
 	public Iterator<Long> iterator() {
-		return new Iterator<Long>() {
-			private boolean done = false;
-			
-			@Override
-			public boolean hasNext() { return done; }
-			
-			@Override
-			public Long next() {
-				if (done) {
-					throw new IllegalStateException("Tried to fetch more than one value from OptionLong.Iterator");
-				} else {
-					done = true;
-					return value;
-				}
-			}
-		};
+		return present ? new SingleIterator<>(value) : Collections.emptyIterator();
 	}
 	
 	public LongStream stream() {

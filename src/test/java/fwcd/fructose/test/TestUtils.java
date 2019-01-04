@@ -2,17 +2,18 @@ package fwcd.fructose.test;
 
 import static org.junit.Assert.fail;
 
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+
 import fwcd.fructose.function.ThrowingRunnable;
 import fwcd.fructose.math.Numeric;
 import fwcd.fructose.math.Vector;
 import fwcd.fructose.operations.ToleranceEquatable;
 
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-
 public final class TestUtils {
-	private TestUtils() {}
+	private TestUtils() {
+	}
 
 	public static void assertThrows(Class<? extends Throwable> exceptionClass, ThrowingRunnable<Throwable> runnable) {
 		boolean ranWithoutException = false;
