@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
+import fwcd.fructose.function.Subscription;
 import fwcd.fructose.structs.WeakArrayList;
 
 public class ListenerList implements Listenable<Unit> {
@@ -113,5 +114,10 @@ public class ListenerList implements Listenable<Unit> {
 	@Override
 	public void unlisten(Consumer<? super Unit> listener) {
 		mutateLater(() -> getUnitListeners().remove(listener));
+	}
+	
+	public Subscription subscribe(Runnable listener) {
+		add(listener);
+		return () -> remove(listener);
 	}
 }
