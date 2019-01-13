@@ -1,17 +1,20 @@
 package fwcd.fructose.math;
 
-import fwcd.fructose.operations.AddSubMulDiv;
+import fwcd.fructose.math.algebra.FieldElement;
 import fwcd.fructose.operations.ToleranceEquatable;
 
+/**
+ * A field element on which scalar addition,
+ * scalar subtraction, scalar multiplication,
+ * scalar division and a tolerance equivalence
+ * relation are defined.
+ * 
+ * <p>These rules are sastified by the real numbers
+ * and common supersets (such as complex numbers).</p>
+ */
 public interface Numeric<V extends Numeric<V>> extends
-		AddSubMulDiv<V>,
+		FieldElement<V>,
 		ToleranceEquatable<V> {
-	/** Finds the multiplicative inverse. */
-	V reciprocal();
-	
-	/** Find the additive inverse. */
-	V negate();
-	
 	V add(Real rhs);
 	
 	V sub(Real rhs);

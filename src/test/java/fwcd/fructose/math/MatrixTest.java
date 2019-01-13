@@ -50,7 +50,7 @@ public class MatrixTest {
 		assertEquals(rMat(new double[][] {
 			{-5, 1},
 			{8, 7}
-		}).determinant().value(), mat(new double[][] {
+		}).determinant().getValue(), mat(new double[][] {
 			{-5, 1},
 			{8, 7}
 		}).determinant(), 0.0001D);
@@ -66,7 +66,7 @@ public class MatrixTest {
 			{1, 0, 2},
 			{4, 5, 7}
 		}), 0.0001D));
-		assertEquals(mat2.determinant().value(), 39, 0.0001D);
+		assertEquals(mat2.determinant().getValue(), 39, 0.0001D);
 		
 		// Test Tensor product/Kronecker product
 		assertThat(rMat(new double[][] {

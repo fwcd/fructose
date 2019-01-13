@@ -32,7 +32,7 @@ public class VectorTest {
 		assertThat(vec(4, 3), approxEquals(vec(4, 3), 0.1D));
 		assertThat(vec(4, 3).add(vec(1, 2)), approxEquals(vec(5, 5), 0.1D));
 		assertThat(vec(9, 2).sub(vec(2, 1)), approxEquals(vec(7, 1), 0.1D));
-		assertEquals(vec(2, 5, 4).dot(vec(1, 2, 3)).value(), 24, 0.1D);
+		assertEquals(vec(2, 5, 4).dot(vec(1, 2, 3)).getValue(), 24, 0.1D);
 		assertThat(vec(1, 3, 2).outer(vec(2, 1, 0, 3)), approxEquals(Numbers.realMatrix(new double[][] {
 			{2, 1, 0, 3},
 			{6, 3, 0, 9},

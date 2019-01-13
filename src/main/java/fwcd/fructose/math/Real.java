@@ -1,9 +1,11 @@
 package fwcd.fructose.math;
 
+import fwcd.fructose.math.algebra.FieldElement;
+
 /**
  * A real number (represented as a double).
  */
-public class Real extends Number implements Numeric<Real> {
+public class Real extends Number implements Numeric<Real>, FieldElement<Real> {
 	private static final long serialVersionUID = 621483791896382089L;
 	private double value;
 	
@@ -13,7 +15,7 @@ public class Real extends Number implements Numeric<Real> {
 	
 	public static Real of(double value) { return new Real(value); }
 	
-	public Complex toComplex() { return Complex.ofReal(value); }
+	public Complex toComplex() { return Complex.of(this); }
 	
 	public Real pow(Real rhs) { return of(Math.pow(value, rhs.value)); }
 	
@@ -41,7 +43,7 @@ public class Real extends Number implements Numeric<Real> {
 	@Override
 	public Real negate() { return of(-value); }
 	
-	public double value() { return value; }
+	public double getValue() { return value; }
 
 	@Override
 	public int intValue() { return (int) value; }

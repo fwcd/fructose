@@ -2,13 +2,15 @@ package fwcd.fructose.math;
 
 import java.util.Objects;
 
+import fwcd.fructose.math.algebra.FieldElement;
+
 /**
  * A complex number (represented using two doubles).
  */
-public class Complex implements Numeric<Complex> {
-	public static final Complex ZERO = of(0, 0);
-	public static final Complex ONE = of(1, 0);
-	public static final Complex I = of(0, 1);
+public class Complex implements Numeric<Complex>, FieldElement<Complex> {
+	public static final Complex ZERO = new Complex(0, 0);
+	public static final Complex ONE = new Complex(1, 0);
+	public static final Complex I = new Complex(0, 1);
 	
 	private final double real;
 	private final double imag;
@@ -22,7 +24,20 @@ public class Complex implements Numeric<Complex> {
 		return of(real, 0);
 	}
 	
+	public static Complex of(Real real) {
+		return ofReal(real.getValue());
+	}
+	
 	public static Complex of(double real, double imag) {
+		if (real == 0.0) {
+			if (imag == 0.0) {
+				return ZERO;
+			} else if (imag == 1.0) {
+				return I;
+			}
+		} else if (real == 1.0 && imag == 0.0) {
+			return ONE;
+		}
 		return new Complex(real, imag);
 	}
 	
@@ -126,7 +141,7 @@ public class Complex implements Numeric<Complex> {
 	}
 	
 	public double abs() {
-		return Math.hypot(real, imag);
+		return Math.sqrt((real * real) + (imag * imag));
 	}
 	
 	public double absSquared() {
@@ -168,9 +183,9 @@ public class Complex implements Numeric<Complex> {
 	@Override
 	public String toString() {
 		if (imag > 0) {
-			return "(" + Double.toString(real) + " + " + Double.toString(imag) + "i)";
+			return "(" + real + " + " + imag + "i)";
 		} else if (imag < 0) {
-			return "(" + Double.toString(real) + " - " + Double.toString(-imag) + "i)";
+			return "(" + real + " - " + -imag + "i)";
 		} else {
 			return Double.toString(real);
 		}
@@ -178,13 +193,13 @@ public class Complex implements Numeric<Complex> {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(real, imag);
+		return 27 * Double.hashCode(real) * Double.hashCode(imag);
 	}
 	
 	@Override
-	public boolean equals(Complex other, double tolerance) {
-		return (Math.abs(real - other.real) < tolerance)
-				&& (Math.abs(imag - other.imag) < tolerance);
+	public boolean equals(Complex other, double epsilon) {
+		return (Math.abs(real - other.real) < epsilon)
+			&& (Math.abs(imag - other.imag) < epsilon);
 	}
 	
 	@Override
@@ -203,21 +218,21 @@ public class Complex implements Numeric<Complex> {
 
 	@Override
 	public Complex add(Real rhs) {
-		return of(real + rhs.value(), imag);
+		return of(real + rhs.getValue(), imag);
 	}
 
 	@Override
 	public Complex sub(Real rhs) {
-		return of(real - rhs.value(), imag);
+		return of(real - rhs.getValue(), imag);
 	}
 
 	@Override
 	public Complex multiply(Real rhs) {
-		return multiply(rhs.value());
+		return multiply(rhs.getValue());
 	}
 
 	@Override
 	public Complex divide(Real rhs) {
-		return divide(rhs.value());
+		return divide(rhs.getValue());
 	}
 }
