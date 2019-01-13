@@ -120,4 +120,10 @@ public class ListenerList implements Listenable<Unit> {
 		add(listener);
 		return () -> remove(listener);
 	}
+	
+	public Subscription subscribeAndFire(Runnable listener) {
+		Subscription sub = subscribe(listener);
+		listener.run();
+		return sub;
+	}
 }
