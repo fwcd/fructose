@@ -9,5 +9,5 @@ public interface Subscription extends AutoCloseable {
 	default void to(Closer closer) { closer.add(this); }
 	
 	@Override
-	default void close() throws Exception { unsubscribe(); }
+	default void close() { unsubscribe(); }
 }
