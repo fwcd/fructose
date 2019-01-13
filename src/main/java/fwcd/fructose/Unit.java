@@ -1,6 +1,5 @@
 package fwcd.fructose;
 
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
