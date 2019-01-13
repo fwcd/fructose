@@ -1,5 +1,6 @@
 package fwcd.fructose;
 
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
@@ -26,6 +27,6 @@ public final class Unit implements Serializable {
 	public boolean equals(Object obj) {
 		if (this == obj) return true;
 		if (obj == null) return false;
-		return Unit.class.equals(obj.getClass());
+		return obj instanceof Unit;
 	}
 }
