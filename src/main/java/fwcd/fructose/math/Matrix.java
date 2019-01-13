@@ -9,11 +9,11 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import fwcd.fructose.ListUtils;
 import fwcd.fructose.operations.Addable;
 import fwcd.fructose.operations.Multipliable;
 import fwcd.fructose.operations.Subtractable;
 import fwcd.fructose.operations.ToleranceEquatable;
+import fwcd.fructose.util.ListUtils;
 
 /**
  * An immutable, numeric matrix.

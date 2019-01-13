@@ -3,7 +3,7 @@ package fwcd.fructose.time;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-import fwcd.fructose.CompareUtils;
+import fwcd.fructose.util.CompareUtils;
 
 /**
  * A fixed, half-open interval between two {@link LocalDateTime}s.

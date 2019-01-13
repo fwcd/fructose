@@ -7,10 +7,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.IntUnaryOperator;
 
-import fwcd.fructose.ListUtils;
 import fwcd.fructose.math.graph.ConstScalar;
 import fwcd.fructose.math.graph.ScalarExponentiation;
 import fwcd.fructose.structs.IntList;
+import fwcd.fructose.util.ListUtils;
 
 /**
  * A set of utilities for performing custom, useful and common math operations.

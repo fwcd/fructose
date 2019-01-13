@@ -10,12 +10,12 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import fwcd.fructose.ListUtils;
 import fwcd.fructose.operations.Addable;
 import fwcd.fructose.operations.Divisible;
 import fwcd.fructose.operations.Multipliable;
 import fwcd.fructose.operations.Subtractable;
 import fwcd.fructose.operations.ToleranceEquatable;
+import fwcd.fructose.util.ListUtils;
 
 /**
  * An immutable, numeric vector.

@@ -1,4 +1,4 @@
-package fwcd.fructose;
+package fwcd.fructose.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,9 +11,6 @@ import fwcd.fructose.function.BiIntFunction;
 
 /**
  * Array and List utilities.
- * 
- * @author Fredrik
- *
  */
 public final class ListUtils {
 	private ListUtils() {}

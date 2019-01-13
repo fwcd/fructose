@@ -11,6 +11,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
+import fwcd.fructose.util.ListUtils;
+
 public class Permutations<T> implements Iterable<List<T>> {
 	private Set<List<T>> permutations;
 	

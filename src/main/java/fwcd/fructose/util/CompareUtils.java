@@ -1,6 +1,6 @@
-package fwcd.fructose;
+package fwcd.fructose.util;
 
-public final class CompareUtils {
+public class CompareUtils {
 	private CompareUtils() {}
 	
 	@SafeVarargs
