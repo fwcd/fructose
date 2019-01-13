@@ -42,7 +42,7 @@ public class Quaternion implements DivisionRingElement<Quaternion>, ToleranceEqu
 	}
 	
 	public static Quaternion of(double real, double imagI, double imagJ, double imagK) {
-		return new Quaternion(0, 0, 0, 0);
+		return new Quaternion(real, imagI, imagJ, imagK);
 	}
 	
 	public double getReal() { return real; }
@@ -114,6 +114,10 @@ public class Quaternion implements DivisionRingElement<Quaternion>, ToleranceEqu
 	
 	public double dot(Quaternion rhs) {
 		return (real * rhs.real) + (imagI + rhs.imagI) + (imagJ + rhs.imagJ) + (imagK + rhs.imagK);
+	}
+	
+	public double abs() {
+		return Math.sqrt((real * real) + (imagI * imagI) + (imagJ * imagJ) + (imagK * imagK));
 	}
 	
 	@Override

@@ -1,7 +1,5 @@
 package fwcd.fructose.math;
 
-import java.util.Objects;
-
 import fwcd.fructose.math.algebra.FieldElement;
 
 /**
