@@ -86,10 +86,10 @@ public class Quaternion implements DivisionRingElement<Quaternion>, ToleranceEqu
 	@Override
 	public Quaternion multiply(Quaternion rhs) {
 		return of(
-			(real * rhs.real)  - (imagI * rhs.imagI) - (imagJ * rhs.imagJ) - (imagJ     * imagK),
-			(real * rhs.imagI) + (imagI * rhs.real)  + (imagJ * imagK)     - (rhs.imagK * rhs.imagI),
-			(real * rhs.imagJ) - (imagI * imagK)     + (imagJ * rhs.real)  + (imagJ     * rhs.imagI),
-			(real * imagK)     + (imagI * rhs.imagJ) - (imagJ * rhs.imagI) + (rhs.imagK * rhs.real)
+			(real * rhs.real)  - (imagI * rhs.imagI) - (imagJ * rhs.imagJ) - (imagK * rhs.imagK),
+			(real * rhs.imagI) + (imagI * rhs.real)  + (imagJ * rhs.imagK) - (imagK * rhs.imagJ),
+			(real * rhs.imagJ) - (imagI * rhs.imagK) + (imagJ * rhs.real)  + (imagK * rhs.imagI),
+			(real * rhs.imagK) + (imagI * rhs.imagJ) - (imagJ * rhs.imagI) + (imagK * rhs.real)
 		);
 	}
 	

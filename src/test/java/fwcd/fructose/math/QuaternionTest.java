@@ -22,7 +22,7 @@ public class QuaternionTest {
 		assertThat(quat(0, 2, -1, -3).abs(), closeTo(Math.sqrt(14), EPSILON));
 		assertThat(quat(0, 2, -1, -3).conjugate(), closeToQuat(0, -2, 1, 3));
 		assertThat(quat(0, 2, -1, -3).reciprocal(), closeToQuat(0, -1.0 / 7.0, 1.0 / 14.0, 3.0 / 14.0));
-		assertThat(quat(-Math.sin(Math.PI), 3, 4, 3).multiply(quat(-1, 3.9, 4, -3)), closeToQuat(1.3, 3, 36.7, -6.6));
+		assertThat(quat(0, 3, 4, 3).multiply(quat(-1, 3.9, 4, -3)), closeToQuat(-18.7, -27, 16.7, -6.6));
 	}
 	
 	private Quaternion quat(double real, double i, double j, double k) {
