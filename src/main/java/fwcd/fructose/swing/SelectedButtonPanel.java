@@ -122,7 +122,11 @@ public class SelectedButtonPanel implements View {
 	
 	private void syncSelection() {
 		for (JButton button : buttons.keySet()) {
-			button.setBackground(selection.matches(button) ? highlightColor : INACTIVE_COLOR);
+			if (selection.matches(button)) {
+				select(button);
+			} else {
+				button.setBackground(INACTIVE_COLOR);
+			}
 		}
 	}
 	
