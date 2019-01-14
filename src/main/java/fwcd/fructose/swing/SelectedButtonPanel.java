@@ -3,7 +3,9 @@ package fwcd.fructose.swing;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.BoxLayout;
@@ -12,16 +14,21 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
+import fwcd.fructose.Option;
+
 public class SelectedButtonPanel implements View {
+	private static final Color INACTIVE_COLOR = Color.WHITE;
+
 	private JComponent view;
 	
 	private final Color highlightColor;
 	private final Map<JButton, Runnable> buttons = new HashMap<>();
+	private final List<SelectedButtonPanel> connected = new ArrayList<>();
 	private final MouseAdapter mouseAdapter;
 
 	private boolean folding = false;
 	private boolean folded = false;
-	private JButton selectedButton = null;
+	private Selection selection = new Selection();
 	
 	public SelectedButtonPanel(boolean horizontal, Color highlightColor) {
 		this(horizontal, highlightColor, false);
@@ -38,7 +45,6 @@ public class SelectedButtonPanel implements View {
 		}
 		
 		mouseAdapter = new MouseAdapter() {
-
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				if (folding) {
@@ -52,7 +58,6 @@ public class SelectedButtonPanel implements View {
 					fold();
 				}
 			}
-			
 		};
 		
 		view.setOpaque(false);
@@ -76,7 +81,7 @@ public class SelectedButtonPanel implements View {
 	private void fold() {
 		folded = true;
 		for (JButton button : buttons.keySet()) {
-			button.setVisible(button.equals(selectedButton));
+			button.setVisible(selection.matches(button));
 		}
 		view.repaint();
 	}
@@ -84,23 +89,24 @@ public class SelectedButtonPanel implements View {
 	public void add(JButton button, Runnable onClick) {
 		button.setBorderPainted(false);
 		button.setOpaque(true);
-		button.setBackground(Color.WHITE);
+		button.setBackground(INACTIVE_COLOR);
 		button.addActionListener((l) -> select(button));
 		button.addMouseListener(mouseAdapter);
 		
 		buttons.put(button, onClick);
 		
-		if (selectedButton == null) {
+		if (selection.isEmpty()) {
 			select(button);
 		}
 
-		button.setVisible(!folding || button.equals(selectedButton));
+		button.setVisible(!folding || selection.matches(button));
 		view.add(button);
 	}
 	
 	public void select(JButton button) {
-		if (selectedButton != null) {
-			selectedButton.setBackground(Color.WHITE);
+		if (!selection.isEmpty()) {
+			JButton selectedButton = selection.getSelectedButton().unwrap();
+			selectedButton.setBackground(INACTIVE_COLOR);
 			
 			if (folded) {
 				selectedButton.setVisible(false);
@@ -110,8 +116,14 @@ public class SelectedButtonPanel implements View {
 		button.setVisible(true);
 		button.setBackground(highlightColor);
 		
-		selectedButton = button;
+		selection.setSelectedButton(button);
 		buttons.get(button).run();
+	}
+	
+	private void syncSelection() {
+		for (JButton button : buttons.keySet()) {
+			button.setBackground(selection.matches(button) ? highlightColor : INACTIVE_COLOR);
+		}
 	}
 	
 	@Override
@@ -121,6 +133,13 @@ public class SelectedButtonPanel implements View {
 
 	public void setOpaque(boolean opaque) {
 		view.setOpaque(opaque);
+	}
+	
+	public void connect(SelectedButtonPanel other) {
+		connected.add(other);
+		other.selection = selection;
+		syncSelection();
+		other.syncSelection();
 	}
 
 	public void setFloatable(boolean floatable) {
@@ -139,5 +158,17 @@ public class SelectedButtonPanel implements View {
 		} else {
 			unfold();
 		}
+	}
+	
+	private static class Selection {
+		private Option<JButton> selectedButton = Option.empty();
+		
+		public void setSelectedButton(JButton selectedButton) { this.selectedButton = Option.of(selectedButton); }
+		
+		public Option<JButton> getSelectedButton() { return selectedButton; }
+		
+		public boolean isEmpty() { return !selectedButton.isPresent(); }
+		
+		public boolean matches(JButton button) { return selectedButton.filter(button::equals).isPresent(); }
 	}
 }
