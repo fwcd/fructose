@@ -313,6 +313,8 @@ public class OptionLong implements Serializable, Iterable<Long>, ToleranceEquata
 	
 	public OptionDouble toOptionDouble() { return present ? OptionDouble.of(value) : OptionDouble.empty(); }
 	
+	public long[] toArray() { return present ? new long[] {value} : new long[0]; }
+	
 	@Override
 	public Iterator<Long> iterator() {
 		return present ? new SingleIterator<>(value) : Collections.emptyIterator();

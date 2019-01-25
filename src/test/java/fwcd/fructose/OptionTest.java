@@ -90,6 +90,8 @@ public class OptionTest {
 		assertThat(a, iterableWithSize(0));
 		assertThat(b, iterableWithSize(1));
 		assertThat(b.iterator().next(), closeTo(42.0, tolerance));
+		assertArrayEquals(new double[0], a.toArray(), tolerance);
+		assertArrayEquals(new double[] {42}, b.toArray(), tolerance);
 	}
 	
 	@Test
@@ -111,5 +113,7 @@ public class OptionTest {
 		assertThat(a, iterableWithSize(0));
 		assertThat(b, iterableWithSize(1));
 		assertThat(b, contains(42L));
+		assertArrayEquals(new long[0], a.toArray());
+		assertArrayEquals(new long[] {42}, b.toArray());
 	}
 }
