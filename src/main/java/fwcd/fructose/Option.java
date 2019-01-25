@@ -396,10 +396,12 @@ public class Option<T> implements Serializable, Iterable<T> {
 	 */
 	public <A> A[] toArray(IntFunction<A[]> arrayConstructor) {
 		A[] array = toArrayUnchecked(arrayConstructor);
-		Class<?> arrayType = array.getClass().getComponentType();
-		Class<? extends Object> valueType = value.getClass();
-		if (!arrayType.isAssignableFrom(valueType)) {
-			throw new ArrayStoreException("Can not store value of type " + valueType.getSimpleName() + " in array of component type " + arrayType.getSimpleName());
+		if (value != null) {
+			Class<?> arrayType = array.getClass().getComponentType();
+			Class<? extends Object> valueType = value.getClass();
+			if (!arrayType.isAssignableFrom(valueType)) {
+				throw new ArrayStoreException("Can not store value of type " + valueType.getSimpleName() + " in array of component type " + arrayType.getSimpleName());
+			}
 		}
 		return array;
 	}

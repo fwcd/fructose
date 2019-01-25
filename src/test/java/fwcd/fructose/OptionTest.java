@@ -1,9 +1,11 @@
 package fwcd.fructose;
 
 import static fwcd.fructose.test.TestUtils.assertThrows;
+import static org.hamcrest.Matchers.array;
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.iterableWithSize;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
@@ -20,6 +22,7 @@ import org.junit.Test;
 
 public class OptionTest {
 	@Test
+	@SuppressWarnings("unchecked")
 	public void testOption() {
 		Option<String> a = Option.empty();
 		Option<String> b = Option.of("test");
@@ -36,6 +39,10 @@ public class OptionTest {
 		assertThat(a, iterableWithSize(0));
 		assertThat(b, iterableWithSize(1));
 		assertThat(b, contains("test"));
+		assertThat(a.toArray(), is(array()));
+		assertThat(b.toArray(), is(array(equalTo("test"))));
+		assertThat(a.toArray(Object[]::new), is(array()));
+		assertThat(b.toArray(String[]::new), is(array(equalTo("test"))));
 	}
 	
 	@Test
