@@ -17,6 +17,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -45,6 +46,8 @@ public class OptionTest {
 		assertThat(a.toArray(Object[]::new), is(array()));
 		assertThat(b.toArray(String[]::new), is(array(equalTo("test"))));
 		assertThrows(ArrayStoreException.class, () -> b.toArray(Integer[]::new));
+		assertThat(a.stream().count(), equalTo(0L));
+		assertThat(b.stream().collect(Collectors.toList()), contains("test"));
 	}
 	
 	@Test
