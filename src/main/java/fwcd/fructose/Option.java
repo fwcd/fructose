@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.function.ToDoubleFunction;
@@ -349,6 +350,58 @@ public class Option<T> implements Serializable, Iterable<T> {
 	
 	public Stream<T> stream() {
 		return (value == null) ? Stream.empty() : Stream.of(value);
+	}
+	
+	/**
+	 * Converts this Option to an untyped array.
+	 */
+	public Object[] toArray() {
+		return (value == null) ? new Object[0] : new Object[] {value};
+	}
+	
+	/**
+	 * Converts this Option to a typed array using
+	 * the provided generator.
+	 * 
+	 * <p>The generator can be concisely expressed
+	 * using a method reference: {@code String[]::new}<p>
+	 * 
+	 * <p><b>This method is unsafe, which means it is
+	 * up to the programmer to verify that the value type
+	 * of this Option is assignable to the array type.</b></p>
+	 * 
+	 * @param arrayConstructor - Takes the size of the array and yields an array
+	 */
+	@SuppressWarnings("unchecked")
+	public <A> A[] toArrayUnchecked(IntFunction<A[]> arrayConstructor) {
+		if (value == null) {
+			return arrayConstructor.apply(0);
+		} else {
+			A[] array = arrayConstructor.apply(1);
+			array[0] = (A) value;
+			return array;
+		}
+	}
+	
+	/**
+	 * Converts this Option to a typed array using
+	 * the provided generator and does additional
+	 * runtime type checking.
+	 * 
+	 * <p>The generator can be concisely expressed
+	 * using a method reference: {@code String[]::new}<p>
+	 * 
+	 * @param arrayConstructor - Takes the size of the array and yields an array
+	 * @throws ArrayStoreException if the value type of this option is incompatible with the array type
+	 */
+	public <A> A[] toArray(IntFunction<A[]> arrayConstructor) {
+		A[] array = toArrayUnchecked(arrayConstructor);
+		Class<?> arrayType = array.getClass().getComponentType();
+		Class<? extends Object> valueType = value.getClass();
+		if (!arrayType.isAssignableFrom(valueType)) {
+			throw new ArrayStoreException("Can not store value of type " + valueType.getSimpleName() + " in array of component type " + arrayType.getSimpleName());
+		}
+		return array;
 	}
 	
 	@Override
