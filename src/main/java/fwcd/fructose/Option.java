@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.IntFunction;
@@ -362,7 +363,11 @@ public class Option<T> implements Serializable, Iterable<T> {
 	}
 	
 	public List<T> toList() {
-		return (value == null) ? Collections.emptyList() : Arrays.asList(value);
+		return (value == null) ? Collections.emptyList() : Collections.singletonList(value);
+	}
+	
+	public Set<T> toSet() {
+		return (value == null) ? Collections.emptySet() : Collections.singleton(value);
 	}
 	
 	/**
