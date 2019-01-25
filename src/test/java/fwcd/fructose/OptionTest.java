@@ -43,6 +43,7 @@ public class OptionTest {
 		assertThat(b.toArray(), is(array(equalTo("test"))));
 		assertThat(a.toArray(Object[]::new), is(array()));
 		assertThat(b.toArray(String[]::new), is(array(equalTo("test"))));
+		assertThrows(ArrayStoreException.class, () -> b.toArray(Integer[]::new));
 	}
 	
 	@Test
