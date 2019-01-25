@@ -1,8 +1,10 @@
 package fwcd.fructose;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
@@ -357,6 +359,10 @@ public class Option<T> implements Serializable, Iterable<T> {
 	 */
 	public Object[] toArray() {
 		return (value == null) ? new Object[0] : new Object[] {value};
+	}
+	
+	public List<T> toList() {
+		return (value == null) ? Collections.emptyList() : Arrays.asList(value);
 	}
 	
 	/**
