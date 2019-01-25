@@ -313,6 +313,8 @@ public class OptionInt implements Serializable, Iterable<Integer>, ToleranceEqua
 	
 	public OptionLong toOptionLong() { return present ? OptionLong.of(value) : OptionLong.empty(); } 
 	
+	public int[] toArray() { return present ? new int[] {value} : new int[0]; }
+	
 	@Override
 	public Iterator<Integer> iterator() {
 		return present ? new SingleIterator<>(value) : Collections.emptyIterator();

@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.iterableWithSize;
 import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -65,6 +66,8 @@ public class OptionTest {
 		assertThat(a, iterableWithSize(0));
 		assertThat(b, iterableWithSize(1));
 		assertThat(b, contains(42));
+		assertArrayEquals(new int[0], a.toArray());
+		assertArrayEquals(new int[] {42}, b.toArray());
 	}
 	
 	@Test
