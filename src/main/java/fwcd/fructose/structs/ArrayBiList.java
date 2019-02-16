@@ -9,26 +9,29 @@ import java.util.function.BiConsumer;
 import fwcd.fructose.BiIterator;
 import fwcd.fructose.Pair;
 
-public class ArrayBiList<A, B> implements BiList<A, B> {
-	private final List<A> aItems = new ArrayList<>();
-	private final List<B> bItems = new ArrayList<>();
+/**
+ * An {@link ArrayList}-based implementation of {@link BiList}.
+ */
+public class ArrayBiList<L, R> implements BiList<L, R> {
+	private final List<L> leftItems = new ArrayList<>();
+	private final List<R> rightItems = new ArrayList<>();
 	
 	@Override
-	public void add(A a, B b) {
-		aItems.add(a);
-		bItems.add(b);
+	public void add(L a, R b) {
+		leftItems.add(a);
+		rightItems.add(b);
 	}
 
 	@Override
 	public void remove(int i) {
-		aItems.remove(i);
-		bItems.remove(i);
+		leftItems.remove(i);
+		rightItems.remove(i);
 	}
 
 	@Override
 	public int size() {
-		int aSize = aItems.size();
-		int bSize = bItems.size();
+		int aSize = leftItems.size();
+		int bSize = rightItems.size();
 		
 		if (aSize != bSize) {
 			throw new IllegalStateException("Both list column need to have the same length!");
@@ -38,19 +41,19 @@ public class ArrayBiList<A, B> implements BiList<A, B> {
 	}
 
 	@Override
-	public Pair<A, B> get(int i) {
-		return new Pair<>(aItems.get(i), bItems.get(i));
+	public Pair<L, R> get(int i) {
+		return new Pair<>(leftItems.get(i), rightItems.get(i));
 	}
 	
 	@Override
-	public BiIterator<A, B> iterator() {
-		return new ComposedIterator<>(aItems.iterator(), bItems.iterator());
+	public BiIterator<L, R> iterator() {
+		return new ComposedIterator<>(leftItems.iterator(), rightItems.iterator());
 	}
 
 	@Override
-	public void forEach(BiConsumer<? super A, ? super B> action) {
-		Iterator<A> aIt = aItems.iterator();
-		Iterator<B> bIt = bItems.iterator();
+	public void forEach(BiConsumer<? super L, ? super R> action) {
+		Iterator<L> aIt = leftItems.iterator();
+		Iterator<R> bIt = rightItems.iterator();
 		
 		while (aIt.hasNext() && bIt.hasNext()) {
 			action.accept(aIt.next(), bIt.next());
@@ -58,40 +61,50 @@ public class ArrayBiList<A, B> implements BiList<A, B> {
 	}
 
 	@Override
-	public A getA(int i) {
-		return aItems.get(i);
+	public L getLeft(int i) {
+		return leftItems.get(i);
 	}
 
 	@Override
-	public B getB(int i) {
-		return bItems.get(i);
-	}
-
-	@Override
-	public boolean contains(A a, B b) {
-		return aItems.contains(a) && bItems.contains(b);
-	}
-
-	@Override
-	public boolean containsA(A a) {
-		return aItems.contains(a);
-	}
-
-	@Override
-	public boolean containsB(B b) {
-		return bItems.contains(b);
+	public R getRight(int i) {
+		return rightItems.get(i);
 	}
 	
 	@Override
-	public void remove(A a) {
-		final int index = aItems.indexOf(a);
+	public List<L> getLeftList() {
+		return leftItems;
+	}
+	
+	@Override
+	public List<R> getRightList() {
+		return rightItems;
+	}
+
+	@Override
+	public boolean contains(L a, R b) {
+		return leftItems.contains(a) && rightItems.contains(b);
+	}
+
+	@Override
+	public boolean containsLeft(L a) {
+		return leftItems.contains(a);
+	}
+
+	@Override
+	public boolean containsRight(R b) {
+		return rightItems.contains(b);
+	}
+	
+	@Override
+	public void remove(L a) {
+		final int index = leftItems.indexOf(a);
 		remove(index);
 	}
 
 	@Override
-	public void remove(A a, B b) {
-		Pair<A, B> p = new Pair<>(a, b);
-		BiIterator<A, B> it = iterator();
+	public void remove(L a, R b) {
+		Pair<L, R> p = new Pair<>(a, b);
+		BiIterator<L, R> it = iterator();
 		while (it.hasNext()) {
 			if (it.next().equals(p)) {
 				it.remove();
@@ -100,15 +113,15 @@ public class ArrayBiList<A, B> implements BiList<A, B> {
 	}
 
 	@Override
-	public int indexOf(A a) {
-		return aItems.indexOf(a);
+	public int indexOf(L a) {
+		return leftItems.indexOf(a);
 	}
 
 	@Override
-	public int indexOf(A a, B b) {
-		Pair<A, B> p = new Pair<>(a, b);
+	public int indexOf(L a, R b) {
+		Pair<L, R> p = new Pair<>(a, b);
 		int i = 0;
-		for (Pair<A, B> item : this) {
+		for (Pair<L, R> item : this) {
 			if (item.equals(p)) {
 				return i;
 			}
@@ -119,29 +132,29 @@ public class ArrayBiList<A, B> implements BiList<A, B> {
 	}
 
 	@Override
-	public void add(int i, A a, B b) {
-		aItems.add(i, a);
-		bItems.add(i, b);
+	public void add(int i, L a, R b) {
+		leftItems.add(i, a);
+		rightItems.add(i, b);
 	}
 
 	@Override
-	public void remap(A a, B b) {
-		bItems.set(aItems.indexOf(a), b);
+	public void remap(L a, R b) {
+		rightItems.set(leftItems.indexOf(a), b);
 	}
 
 	@Override
 	public void clear() {
-		aItems.clear();
-		bItems.clear();
+		leftItems.clear();
+		rightItems.clear();
 	}
 	
 	@Override
-	public void setA(int i, A value) {
-		aItems.set(i, value);
+	public void setLeft(int i, L value) {
+		leftItems.set(i, value);
 	}
 	
 	@Override
-	public void setB(int i, B value) {
-		bItems.set(i, value);
+	public void setRight(int i, R value) {
+		rightItems.set(i, value);
 	}
 }

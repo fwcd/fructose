@@ -1,6 +1,9 @@
 package fwcd.fructose.structs;
 
+import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import fwcd.fructose.BiIterable;
 import fwcd.fructose.Pair;
@@ -10,54 +13,86 @@ import fwcd.fructose.Pair;
  * 
  * @author Fredrik
  *
- * @param <A> The first column item type
- * @param <B> The second column item type
+ * @param <L> The first column item type
+ * @param <R> The second column item type
  */
-public interface BiList<A, B> extends BiIterable<A, B> {
-	void add(A a, B b);
+public interface BiList<L, R> extends BiIterable<L, R> {
+	void add(L a, R b);
 	
-	void add(int i, A a, B b);
+	void add(int i, L a, R b);
 	
-	void remove(A a);
+	void remove(L a);
 	
-	void remove(A a, B b);
+	void remove(L a, R b);
 	
 	void remove(int i);
 	
-	boolean containsA(A a);
+	boolean containsLeft(L a);
 	
-	boolean containsB(B b);
+	boolean containsRight(R b);
 	
-	boolean contains(A a, B b);
+	boolean contains(L a, R b);
 	
 	int size();
 	
-	int indexOf(A a);
+	int indexOf(L a);
 	
-	int indexOf(A a, B b);
+	int indexOf(L a, R b);
 	
-	void remap(A a, B b);
+	void remap(L a, R b);
 	
-	A getA(int i);
+	L getLeft(int i);
 	
-	B getB(int i);
+	R getRight(int i);
 	
-	void setA(int i, A value);
+	void setLeft(int i, L value);
 	
-	void setB(int i, B value);
+	void setRight(int i, R value);
 	
-	Pair<A, B> get(int i);
+	default Pair<L, R> get(int i) {
+		return new Pair<L, R>(getLeft(i), getRight(i));
+	}
 	
-	default void addAll(BiList<? extends A, ? extends B> list) {
+	default List<L> getLeftList() {
+		return IntStream.range(0, size())
+			.mapToObj(this::getLeft)
+			.collect(Collectors.toList());
+	}
+	
+	default List<R> getRightList() {
+		return IntStream.range(0, size())
+			.mapToObj(this::getRight)
+			.collect(Collectors.toList());
+	}
+	
+	default void addAll(BiList<? extends L, ? extends R> list) {
 		list.forEach(this::add);
 	}
 
 	@Override
-	default void forEach(BiConsumer<? super A, ? super B> action) {
+	default void forEach(BiConsumer<? super L, ? super R> action) {
 		for (int i=0; i<size(); i++) {
-			action.accept(getA(i), getB(i));
+			action.accept(getLeft(i), getRight(i));
 		}
 	}
 	
 	void clear();
+	
+	@Deprecated
+	default L getA(int i) { return getLeft(i); }
+	
+	@Deprecated
+	default R getB(int i) { return getRight(i); }
+	
+	@Deprecated
+	default void setA(int i, L value) { setLeft(i, value); }
+	
+	@Deprecated
+	default void setB(int i, R value) { setRight(i, value); }
+	
+	@Deprecated
+	default boolean containsA(L a) { return containsLeft(a); }
+	
+	@Deprecated
+	default boolean containsB(R b) { return containsRight(b); }
 }
