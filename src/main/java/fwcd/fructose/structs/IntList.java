@@ -7,7 +7,7 @@ import java.util.function.IntConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import fwcd.fructose.StreamUtils;
+import fwcd.fructose.util.StreamUtils;
 
 public class IntList {
 	private int[] data;

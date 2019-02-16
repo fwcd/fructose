@@ -1,4 +1,4 @@
-package fwcd.fructose;
+package fwcd.fructose.util;
 
 import java.util.Iterator;
 import java.util.Objects;

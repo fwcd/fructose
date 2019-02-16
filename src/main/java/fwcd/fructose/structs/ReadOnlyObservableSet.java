@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 import fwcd.fructose.EventListenerList;
 import fwcd.fructose.ReadOnlyListenableValue;
-import fwcd.fructose.StreamUtils;
+import fwcd.fructose.util.StreamUtils;
 import fwcd.fructose.structs.events.SetModifyEvent;
 
 /**
