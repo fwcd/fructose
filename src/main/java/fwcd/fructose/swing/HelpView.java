@@ -16,7 +16,7 @@ import javax.swing.border.EmptyBorder;
  * @author Fredrik
  *
  */
-public class HelpView implements View {
+public class HelpView implements Viewable {
 	private final JPanel view;
 	private final int padding = 20;
 	

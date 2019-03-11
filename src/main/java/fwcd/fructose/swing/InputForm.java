@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-public class InputForm implements View {
+public class InputForm implements Viewable {
 	private final JPanel view;
 	private HintTextField textField;
 	private JButton button;

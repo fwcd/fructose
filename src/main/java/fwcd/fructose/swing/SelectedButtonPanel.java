@@ -16,7 +16,7 @@ import javax.swing.JToolBar;
 
 import fwcd.fructose.Option;
 
-public class SelectedButtonPanel implements View {
+public class SelectedButtonPanel implements Viewable {
 	private static final Color INACTIVE_COLOR = Color.WHITE;
 
 	private JComponent view;

@@ -6,7 +6,7 @@ import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class StatusBar implements View {
+public class StatusBar implements Viewable {
 	private JPanel view;
 	
 	private JLabel status;

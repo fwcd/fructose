@@ -8,7 +8,7 @@ import javax.swing.JRadioButton;
 
 import fwcd.fructose.swing.properties.EnumOptionsProperty;
 
-public class EnumOptionsView implements View {
+public class EnumOptionsView implements Viewable {
 	private JPanel view = new JPanel();
 	
 	public EnumOptionsView(boolean horizontal) {

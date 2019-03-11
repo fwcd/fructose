@@ -2,7 +2,7 @@ package fwcd.fructose.swing;
 
 import javax.swing.JPanel;
 
-public class EmptyView implements View {
+public class EmptyView implements Viewable {
 	private JPanel view;
 	
 	public EmptyView() {
