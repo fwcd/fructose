@@ -9,5 +9,9 @@ import javax.swing.JComponent;
  * depending on which UI architecture is used.
  */
 public interface Viewable {
+	/**
+	 * Fetches the Swing component associated with this viewable.
+	 * @return The associated Swing component.
+	 */
 	JComponent getComponent();
 }
