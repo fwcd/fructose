@@ -1,7 +1,7 @@
 # Fructose
 A general-purpose Java library providing an extensive set of utilities.
 
-[![Build Status](https://travis-ci.org/fwcd/Fructose.svg?branch=master)](https://travis-ci.org/fwcd/Fructose)
+[![Build Status](https://travis-ci.org/fwcd/fructose.svg?branch=master)](https://travis-ci.org/fwcd/fructose)
 
 * Math
     * Complex numbers
