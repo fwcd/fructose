@@ -19,7 +19,7 @@ public class Lens<T, E> {
 	 * Creates a new lens. This can be done conveniently using
 	 * method references:
 	 * 
-	 * <pre>new Lens(MyStructure::getValue, MyStructure::setValue)</pre>
+	 * <pre>new Lens(MyStructure::getValue, MyStructure::withValue)</pre>
 	 * 
 	 * (Assuming that the setter does not mutate the structure
 	 * but instead creates a new one.)
@@ -54,16 +54,30 @@ public class Lens<T, E> {
 	}
 	
 	/**
-	 * Layers another lens above this one.
+	 * Layers this lens below another one.
 	 * 
 	 * @param <U> - The outer structure
 	 * @param outer - An outer lens focusing on this lenses structure
 	 * @return An outer lens focusing on this lenses value
 	 */
-	public <U> Lens<U, E> compose(Lens<U, T> outer) {
+	public <U> Lens<U, E> below(Lens<U, T> outer) {
 		return new Lens<>(
 			getter.compose(outer.getter),
 			(structure, newValue) -> outer.set(structure, set(outer.get(structure), newValue))
+		);
+	}
+	
+	/**
+	 * Layers this lens above another one.
+	 * 
+	 * @param <U> - The outer structure
+	 * @param inner - An outer lens focusing on this lenses structure
+	 * @return An outer lens focusing on this lenses value
+	 */
+	public <F> Lens<T, F> compose(Lens<E, F> inner) {
+		return new Lens<>(
+			inner.getter.compose(getter),
+			(structure, newValue) -> set(structure, inner.set(get(structure), newValue))
 		);
 	}
 }
