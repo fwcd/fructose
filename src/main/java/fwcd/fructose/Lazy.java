@@ -1,5 +1,6 @@
 package fwcd.fructose;
 
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -7,16 +8,16 @@ import java.util.function.Supplier;
  * Stores a lazily loaded reference to an object.
  */
 public class Lazy<T> {
-	private final Supplier<T> getter;
+	private Supplier<T> getter;
 	private T value;
 
 	private Lazy(T value) {
 		getter = null;
-		this.value = value;
+		this.value = Objects.requireNonNull(value);
 	}
 
 	public Lazy(Supplier<T> getter) {
-		this.getter = getter;
+		this.getter = Objects.requireNonNull(getter);
 	}
 
 	public static <T> Lazy<T> of(Supplier<T> getter) {
@@ -50,6 +51,7 @@ public class Lazy<T> {
 	public T get() {
 		if (value == null) {
 			value = getter.get();
+			getter = null;
 		}
 
 		return value;
