@@ -21,7 +21,25 @@ import fwcd.fructose.util.ListUtils;
  */
 public final class ExtMath {
 	private ExtMath() {}
-	
+
+	/**
+     * Parses the number expressed in `fromRadix` base and returns its
+     * corresponsive in `toRadix` base.
+	 * 
+     * @param number number to be converted
+     * @param fromRadix initial base
+     * @param toRadix destination base
+     * @return the converted number as a string
+	 * @throws IllegalArgumentException if the radix is outside the supported range
+	 * @throws NumberFormatException if the number could not be parsed
+     */
+	public static String convertBase(String number, int fromRadix, int toRadix) {
+		if (toRadix < Character.MIN_RADIX || toRadix > Character.MAX_RADIX) {
+			throw new IllegalArgumentException("Destination radix " + toRadix + " is out of bounds!");
+		}
+		return Integer.toString(Integer.parseInt(number, fromRadix), toRadix);
+	}
+
 	public static int ceilDivide(int counter, int denominator) {
 		if (counter <= 0) {
 			return (int) Math.ceil((double) counter / (double) denominator);
@@ -29,14 +47,14 @@ public final class ExtMath {
 			return (counter + denominator - 1) / denominator;
 		}
 	}
-	
+
 	public static int log2Floor(int n) {
 		if (n <= 0) {
 			throw new IllegalArgumentException();
 		}
-	    return 31 - Integer.numberOfLeadingZeros(n);
+		return 31 - Integer.numberOfLeadingZeros(n);
 	}
-	
+
 	/**
 	 * Calculates the square root of a BigInteger.<br>
 	 * <br>
@@ -50,7 +68,7 @@ public final class ExtMath {
 	public static BigInteger sqrt(BigInteger n) {
 		BigInteger a = BigInteger.ONE;
 		BigInteger b = n.shiftRight(5).add(BigInteger.valueOf(8));
-		
+
 		while (b.compareTo(a) >= 0) {
 			BigInteger mid = a.add(b).shiftRight(1);
 			if (mid.multiply(mid).compareTo(n) > 0) {
@@ -59,20 +77,20 @@ public final class ExtMath {
 				a = mid.add(BigInteger.ONE);
 			}
 		}
-		
+
 		return a.subtract(BigInteger.ONE);
 	}
-	
+
 	/**
-	 * Calculates the square root of a BigInteger and throws an
-	 * exception if the result is not a natural number.
+	 * Calculates the square root of a BigInteger and throws an exception if the
+	 * result is not a natural number.
 	 * 
 	 * @param n
 	 * @return
 	 */
 	public static BigInteger exactSqrt(BigInteger n) {
 		BigInteger sqrt = sqrt(n);
-		
+
 		if (sqrt.equals(n.pow(2))) {
 			return sqrt;
 		} else {
@@ -84,10 +102,8 @@ public final class ExtMath {
 	 * Creates a sum, iterating over a range of integers and performing a specified
 	 * operation on each value.
 	 * 
-	 * @param range
-	 *            - Including both ends of the range
-	 * @param operation
-	 *            - Specified equation
+	 * @param range     - Including both ends of the range
+	 * @param operation - Specified equation
 	 * @return The sum
 	 */
 	public static int sigma(InclusiveIntRange range, IntUnaryOperator operation) {
@@ -134,7 +150,7 @@ public final class ExtMath {
 					.multiply(binomCoefficient(n.subtract(BigInteger.valueOf(1)), k.subtract(BigInteger.valueOf(1))));
 		}
 	}
-	
+
 	public static BigInteger largeFactorial(BigInteger number) {
 		BigInteger result = new BigInteger("1");
 
@@ -144,7 +160,7 @@ public final class ExtMath {
 
 		return result;
 	}
-	
+
 	public static BigInteger largeFactorial(int number) {
 		BigInteger result = new BigInteger("1");
 
@@ -173,8 +189,7 @@ public final class ExtMath {
 	/**
 	 * Naive and slow (but deterministic) prime tester.
 	 * 
-	 * @param x
-	 *            - The number to be tested
+	 * @param x - The number to be tested
 	 * @return If it's a prime
 	 */
 	public static boolean isPrime(long x) {
@@ -194,8 +209,7 @@ public final class ExtMath {
 	/**
 	 * Fast, but probabilistic prime tester.
 	 * 
-	 * @param x
-	 *            - The number to be test
+	 * @param x - The number to be test
 	 * @return If it's probably a prime
 	 */
 	public static boolean fastIsPrime(long x, int certainty) {
@@ -286,23 +300,22 @@ public final class ExtMath {
 		} else if (index == 1 || index == 2) {
 			return 1;
 		}
-		
+
 		long lastA = 0;
 		long lastB = 1;
-		
-		for (int i=1; i<index; i++) {
+
+		for (int i = 1; i < index; i++) {
 			long next = Math.addExact(lastA, lastB);
 			lastA = lastB;
 			lastB = next;
 		}
-		
+
 		return lastB;
 	}
-	
+
 	/**
-	 * Calculates euler's totient function.
-	 * (Uses a prime check with a certainty of 15, which
-	 * means that this isn't a deterministic algorithm)
+	 * Calculates euler's totient function. (Uses a prime check with a certainty of
+	 * 15, which means that this isn't a deterministic algorithm)
 	 * 
 	 * @param number
 	 * @return
@@ -349,7 +362,7 @@ public final class ExtMath {
 	private static ConstScalar term(double n) {
 		return new ConstScalar(n);
 	}
-	
+
 	public static List<ScalarExponentiation> summarizeFactors(IntList factors) {
 		Collections.sort(factors.boxed());
 		List<ScalarExponentiation> exponentiations = new ArrayList<>();
@@ -377,7 +390,7 @@ public final class ExtMath {
 
 		return exponentiations;
 	}
-	
+
 	public static String binaryString(int v, int length) {
 		String s = Integer.toBinaryString(v);
 		while (s.length() < length) {
