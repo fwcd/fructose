@@ -1,7 +1,8 @@
 # Fructose
-A general-purpose Java library providing an extensive set of utilities.
 
 [![Build Status](https://github.com/fwcd/fructose/workflows/Java%20CI/badge.svg)](https://github.com/fwcd/fructose/actions)
+
+A general-purpose Java library providing an extensive set of utilities.
 
 * Math
     * Complex numbers
